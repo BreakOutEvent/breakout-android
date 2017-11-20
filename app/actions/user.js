@@ -6,3 +6,16 @@ export function setUser(user){
     payload:user
   }
 }
+
+export function setUsername(username){
+  return {
+    type: types.SET_USERNAME,
+    payload:username
+  }
+}
+
+export function login(username,password){
+  return (dispatch,getState) => {
+    console.log(username+" "+password);
+  }
+}
