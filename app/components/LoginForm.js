@@ -8,6 +8,8 @@ import {
 	AsyncStorage
 } from 'react-native';
 import CardView from "./CardView";
+import LoadingButton from './LoadingButton';
+
 export default class LoginForm extends Component{
   constructor(props){
     super(props);
@@ -29,11 +31,10 @@ export default class LoginForm extends Component{
         placeholder="Passwort"
         secureTextEntry={true} />
 				<View style={styles.button}>
-					<Button
-					title="Login"
-					color="#e6823c"
-					width="100%"
+					<LoadingButton
 					onPress={() => {this.onClick()}}
+					loggingIn={this.props.loggingIn}
+					text="LOGIN"
 					/>
 				</View>
       </CardView>

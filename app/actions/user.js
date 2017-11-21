@@ -14,8 +14,16 @@ export function setUsername(username){
   }
 }
 
+export function setLoggingIn(logging){
+  return {
+    type: types.LOGGING_IN,
+    payload:logging
+  }
+}
+
 export function login(username,password){
   return (dispatch,getState) => {
     console.log(username+" "+password);
+    dispatch(setLoggingIn(true));
   }
 }

@@ -32,9 +32,10 @@ class Home extends Component{
   }
 
   render(){
+		console.log(this.props.loggingIn);
     return(
       <View style={styles.container}>
-        <LoginForm style={{width:"75%",height:30,backgroundColor:"white"}} onButtonClick={this.onLoginPressed} loggingIn={this.props.isLoggingIn}/>
+        <LoginForm style={{width:"75%",height:30,backgroundColor:"white"}} onButtonClick={this.onLoginPressed} loggingIn={this.props.loggingIn}/>
       </View>
     );
   }
@@ -56,6 +57,7 @@ const styles = StyleSheet.create({
 });
 //Make state available as props
 function mapStateToProps(state){
+	console.log(state);
 	return {
 		loggingIn: state.isLoggingIn,
 	}
