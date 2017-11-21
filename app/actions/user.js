@@ -24,6 +24,9 @@ export function setLoggingIn(logging){
 export function login(username,password){
   return (dispatch,getState) => {
     console.log(username+" "+password);
-    dispatch(setLoggingIn(true));
+    let curState = getState()
+    let loggingIn = curState.isLoggingIn;
+    console.log(loggingIn);
+    dispatch(setLoggingIn(!loggingIn));
   }
 }
