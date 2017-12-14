@@ -21,6 +21,8 @@ import {ActionCreators} from '../actions';
 import {bindActionCreators} from 'redux';
 import {withNavigation} from 'react-navigation';
 
+import LoginForm from '../components/LoginForm';
+
 class Home extends Component{
   constructor(props){
     super(props);
@@ -30,12 +32,19 @@ class Home extends Component{
   }
 
   render(){
+		console.log(this.props.loggingIn);
     return(
       <View style={styles.container}>
-        <Text>Hallo BreakOut!</Text>
+        <LoginForm style={{width:"75%",height:30,backgroundColor:"white"}} onButtonClick={this.onLoginPressed} loggingIn={this.props.loggingIn}/>
       </View>
     );
   }
+
+	onLoginPressed = (username,password) => {
+		console.log(username+" "+password);
+		console.log(this.props);
+		this.props.login(username,password);
+	}
 }
 
 const styles = StyleSheet.create({
@@ -48,17 +57,9 @@ const styles = StyleSheet.create({
 });
 //Make state available as props
 function mapStateToProps(state){
+	console.log(state);
 	return {
-		searchedProduct: state.searchedProduct,
-		results: state.searchResults,
-		aId: state.analyticsId,
-		searching: state.searching,
-		genUuid: state.uuid,
-		initStatus: state.initLoading,
-		showClosed: state.showClosed,
-		highToLow: state.highToLow,
-		lowToHigh: state.lowToHigh,
-		userLocation: state.userLocation
+		loggingIn: state.isLoggingIn,
 	}
 }
 
