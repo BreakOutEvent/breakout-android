@@ -31,4 +31,18 @@ export const isLoggingIn = createReducer(false,{
     console.log("set logging in: "+action.payload);
     return action.payload;
   }
+});
+
+export const accessToken = createReducer("",{
+  [types.SET_ATOKEN](state,action){
+    console.log("setAccessToken: "+action.payload);
+    return action.payload;
+  }
+});
+
+export const refreshToken = createReducer("",{
+  [types.SET_RTOKEN](state,action){
+    console.log("setRefreshToken: "+action.payload);
+    return action.payload;
+  }
 })
