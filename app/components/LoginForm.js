@@ -22,22 +22,36 @@ export default class LoginForm extends Component{
 	}
   render(){
     return(
-      <CardView style={this.props.style}>
-        <TextInput style={{width:"100%"}}
-        onChangeText={(text)=>{this.onUsernameEntry(text)}}
-        placeholder="Username" />
-        <TextInput style={{width:"100%"}}
-        onChangeText={(text)=>{this.onPasswordEntry(text)}}
-        placeholder="Passwort"
-        secureTextEntry={true} />
-				<View style={styles.button}>
-					<LoadingButton
-					onPress={() => {this.onClick()}}
-					loggingIn={this.props.loggingIn}
-					text="LOGIN"
-					/>
+			<View style={styles.container}>
+				<View style={styles.logoArea}>
 				</View>
-      </CardView>
+	      <View style={styles.loginArea}>
+					<View style={styles.loginInput}>
+		        <TextInput style={styles.textInput} placeholderTextColor='#ffffff80' underlineColorAndroid='#ffffff80'
+		        onChangeText={(text)=>{this.onUsernameEntry(text)}}
+		        placeholder="Email" />
+		        <TextInput style={styles.textInput} placeholderTextColor='#ffffff80' underlineColorAndroid='#ffffff80'
+		        onChangeText={(text)=>{this.onPasswordEntry(text)}}
+		        placeholder="Passwort"
+		        secureTextEntry={true} />
+					</View>
+					<View style={styles.button}>
+						<LoadingButton
+						onPress={() => {this.onClick()}}
+						loggingIn={this.props.loggingIn}
+						text="EINLOGGEN"
+						/>
+					</View>
+					<View style={styles.button}>
+						<LoadingButton
+						onPress={() => {this.onClick()}}
+						loggingIn={this.props.loggingIn}
+						text="KOSTENLOS REGISTRIEREN"
+						style={{backgroundColor:'#ffffff80'}}
+						/>
+					</View>
+	      </View>
+			</View>
     );
   }
 
@@ -56,11 +70,38 @@ export default class LoginForm extends Component{
 
 const styles = StyleSheet.create({
   container:{
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'flex-start',
+		alignItems:'center',
+		backgroundColor: '#000000',
+		width: '100%'
 
   },
+	logoArea:{
+		backgroundColor: '#e6832c',
+		width:'100%',
+		height:'40.2%'
+	},
+	loginArea:{
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent:'flex-start',
+		alignItems:'stretch',
+		backgroundColor: '#34323b',
+		width:'100%',
+		paddingTop: 28
+	},
+	loginInput:{
+		width:'100%'
+
+	},
+	textInput:{
+		marginHorizontal: 40
+	},
 	button:{
 		marginTop:12,
 		paddingTop:20,
-		width:200
+		marginHorizontal: 40
 	}
 });
