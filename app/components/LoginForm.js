@@ -50,6 +50,9 @@ export default class LoginForm extends Component{
 						style={{backgroundColor:'#ffffff80'}}
 						/>
 					</View>
+					<Text style={styles.text}>
+					Was ist BreakOut?
+					</Text>
 	      </View>
 			</View>
     );
@@ -103,5 +106,12 @@ const styles = StyleSheet.create({
 		marginTop:12,
 		paddingTop:20,
 		marginHorizontal: 40
+	},
+	text:{
+		color:'#ffffffcc',
+		paddingTop: 25,
+		textAlignVertical: 'center',
+		textAlign: 'center'
+
 	}
 });
