@@ -17,10 +17,14 @@ export default class LoadingButton extends Component{
 	render(){
 		console.log(this.props.loggingIn);
 		let display = (this.props.loggingIn)? <ActivityIndicator color="#FFF"></ActivityIndicator> : <Text style={{color:"white"}}>{this.props.text}</Text>
+		//rather inelegant solution to prevent app from crashing when the 'style'-prop is undefined
+		if(this.props.style != undefined){
+			customstyle = [styles.default,this.props.style]
+		}else{
+			customstyle = styles.default
+		}
 		return(
-			<TouchableOpacity style={[styles.container,this.props.style]} onPress={() => this.onClicked()} activeOpacity={0.8}>
-				{display}
-			</TouchableOpacity>
+			<TouchableOpacity style={customstyle} onPress={() => this.onClicked()} activeOpacity={0.8}>{display}</TouchableOpacity>
 		);
 	}
 	onClicked = () =>{
@@ -29,7 +33,7 @@ export default class LoadingButton extends Component{
 }
 
 const styles = StyleSheet.create({
-	container: {
+	default: {
 		backgroundColor: "#e6823c",
 		padding:10,
 		elevation:4,

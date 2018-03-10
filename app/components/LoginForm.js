@@ -7,7 +7,6 @@ import {
 	Button,
 	AsyncStorage
 } from 'react-native';
-import CardView from "./CardView";
 import LoadingButton from './LoadingButton';
 
 export default class LoginForm extends Component{
@@ -51,7 +50,7 @@ export default class LoginForm extends Component{
 						/>
 					</View>
 					<Text style={styles.text}>
-					Was ist BreakOut?
+						Was ist BreakOut?
 					</Text>
 	      </View>
 			</View>
