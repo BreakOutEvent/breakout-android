@@ -5,7 +5,9 @@ import {
 	Text,
 	TextInput,
 	Button,
-	AsyncStorage
+	AsyncStorage,
+	Image,
+	TouchableOpacity
 } from 'react-native';
 import LoadingButton from './LoadingButton';
 
@@ -23,6 +25,12 @@ export default class LoginForm extends Component{
     return(
 			<View style={styles.container}>
 				<View style={styles.logoArea}>
+					<TouchableOpacity style={{height:26, marginTop:21, marginLeft:21}}>
+						<Image source={require('../assets/ic_close_black_24dp.png')} style={{height:26, width:26}}/>
+					</TouchableOpacity>
+					<View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+						<Image source={require('../assets/logo_login.png')} style={{height:163, width:160}}/>
+					</View>
 				</View>
 	      <View style={styles.loginArea}>
 					<View style={styles.loginInput}>
