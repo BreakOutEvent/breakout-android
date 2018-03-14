@@ -25,22 +25,28 @@ export default class LoginForm extends Component{
     return(
 			<View style={styles.container}>
 				<View style={styles.logoArea}>
-					<TouchableOpacity style={{height:26, marginTop:21, marginLeft:21}}>
+					<TouchableOpacity style={{height:20, width:30, marginTop:21, marginLeft:21}}>
 						<Image source={require('../assets/ic_close_black_24dp.png')} style={{height:26, width:26}}/>
 					</TouchableOpacity>
-					<View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+					<View style={{flex:1, justifyContent:'flex-start', alignItems:'center'}}>
 						<Image source={require('../assets/logo_login.png')} style={{height:163, width:160}}/>
 					</View>
 				</View>
 	      <View style={styles.loginArea}>
 					<View style={styles.loginInput}>
-		        <TextInput style={styles.textInput} placeholderTextColor='#ffffff80' underlineColorAndroid='#ffffff80'
-		        onChangeText={(text)=>{this.onUsernameEntry(text)}}
-		        placeholder="Email" />
-		        <TextInput style={styles.textInput} placeholderTextColor='#ffffff80' underlineColorAndroid='#ffffff80'
-		        onChangeText={(text)=>{this.onPasswordEntry(text)}}
-		        placeholder="Passwort"
-		        secureTextEntry={true} />
+						<View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+							<Image source={require('../assets/ic_mail_outline_black_24dp.png')} style={{height:26, width:26, tintColor:'#ffffff80'}}/>
+			        <TextInput style={styles.textInput} placeholderTextColor='#ffffff80' underlineColorAndroid='#ffffff80'
+			        onChangeText={(text)=>{this.onUsernameEntry(text)}}
+			        placeholder="Email" />
+						</View>
+						<View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+							<Image source={require('../assets/ic_lock_outline_black_24dp.png')} style={{height:26, width:26, tintColor:'#ffffff80'}}/>
+			        <TextInput style={styles.textInput} placeholderTextColor='#ffffff80' underlineColorAndroid='#ffffff80'
+			        onChangeText={(text)=>{this.onPasswordEntry(text)}}
+			        placeholder="Passwort"
+			        secureTextEntry={true} />
+						</View>
 					</View>
 					<View style={styles.button}>
 						<LoadingButton
@@ -84,7 +90,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		justifyContent: 'flex-start',
 		alignItems:'center',
-		backgroundColor: '#000000',
+		backgroundColor: '#34323b',
 		width: '100%'
 
   },
@@ -99,20 +105,24 @@ const styles = StyleSheet.create({
 		justifyContent:'flex-start',
 		alignItems:'stretch',
 		backgroundColor: '#34323b',
-		width:'100%',
-		paddingTop: 28
+		width:'84%',
+		paddingTop: 28,
+		marginHorizontal: 40
 	},
 	loginInput:{
-		width:'100%'
+		width:'100%',
+		alignItems:'center',
+		justifyContent:'center'
 
 	},
 	textInput:{
-		marginHorizontal: 40
+		flex:1,
+		fontSize:16
 	},
 	button:{
 		marginTop:12,
-		paddingTop:20,
-		marginHorizontal: 40
+		paddingTop:20
+
 	},
 	text:{
 		color:'#ffffffcc',
