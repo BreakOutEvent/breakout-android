@@ -14,12 +14,16 @@ import {
   TextInput
 } from 'react-native';
 import GenericButton from '../components/GenericButton';
+import 'core-js/es6/symbol';
+import 'core-js/fn/symbol/iterator';
+import LocalizedStrings from 'react-native-localization';
 
 export default class NewPost extends Component{
 	constructor(props){
 		super(props);
 	}
   render(){
+      strings.setLanguage('en-US')
       return(
         <View style={styles.container}>
           <View style={styles.topScreenInput}>
@@ -28,7 +32,7 @@ export default class NewPost extends Component{
             </TouchableOpacity>
             <View style={{flex:1, height:'100%', justifyContent:'center'}}>
               <Text style={{flex:1, height:'100%', textAlignVertical:'center', fontSize:20, color:'#ffffff'}} adjustsFontSizeToFit numberOfLines={1}>
-                Neuer Post
+                {strings.newPost}
               </Text>
             </View>
             <TouchableOpacity style={{backgroundColor:'#e6823c', justifyContent:'center'}} text='test'>
@@ -43,7 +47,7 @@ export default class NewPost extends Component{
             <View style={{flex:1}}/>
             <View style={{width:'100%', backgroundColor:'#00000080', justifyContent:'space-between'}}>
               <Text style={{ marginLeft:20, color:'#ffffff'}}>
-                Aktuellen Ort ermitteln...
+                {strings.gettingCurrentLocation}
               </Text>
             </View>
           </ImageBackground>
@@ -52,20 +56,37 @@ export default class NewPost extends Component{
               <Image source={require('../assets/ic_add_circle_outline_black_24dp.png')} style={{height:26, width:26, marginHorizontal:20, resizeMode: 'contain', tintColor:'#33333333'}}/>
             </TouchableOpacity>
             <Text style={{color:'#33333333', fontSize:15, flex:1, height:'100%', textAlignVertical:'center'}}>
-              Wähle eine Challenge aus
+              {strings.chooseChallenge}
             </Text>
           </View>
           <View style={{flex:1, backgroundColor:'#f2f2f2'}}>
             <Text style={{color:'#00000061', fontSize:12, marginHorizontal:16, marginTop:16}}>
-              Nachricht
+              {strings.message}
             </Text>
             <TextInput style={{color:'#000000', height:40, marginHorizontal:16}} placeholderTextColor='#00000061' underlineColorAndroid='#00000061'
-           placeholder='Was machst du gerade?'/>
+           placeholder={strings.whatRUDoing}/>
           </View>
         </View>
       );
   }
 }
+
+let strings = new LocalizedStrings({
+ "en-US":{
+	 newPost:"New post",
+   gettingCurrentLocation:"Getting current location...",
+   chooseChallenge:"Choose a challenge",
+   message:"Message",
+   whatRUDoing:"What are you doing?"
+ },
+ de:{
+   newPost:"Neuer post",
+   gettingCurrentLocation:"Aktuellen Ort ermitteln...",
+   chooseChallenge:"Wähle eine Challenge aus",
+   message:"Nachricht",
+   whatRUDoing:"Was machst du gerade?"
+ }
+});
 
 const styles = StyleSheet.create({
   challengeSelector:{

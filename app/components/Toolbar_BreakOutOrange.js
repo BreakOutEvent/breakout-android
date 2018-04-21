@@ -1,3 +1,4 @@
+//Toolbar in BreakOut orange, accepts a heading and icons for the left and right buttons. If no resource for the right button is given it will not render.
 import React,{Component} from 'react';
 import{
 	StyleSheet,
@@ -11,13 +12,12 @@ import{
 export default class Toolbar_BreakOutOrange extends Component{
   constructor(props){
     super(props);
-
   }
 
   render(){
     var iconForLeftButton = (this.props.iconForLeftButton != undefined)?this.props.iconForLeftButton : require('../assets/ic_close_black_24dp.png')
     var heading = (this.props.heading != undefined)?this.props.heading : 'BreakOut'
-    var iconForRightButton = this.props.iconForLeftButton;
+    var iconForRightButton = this.props.iconForRightButton;
 
     if (typeof(iconForRightButton) !== 'undefined' || iconForRightButton != null){
       return(
@@ -35,7 +35,7 @@ export default class Toolbar_BreakOutOrange extends Component{
           </TouchableOpacity>
         </View>
       )
-    } else {
+    }else{
       return(
         <View style={styles.toolbar}>
           <TouchableOpacity style={{backgroundColor:'#e6823c', justifyContent:'center'}} text='test'>

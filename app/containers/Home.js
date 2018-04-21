@@ -24,6 +24,8 @@ import {withNavigation} from 'react-navigation';
 
 import LoginForm from '../components/LoginForm';
 import NewPost from '../screens/NewPost';
+import ChallengeItem from '../components/ChallengeItem';
+import ChallengeList from './ChallengeList';
 class Home extends Component{
   constructor(props){
     super(props);
@@ -36,7 +38,7 @@ class Home extends Component{
 		console.log(this.props.loggingIn);
     return(
       <View style={styles.container}>
-				<LoginForm/>
+				<ChallengeList/>
       </View>
     );
   }

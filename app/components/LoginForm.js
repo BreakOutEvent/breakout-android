@@ -9,6 +9,9 @@ import {
 	Image,
 	TouchableOpacity
 } from 'react-native';
+import 'core-js/es6/symbol';
+import 'core-js/fn/symbol/iterator';
+import LocalizedStrings from 'react-native-localization';
 import LoadingButton from './LoadingButton';
 
 export default class LoginForm extends Component{
@@ -22,6 +25,7 @@ export default class LoginForm extends Component{
 		console.log(this.props);
 	}
   render(){
+		strings.setLanguage('de')
     return(
 			<View style={styles.container}>
 				<View style={styles.logoArea}>
@@ -38,13 +42,13 @@ export default class LoginForm extends Component{
 							<Image source={require('../assets/ic_mail_outline_black_24dp.png')} style={{height:26, width:26, tintColor:'#ffffff80'}}/>
 			        <TextInput style={styles.textInput} placeholderTextColor='#ffffff80' underlineColorAndroid='#ffffff80'
 			        onChangeText={(text)=>{this.onUsernameEntry(text)}}
-			        placeholder="Email" />
+			        placeholder={strings.email} />
 						</View>
 						<View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
 							<Image source={require('../assets/ic_lock_outline_black_24dp.png')} style={{height:26, width:26, tintColor:'#ffffff80'}}/>
 			        <TextInput style={styles.textInput} placeholderTextColor='#ffffff80' underlineColorAndroid='#ffffff80'
 			        onChangeText={(text)=>{this.onPasswordEntry(text)}}
-			        placeholder="Passwort"
+			        placeholder={strings.password}
 			        secureTextEntry={true} />
 						</View>
 					</View>
@@ -52,19 +56,19 @@ export default class LoginForm extends Component{
 						<LoadingButton
 						onPress={() => {this.onClick()}}
 						loggingIn={this.props.loggingIn}
-						text="EINLOGGEN"
+						text={strings.logIn}
 						/>
 					</View>
 					<View style={styles.button}>
 						<LoadingButton
 						onPress={() => {this.onClick()}}
 						loggingIn={this.props.loggingIn}
-						text="KOSTENLOS REGISTRIEREN"
+						text={strings.register}
 						style={{backgroundColor:'#ffffff80'}}
 						/>
 					</View>
 					<Text style={styles.text}>
-						Was ist BreakOut?
+						{strings.whatIsBreakout}
 					</Text>
 	      </View>
 			</View>
@@ -82,7 +86,26 @@ export default class LoginForm extends Component{
 	onClick = () => {
 		this.props.onButtonClick(this.state.username,this.state.password);
 	}
+
+
 }
+
+let strings = new LocalizedStrings({
+ "en-US":{
+	 email:"Email",
+	 password:"Password",
+	 logIn:"Log in",
+	 register:"Register",
+	 whatIsBreakout:"What is BreakOut?"
+ },
+ de:{
+	 email:"Email",
+	 password:"Passwort",
+	 logIn:"Einloggen",
+	 register:"Registrieren",
+	 whatIsBreakout:"Was ist BreakOut?"
+ }
+});
 
 const styles = StyleSheet.create({
   container:{
