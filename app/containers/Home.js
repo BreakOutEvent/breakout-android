@@ -38,7 +38,7 @@ class Home extends Component{
 		console.log(this.props.loggingIn);
     return(
       <View style={styles.container}>
-				<ChallengeList/>
+				<LoginForm/>
       </View>
     );
   }
