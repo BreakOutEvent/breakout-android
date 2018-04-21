@@ -1,3 +1,4 @@
+//A generic Button component that offers some styles necessitated by the UI-Design document
 import React,{Component} from 'react';
 import {
 	StyleSheet,
@@ -9,14 +10,14 @@ import {
 	TouchableOpacity
 } from 'react-native';
 
-export default class LoadingButton extends Component{
+export default class GenericButton extends Component{
 	constructor(props){
 		super(props);
 	}
 
 	render(){
 		console.log(this.props.loggingIn);
-		let display = (this.props.loggingIn)? <ActivityIndicator color="#FFF"></ActivityIndicator> : <Text style={{color:"white"}}>{this.props.text}</Text>
+		let customstyle
 		//rather inelegant solution to prevent app from crashing when the 'style'-prop is undefined
 		if(this.props.style != undefined){
 			customstyle = [styles.default,this.props.style]
@@ -24,11 +25,8 @@ export default class LoadingButton extends Component{
 			customstyle = styles.default
 		}
 		return(
-			<TouchableOpacity style={customstyle} onPress={() => this.onClicked()} activeOpacity={0.8}>{display}</TouchableOpacity>
+			 <TouchableOpacity style={customstyle} onPress={() => this.onClicked()} activeOpacity={0.8}><Text style={{color:"white"}}>{this.props.text}</Text></TouchableOpacity>
 		);
-	}
-	onClicked = () =>{
-		this.props.onPress();
 	}
 }
 
@@ -40,6 +38,5 @@ const styles = StyleSheet.create({
 		minHeight:45,
 		justifyContent:"center",
 		alignItems:"center",
-		borderRadius: 50
 	}
 })
