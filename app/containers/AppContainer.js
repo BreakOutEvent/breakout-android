@@ -8,6 +8,7 @@ import ChatScreen from "../screens/ChatScreen";
 import TeamOverviewScreen from "../screens/TeamOverviewScreen";
 import CreatePostingScreen from "../screens/CreatePostingScreen";
 import LoginScreen from "../screens/LoginScreen";
+import * as Colors from "../config/Colors";
 
 const drawerButton = (navigation) =>
     (<Icon name='menu' style={{paddingLeft: 10}} onPress={() => navigation.navigate('DrawerToggle')}/>);
@@ -29,7 +30,7 @@ export default AppWithNav = StackNavigator({
     title: 'BreakOut',
     intialRouteName: 'drawerStack',
     navigationOptions: ({navigation}) => ({
-        headerStyle: {backgroundColor: '#cc7800'},
+        headerStyle: {backgroundColor: Colors.Primary},
         title: 'BreakOut',
         headerTintColor: 'white',
         gesturesEnabled: false,
