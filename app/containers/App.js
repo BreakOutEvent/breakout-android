@@ -1,7 +1,7 @@
 import React from 'react';
 import {DrawerNavigator, StackNavigator} from 'react-navigation';
 import {Icon} from 'native-base'
-import PostingListScreen from "../screens/PostingList";
+import ConnectedPostingList from "../screens/PostingList";
 import MapScreen from "../screens/MapScreen";
 import AllTeamsScreen from "../screens/AllTeamsScreen";
 import ChatScreen from "../screens/ChatScreen";
@@ -9,21 +9,23 @@ import TeamOverviewScreen from "../screens/TeamOverviewScreen";
 import CreatePostingScreen from "../screens/CreatePostingScreen";
 import LoginScreen from "../screens/LoginScreen";
 import * as Colors from "../config/Colors";
+import {Provider} from 'react-redux';
+import store from '../store/store';
 
 const drawerButton = (navigation) =>
-    (<Icon name='menu' style={{paddingLeft: 10}} onPress={() => navigation.navigate('DrawerToggle')}/>);
+    (<Icon name='menu' style={{paddingLeft: 10, color: 'white'}} onPress={() => navigation.navigate('DrawerToggle')}/>);
 
 const DrawerStack = DrawerNavigator({
+    allPostings: {screen: ConnectedPostingList},
     login: {screen: LoginScreen},
     postStatus: {screen: CreatePostingScreen},
     yourTeam: {screen: TeamOverviewScreen},
     chat: {screen: ChatScreen},
     map: {screen: MapScreen},
-    allPostings: {screen: PostingListScreen},
     allTeams: {screen: AllTeamsScreen},
 });
 
-export default AppWithNav = StackNavigator({
+const Navigator = StackNavigator({
     drawerStack: {screen: DrawerStack}
 }, {
     headerMode: 'screen',
@@ -37,3 +39,10 @@ export default AppWithNav = StackNavigator({
         headerLeft: drawerButton(navigation)
     })
 });
+
+export default App = () => (
+    <Provider store={store}>
+        <Navigator/>
+    </Provider>
+);
+
