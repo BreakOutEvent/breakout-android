@@ -10,14 +10,15 @@ import CreatePostingScreen from "../screens/CreatePostingScreen";
 import LoginScreen from "../screens/LoginScreen";
 import * as Colors from "../config/Colors";
 import {Provider} from 'react-redux';
-import store from '../store/store';
+import {persistor, store} from '../store/store';
+import {PersistGate} from "redux-persist/integration/react";
 
 const drawerButton = (navigation) =>
     (<Icon name='menu' style={{paddingLeft: 10, color: 'white'}} onPress={() => navigation.navigate('DrawerToggle')}/>);
 
 const DrawerStack = DrawerNavigator({
-    allPostings: {screen: ConnectedPostingList},
     login: {screen: LoginScreen},
+    allPostings: {screen: ConnectedPostingList},
     postStatus: {screen: CreatePostingScreen},
     yourTeam: {screen: TeamOverviewScreen},
     chat: {screen: ChatScreen},
@@ -42,7 +43,9 @@ const Navigator = StackNavigator({
 
 export default App = () => (
     <Provider store={store}>
-        <Navigator/>
+        <PersistGate loading={null} persistor={persistor}>
+            <Navigator/>
+        </PersistGate>
     </Provider>
 );
 

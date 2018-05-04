@@ -247,11 +247,11 @@ const ProfilePic = (props) => {
 
 const mapStateToProps = (state) => {
     return ({
-        postings: state.postings,
-        currentPage: state.currentPage,
-        refreshing: state.refreshing,
-        fetchNextPageError: state.fetchNextPageError,
-        fetchNewPostingsError: state.fetchNewPostingsError
+        postings: state.postings.postings,
+        currentPage: state.postings.currentPage,
+        refreshing: state.postings.refreshing,
+        fetchNextPageError: state.postings.fetchNextPageError,
+        fetchNewPostingsError: state.postings.fetchNewPostingsError
     });
 };
 
