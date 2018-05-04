@@ -19,6 +19,9 @@ import thunkMiddleware from 'redux-thunk';
 
 import Home from './app/containers/Home';
 import AppContainer from './app/containers/AppContainer';
+import {SENTRY_DSN} from "./app/secrets/config";
+import { Sentry } from 'react-native-sentry';
+Sentry.config(SENTRY_DSN).install();
 
 function configureStore(initialState) {
   const enhancer = compose(
