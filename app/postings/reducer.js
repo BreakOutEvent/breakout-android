@@ -73,7 +73,6 @@ export default postingReducer = (state = initialState, action) => {
                 })
             };
         default:
-            console.warn(`Unknown action '${action.type}'. Returning unchanged state`);
             return state;
     }
 };

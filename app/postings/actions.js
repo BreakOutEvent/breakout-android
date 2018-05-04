@@ -1,5 +1,6 @@
 import BreakoutApi from 'breakout-api-client';
 import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG} from "../secrets/config";
+import {store} from '../store/store';
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 
@@ -15,7 +16,8 @@ export const LIKE_POSTING_ERROR = 'LIKE_POSTING_ERROR';
 
 export function fetchNextPage(nextPage) {
     return dispatch => {
-        api.fetchPostings(nextPage)
+        withAccessToken(api, store.getState())
+            .fetchPostings(nextPage)
             .then(postings => dispatch(onFetchNextPageSuccess(postings)))
             .catch(error => dispatch(onFetchNextPageError(error)))
     }
@@ -24,7 +26,8 @@ export function fetchNextPage(nextPage) {
 export function fetchNewPostings() {
     return dispatch => {
         dispatch(onFetchNewPostingsInProgress());
-        api.fetchPostings(0)
+        withAccessToken(api, store.getState())
+            .fetchPostings(0)
             .then(postings => dispatch(onFetchNewPostingsSuccess(postings)))
             .catch(error => dispatch(onFetchNewPostingsError(error)))
     }
@@ -32,9 +35,20 @@ export function fetchNewPostings() {
 
 export function addLike(postingId) {
     return dispatch => {
-        api.likePosting(postingId)
+        withAccessToken(api, store.getState())
+            .likePosting(postingId)
             .then(() => dispatch(onLikePostingSuccess(postingId)))
             .catch(error => dispatch(onLikePostingError(error)))
+    }
+}
+
+function withAccessToken(api, state) {
+    const access_token = _.get(state, 'login.access_token');
+    if (access_token) {
+        api.setAccessToken(access_token);
+        return api
+    } else {
+        return api
     }
 }
 

@@ -21,7 +21,7 @@ import {ActionCreators} from '../actions';
 import {bindActionCreators} from 'redux';
 import {withNavigation} from 'react-navigation';
 
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../Login/screen';
 
 class Home extends Component{
   constructor(props){
@@ -32,7 +32,6 @@ class Home extends Component{
   }
 
   render(){
-		console.log(this.props.loggingIn);
     return(
       <View style={styles.container}>
         <LoginForm style={{width:"75%",height:30,backgroundColor:"white"}} onButtonClick={this.onLoginPressed} loggingIn={this.props.loggingIn}/>
