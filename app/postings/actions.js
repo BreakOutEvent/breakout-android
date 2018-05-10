@@ -1,6 +1,7 @@
 import BreakoutApi from 'breakout-api-client';
 import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG} from "../secrets/config";
 import {store} from '../store/store';
+import {withAccessToken} from "../utils/utils";
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 
@@ -39,16 +40,6 @@ export function addLike(postingId) {
             .likePosting(postingId)
             .then(() => dispatch(onLikePostingSuccess(postingId)))
             .catch(error => dispatch(onLikePostingError(error)))
-    }
-}
-
-function withAccessToken(api, state) {
-    const access_token = _.get(state, 'login.access_token');
-    if (access_token) {
-        api.setAccessToken(access_token);
-        return api
-    } else {
-        return api
     }
 }
 

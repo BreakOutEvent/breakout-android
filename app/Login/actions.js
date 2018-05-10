@@ -7,6 +7,8 @@ export const ON_USERNAME_CHANGED = 'ON_USERNAME_CHANGED';
 export const ON_PASSWORD_CHANGED = 'ON_PASSWORD_CHANGED';
 export const ON_LOGIN_SUCCESS = 'ON_LOGIN_SUCCESS';
 export const ON_LOGIN_ERROR = 'ON_LOGIN_ERROR';
+export const ON_FETCH_ME_SUCCESS = 'ON_FETCH_ME_SUCCESS';
+export const ON_FETCH_ME_ERROR = 'ON_FETCH_ME_ERROR';
 
 export function onUsernameChanged(username) {
     return {
@@ -31,13 +33,18 @@ export function onPressLogin(username, password) {
 }
 
 function onLoginSuccess(response) {
-    return {
-        type: ON_LOGIN_SUCCESS,
-        payload: {
-            access_token: response.access_token,
-            refresh_token: response.refresh_token
-        }
-    }
+    return dispatch => {
+        dispatch({
+            type: ON_LOGIN_SUCCESS,
+            payload: {
+                access_token: response.access_token,
+                refresh_token: response.refresh_token
+            }
+        });
+        api.getMe()
+            .then(me => dispatch(onFetchMeSuccess(me)))
+            .catch(error => dispatch(onFetchMeError(error)))
+    };
 }
 
 function onLoginError(error) {
@@ -46,5 +53,19 @@ function onLoginError(error) {
         payload: {
             error
         }
+    }
+}
+
+function onFetchMeSuccess(me) {
+    return {
+        type: ON_FETCH_ME_SUCCESS,
+        payload: {me}
+    }
+}
+
+function onFetchMeError(error) {
+    return {
+        type: ON_FETCH_ME_ERROR,
+        payload: {error}
     }
 }

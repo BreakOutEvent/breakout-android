@@ -5,46 +5,43 @@ import ConnectedPostingList from "../screens/PostingList";
 import MapScreen from "../screens/MapScreen";
 import AllTeamsScreen from "../screens/AllTeamsScreen";
 import ChatScreen from "../screens/ChatScreen";
-import TeamOverviewScreen from "../screens/TeamOverviewScreen";
+import TeamOverviewScreen from "../team-profile/team-profile";
 import CreatePostingScreen from "../screens/CreatePostingScreen";
-import LoginScreen from "../screens/LoginScreen";
 import * as Colors from "../config/Colors";
 import {Provider} from 'react-redux';
 import {persistor, store} from '../store/store';
 import {PersistGate} from "redux-persist/integration/react";
+import LoginScreen from '../Login/screen';
 
 const drawerButton = (navigation) =>
     (<Icon name='menu' style={{paddingLeft: 10, color: 'white'}} onPress={() => navigation.navigate('DrawerToggle')}/>);
 
-const DrawerStack = DrawerNavigator({
-    login: {screen: LoginScreen},
-    allPostings: {screen: ConnectedPostingList},
-    postStatus: {screen: CreatePostingScreen},
-    yourTeam: {screen: TeamOverviewScreen},
-    chat: {screen: ChatScreen},
-    map: {screen: MapScreen},
-    allTeams: {screen: AllTeamsScreen},
+const stacked = (Screen, title='BreakOut', borderLess = false) => StackNavigator({
+    screen: Screen
+}, {
+    navigationOptions: ({navigation}) => ({
+            headerStyle: (borderLess) ? {backgroundColor: Colors.Primary, borderBottomWidth: 0} : {backgroundColor: Colors.Primary},
+            headerTintColor: 'white',
+            gesturesEnabled: false,
+            headerLeft: drawerButton(navigation),
+            title: title,
+        }),
 });
 
-const Navigator = StackNavigator({
-    drawerStack: {screen: DrawerStack}
-}, {
-    headerMode: 'screen',
-    title: 'BreakOut',
-    intialRouteName: 'drawerStack',
-    navigationOptions: ({navigation}) => ({
-        headerStyle: {backgroundColor: Colors.Primary},
-        title: 'BreakOut',
-        headerTintColor: 'white',
-        gesturesEnabled: false,
-        headerLeft: drawerButton(navigation)
-    })
+const DrawerStack = DrawerNavigator({
+    yourTeam: {screen: stacked(TeamOverviewScreen, 'Your Team', borderLess = true)},
+    login: {screen: stacked(LoginScreen)},
+    allPostings: {screen: stacked(ConnectedPostingList)},
+    postStatus: {screen: stacked(CreatePostingScreen)},
+    chat: {screen: stacked(ChatScreen)},
+    map: {screen: stacked(MapScreen)},
+    allTeams: {screen: stacked(AllTeamsScreen)},
 });
 
 export default App = () => (
     <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-            <Navigator/>
+            <DrawerStack/>
         </PersistGate>
     </Provider>
 );

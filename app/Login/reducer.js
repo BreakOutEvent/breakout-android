@@ -1,9 +1,14 @@
 import _ from 'lodash';
-import {ON_LOGIN_ERROR, ON_LOGIN_SUCCESS, ON_PASSWORD_CHANGED, ON_USERNAME_CHANGED} from "./actions";
+import {
+    ON_FETCH_ME_ERROR,
+    ON_FETCH_ME_SUCCESS, ON_LOGIN_ERROR, ON_LOGIN_SUCCESS, ON_PASSWORD_CHANGED,
+    ON_USERNAME_CHANGED
+} from "./actions";
 
 const initialState = {
     username: '',
     password: '',
+    me: null
 };
 
 export default loginReducer = (state = initialState, action) => {
@@ -34,6 +39,21 @@ export default loginReducer = (state = initialState, action) => {
                 error: {
                     userMessage: parseError(action.payload.error),
                     ...action.payload.error
+                }
+            };
+
+        case ON_FETCH_ME_SUCCESS:
+            console.log(action.payload.me);
+            return {
+                ...state,
+                me: {...action.payload.me}
+            };
+
+        case ON_FETCH_ME_ERROR:
+            return {
+                ...state,
+                me: {
+                    error: {...action.payload.error}
                 }
             };
         default:
