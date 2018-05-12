@@ -1,6 +1,7 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import thunk from 'redux-thunk';
 import {logger} from "redux-logger";
+import locationReducer from '../locations/reducer';
 import postingReducer from '../postings/reducer';
 import loginReducer from '../login/reducer';
 import teamProfileReducer from '../team-profile/reducer';
@@ -13,6 +14,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
+    locations: locationReducer,
     postings: postingReducer,
     login: loginReducer,
     team: teamProfileReducer
