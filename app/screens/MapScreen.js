@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Text, View} from "react-native";
+import {StyleSheet, View} from "react-native";
 import {Icon} from "native-base";
+import MapView from 'react-native-maps';
 
 export default class MapScreen extends Component {
     static navigationOptions = {
@@ -8,7 +9,26 @@ export default class MapScreen extends Component {
         drawerIcon: () => <Icon name='map'/>
     };
 
+
     render() {
-        return <View><Text>Map will be here</Text></View>
+        return (
+            <View style={styles.container}>
+            <MapView
+                style={styles.container}
+                initialRegion={{
+                    latitude: 37.78825,
+                    longitude: -122.4324,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                }}
+            />
+            </View>
+        );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});
