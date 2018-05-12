@@ -11,7 +11,7 @@ export default PostingList = (props) => {
                   ListFooterComponent={errorFooter}
                   data={props.postings}
                   keyExtractor={item => item.id}
-                  style={{paddingLeft: 10, paddingRight: 10, paddingTop: 5}}
+                  style={{margin: 10}}
                   renderItem={renderPosting}
                   onEndReached={() => props.nextPage(props.currentPage)}
                   refreshing={props.refreshing}
