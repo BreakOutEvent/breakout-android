@@ -82,6 +82,11 @@ export const onTeamProfileOpened = (teamId) => {
             .fetchSponsoringsForTeam(teamId)
             .then(sponsorings => dispatch(onFetchSponsoringsSuccess(teamId, sponsorings)))
             .catch(error => dispatch(onFetchSponsoringsError(teamId, error)))
+
+        withAccessToken(api)
+            .fetchPostingsForTeam(teamId)
+            .then(postings => dispatch(onFetchPostingsForTeamSuccess(teamId, postings)))
+            .catch(error => dispatch(onFetchPostingsForTeamError(teamId, error)));
     }
 };
 

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {addLike} from "../postings/actions";
 import {connect} from "react-redux";
-import {Icon} from "native-base";
+import {Icon, View} from "native-base";
 import PostingList from "../components/posting-list";
 import {fetchNewPostingsForTeam} from "./actions";
 
@@ -12,15 +12,22 @@ class Postings extends Component {
     };
 
     render() {
-        return <PostingList {...this.props}/>
+        return <View><PostingList {...this.props}/></View>
     }
 }
 
 const mapStateToProps = (state) => {
     const teamId = _.get(state, 'login.me.participant.teamId');
+    let postings;
+    if (state.team[teamId]) {
+        postings = state.team[teamId].postings
+    } else {
+        postings = [];
+    }
+    console.log(postings);
     return ({
         teamId,
-        postings: state.team[teamId].postings,
+        postings,
         currentPage: 0, // no paging for team postings
         refreshing: false, // state.postings.refreshing,
        // fetchNextPageError: undefined, // state.postings.fetchNextPageError,
