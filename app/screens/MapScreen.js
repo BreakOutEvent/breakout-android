@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, View} from "react-native";
 import {Icon} from "native-base";
-import MapView, {Polyline} from 'react-native-maps';
+import MapView, {Polyline, Marker} from 'react-native-maps';
 import {connect} from "react-redux";
 import {fetchLocations} from "../locations/actions";
 
@@ -84,7 +84,7 @@ const mapStyle = [
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
+    }
 });
 
 function getCityColor(team) {
@@ -108,6 +108,19 @@ class MapScreen extends Component {
     };
 
     render() {
+        let teamMarkers = this.props.locations.map(team => {
+            let maxDistanceTeamLocation = team.locations
+                .reduce((locA, locB) => locA['distance'] >= locB['distance'] ? locA : locB, {});
+
+            return <Marker
+                key={team.id}
+                title={team.name}
+                opacity={0.7}
+                coordinate={{
+                    latitude: maxDistanceTeamLocation.latitude,
+                    longitude: maxDistanceTeamLocation.longitude,
+                }}/>;
+        });
         let teamPolylines = this.props.locations.map(team => {
             let startingLocation = {
                 latitude: team.event.startingLocation.latitude,
@@ -131,6 +144,30 @@ class MapScreen extends Component {
             />
         });
 
+        let munichMarker = <Marker
+            key="München"
+            title="Start München"
+            coordinate={{
+                latitude: 48.150676,
+                longitude: 11.580984,
+            }}/>;
+
+        let berlinMarker = <Marker
+            key="Berlin"
+            title="Start Berlin"
+            coordinate={{
+                latitude: 52.512643,
+                longitude: 13.321876,
+            }}/>;
+
+        let barcelonaMarker = <Marker
+            key="Barcelona"
+            title="Start Barcelona"
+            coordinate={{
+                latitude: 41.3947688,
+                longitude: 2.0787279,
+            }}/>;
+
         return (
             <View style={styles.container}>
                 <MapView
@@ -142,6 +179,8 @@ class MapScreen extends Component {
                         latitudeDelta: 20,
                         longitudeDelta: 20,
                     }}>
+                    {[munichMarker, berlinMarker, barcelonaMarker]}
+                    {teamMarkers}
                     {teamPolylines}
                 </MapView>
             </View>
