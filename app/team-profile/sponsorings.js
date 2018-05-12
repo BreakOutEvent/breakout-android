@@ -45,9 +45,15 @@ class Sponsorings extends React.Component {
 
 function mapStateToProps(state) {
     const teamId = _.get(state, 'login.me.participant.teamId');
+    let sponsorings;
+    if (state.team[teamId]) {
+        sponsorings = state.team[teamId].sponsorings
+    } else {
+        sponsorings = [];
+    }
     return {
         teamId,
-        sponsorings: state.team[teamId].sponsorings
+        sponsorings
     }
 }
 

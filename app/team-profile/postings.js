@@ -24,7 +24,6 @@ const mapStateToProps = (state) => {
     } else {
         postings = [];
     }
-    console.log(postings);
     return ({
         teamId,
         postings,

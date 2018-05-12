@@ -61,9 +61,15 @@ class Challenges extends React.Component {
 
 function mapStateToProps(state) {
     const teamId = _.get(state, 'login.me.participant.teamId');
+    let challenges;
+    if (state.team[teamId]) {
+        challenges = state.team[teamId].challenges
+    } else {
+        challenges = [];
+    }
     return {
         teamId,
-        challenges: state.team[teamId].challenges
+        challenges
     }
 }
 
