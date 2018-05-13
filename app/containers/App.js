@@ -20,7 +20,7 @@ const stacked = (Screen, title='BreakOut', borderLess = false) => StackNavigator
     screen: Screen
 }, {
     navigationOptions: ({navigation}) => ({
-            headerStyle: (borderLess) ? {backgroundColor: Colors.Primary, borderBottomWidth: 0} : {backgroundColor: Colors.Primary},
+            headerStyle: (borderLess) ? {backgroundColor: Colors.Primary, borderBottomWidth: 0, elevation: 0} : {backgroundColor: Colors.Primary},
             headerTintColor: 'white',
             gesturesEnabled: false,
             headerLeft: drawerButton(navigation),
