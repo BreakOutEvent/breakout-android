@@ -7,7 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "breakout-api-client": "^0.8.0",
+    "breakout-api-client": "^0.8.2",
     "immutability-helper": "^2.6.6",
     "lodash": "^4.17.10",
     "moment": "^2.22.1",

@@ -1,7 +1,5 @@
 import BreakoutApi from 'breakout-api-client';
 import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG} from "../secrets/config";
-import {store} from '../store/store';
-import {withAccessToken} from "../utils/utils";
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 
@@ -22,10 +20,10 @@ function groupLocationsByTeam(eventLocations, events) {
     }, []);
 }
 
-export function fetchLocations() {
+export function fetchEventLocations() {
     return async dispatch => {
         try {
-            const events = await withAccessToken(api, store.getState()).getAllEvents();
+            const events = await api.getAllEvents();
             const currentEvents = events.filter(e => e.isCurrent);
             const eventLocations = await Promise.all(currentEvents.map(event => api.fetchLocationsForEvent(event.id)));
 
