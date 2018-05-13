@@ -7,6 +7,9 @@ import ConnectedAboutTeam from "./about";
 import ConnectedChallenges from "./challenges";
 import ConnectedSponsorings from "./sponsorings";
 import ConnectedTeamPostings from "./postings";
+import {MapScreen} from "../screens/MapScreen";
+import {connect} from "react-redux";
+import {fetchTeamLocations} from "./actions";
 
 const elem = (props) => {
     console.log(props);
@@ -37,6 +40,30 @@ const elem = (props) => {
     );
 };
 
+const mapStateToProps = (state) => {
+    const teamId = _.get(state, 'login.me.participant.teamId');
+
+    let locations;
+    if (state.team[teamId]) {
+        locations = state.team[teamId].locations
+    } else {
+        locations = [];
+    }
+    return ({
+        showSingleTeam: true,
+        teamId: teamId,
+        locations: locations
+    });
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onRefresh: (teamId) => dispatch(fetchTeamLocations(teamId)),
+    }
+};
+
+const ConnectedMapScreen = connect(mapStateToProps, mapDispatchToProps)(MapScreen);
+
 class TeamMapView extends React.Component {
     static navigationOptions = {
         tabBarIcon: <Icon name='map' style={{color: 'white'}}/>,
@@ -44,7 +71,7 @@ class TeamMapView extends React.Component {
     };
 
     render() {
-        return <Text>Map</Text>
+        return <ConnectedMapScreen/>
     }
 }
 
@@ -91,7 +118,7 @@ export default class TeamProfile extends React.PureComponent {
         drawerIcon: () => <Icon name='contact'/>
     };
 
-    render(){
+    render() {
         return <Tabnav/>
     }
 }

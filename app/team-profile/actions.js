@@ -1,6 +1,7 @@
 import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG} from "../secrets/config";
 import BreakoutApi from "breakout-api-client";
 import {withAccessToken} from "../utils/utils";
+import {FETCH_TEAM_LOCATIONS_ERROR, FETCH_TEAM_LOCATIONS_SUCCESS} from "../locations/actions";
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 
@@ -12,6 +13,8 @@ export const ON_FETCH_SPONSORINGS_SUCCESS = 'ON_FETCH_SPONSORINGS_SUCCESS';
 export const ON_FETCH_SPONSORINGS_ERROR = 'ON_FETCH_SPONSORINGS_ERROR';
 export const ON_FETCH_POSTINGS_FOR_TEAM_SUCCESS = 'ON_FETCH_POSTINGS_FOR_TEAM_SUCCESS';
 export const ON_FETCH_POSTINGS_FOR_TEAM_ERROR = 'ON_FETCH_POSTINGS_FOR_TEAM_ERROR';
+export const ON_FETCH_TEAM_LOCATIONS_SUCCESS = 'ON_FETCH_TEAM_LOCATIONS_SUCCESS';
+export const ON_FETCH_TEAM_LOCATIONS_ERROR = 'ON_FETCH_TEAM_LOCATIONS_ERROR';
 
 function onFetchTeamSuccess(team) {
     return {
@@ -90,6 +93,19 @@ export const onTeamProfileOpened = (teamId) => {
     }
 };
 
+
+export function fetchTeamLocations(teamId) {
+    return async dispatch => {
+        try {
+            const teamLocations = await api.fetchLocationsForTeam(teamId);
+
+            dispatch(onFetchTeamLocationsSuccess(teamId, teamLocations));
+        } catch (error) {
+            dispatch(onFetchTeamLocationsError(error));
+        }
+    }
+}
+
 function onFetchPostingsForTeamSuccess(teamId, postings) {
     return {
         type: ON_FETCH_POSTINGS_FOR_TEAM_SUCCESS,
@@ -109,6 +125,25 @@ function onFetchPostingsForTeamError(teamId, error) {
         }
     }
 }
+
+function onFetchTeamLocationsSuccess(teamId, locations) {
+    return {
+        type: ON_FETCH_TEAM_LOCATIONS_SUCCESS,
+        payload: {
+            teamId: teamId,
+            locations,
+        }
+    };
+}
+
+function onFetchTeamLocationsError(error) {
+    return {
+        type: ON_FETCH_TEAM_LOCATIONS_ERROR,
+        payload: {error}
+    }
+}
+
+
 
 export const fetchNewPostingsForTeam = (teamId) => (dispatch) => {
     withAccessToken(api)
