@@ -1,6 +1,12 @@
 package com.breakout;
 import android.support.multidex.MultiDexApplication;
 
+
+import android.app.Application;
+
+import com.facebook.react.ReactApplication;
+import com.RNFetchBlob.RNFetchBlobPackage;
+import com.imagepicker.ImagePickerPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
@@ -24,8 +30,10 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new ReactVideoPackage(),
-            new MapsPackage()
+          new RNFetchBlobPackage(),
+          new ReactVideoPackage(),
+          new MapsPackage(),
+          new ImagePickerPackage()
       );
     }
 

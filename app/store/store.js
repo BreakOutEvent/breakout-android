@@ -5,6 +5,7 @@ import locationReducer from '../locations/reducer';
 import postingReducer from '../postings/reducer';
 import loginReducer from '../login/reducer';
 import teamProfileReducer from '../team-profile/reducer';
+import createPostingReducer from '../create-posting/reducer';
 import storage from 'redux-persist/lib/storage';
 import {persistReducer, persistStore} from "redux-persist";
 
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
     locations: locationReducer,
     postings: postingReducer,
     login: loginReducer,
-    team: teamProfileReducer
+    team: teamProfileReducer,
+    createPosting: createPostingReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

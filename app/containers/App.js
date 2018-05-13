@@ -6,12 +6,14 @@ import MapScreen from "../screens/MapScreen";
 import AllTeamsScreen from "../screens/AllTeamsScreen";
 import ChatScreen from "../screens/ChatScreen";
 import TeamOverviewScreen from "../team-profile/team-profile";
-import CreatePostingScreen from "../screens/CreatePostingScreen";
+import CreatePostingScreen from "../create-posting/screen";
 import * as Colors from "../config/Colors";
 import {Provider} from 'react-redux';
 import {persistor, store} from '../store/store';
 import {PersistGate} from "redux-persist/integration/react";
 import LoginScreen from '../login/screen';
+
+console.ignoredYellowBox = ['Remote debugger'];
 
 const drawerButton = (navigation) =>
     (<Icon name='menu' style={{paddingLeft: 10, color: 'white'}} onPress={() => navigation.navigate('DrawerToggle')}/>);
@@ -29,10 +31,10 @@ const stacked = (Screen, title='BreakOut', borderLess = false) => StackNavigator
 });
 
 const DrawerStack = DrawerNavigator({
+    postStatus: {screen: stacked(CreatePostingScreen)},
     yourTeam: {screen: stacked(TeamOverviewScreen, 'Your Team', borderLess = true)},
     login: {screen: stacked(LoginScreen)},
     allPostings: {screen: stacked(ConnectedPostingList)},
-    postStatus: {screen: stacked(CreatePostingScreen)},
     chat: {screen: stacked(ChatScreen)},
     map: {screen: stacked(MapScreen)},
     allTeams: {screen: stacked(AllTeamsScreen)},
