@@ -108,8 +108,8 @@ class MapScreen extends Component {
     };
 
     render() {
-        let teamMarkers = this.props.locations.map(team => {
-            let maxDistanceTeamLocation = team.locations
+        const teamMarkers = this.props.locations.map(team => {
+            const maxDistanceTeamLocation = team.locations
                 .reduce((locA, locB) => locA['distance'] >= locB['distance'] ? locA : locB, {});
 
             return <Marker
@@ -121,19 +121,20 @@ class MapScreen extends Component {
                     longitude: maxDistanceTeamLocation.longitude,
                 }}/>;
         });
-        let teamPolylines = this.props.locations.map(team => {
-            let startingLocation = {
+        const teamPolylines = this.props.locations.map(team => {
+            const startingLocation = {
                 latitude: team.event.startingLocation.latitude,
                 longitude: team.event.startingLocation.longitude,
             };
 
-            let routeLocations = team.locations.map(location => {
+            const routeLocations = team.locations.map(location => {
                 return {
                     latitude: location.latitude,
                     longitude: location.longitude,
                 }
             });
-            let teamLatLngs = [startingLocation].concat(routeLocations);
+
+            const teamLatLngs = [startingLocation].concat(routeLocations);
 
             return <Polyline
                 key={team.id}
@@ -144,7 +145,7 @@ class MapScreen extends Component {
             />
         });
 
-        let munichMarker = <Marker
+        const munichMarker = <Marker
             key="München"
             title="Start München"
             coordinate={{
@@ -152,7 +153,7 @@ class MapScreen extends Component {
                 longitude: 11.580984,
             }}/>;
 
-        let berlinMarker = <Marker
+        const berlinMarker = <Marker
             key="Berlin"
             title="Start Berlin"
             coordinate={{
@@ -160,7 +161,7 @@ class MapScreen extends Component {
                 longitude: 13.321876,
             }}/>;
 
-        let barcelonaMarker = <Marker
+        const barcelonaMarker = <Marker
             key="Barcelona"
             title="Start Barcelona"
             coordinate={{

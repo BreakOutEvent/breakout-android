@@ -8,30 +8,31 @@ const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 export const FETCH_EVENT_LOCATIONS_SUCCESS = 'FETCH_EVENT_LOCATIONS_SUCCESS';
 export const FETCH_EVENT_LOCATIONS_ERROR = 'FETCH_EVENT_LOCATIONS_ERROR';
 
-export function fetchLocations() {
-    return dispatch => {
-        withAccessToken(api, store.getState())
-            .getAllEvents()
-            .then(events => {
-                const currentEvents = events.filter(e => e.isCurrent);
-                return Promise.all(currentEvents.map(event => api.fetchLocationsForEvent(event.id)))
-                    .then(eventLocations => {
-                        let teams = [];
-                        const locations = [].concat(...eventLocations);
-                        locations.forEach(tl => {
-                            teams[tl.id] = {
-                                id: tl.id,
-                                name: tl.name,
-                                event: events.find(e => e.id === tl.event),
-                                locations: tl.locations
-                            };
-                        });
+function groupLocationsByTeam(eventLocations, events) {
+    const locations = [].concat(...eventLocations);
+    return locations.reduce((teams, team) => {
+        teams.push({
+            id: team.id,
+            name: team.name,
+            event: events.find(e => e.id === team.event),
+            locations: team.locations
+        });
 
-                        dispatch(onFetchEventLocationsSuccess(teams))
-                    })
-                    .catch(error => dispatch(onFetchEventLocationsError(error)))
-            })
-            .catch(error => dispatch(onFetchEventLocationsError(error)))
+        return teams;
+    }, []);
+}
+
+export function fetchLocations() {
+    return async dispatch => {
+        try {
+            const events = await withAccessToken(api, store.getState()).getAllEvents();
+            const currentEvents = events.filter(e => e.isCurrent);
+            const eventLocations = await Promise.all(currentEvents.map(event => api.fetchLocationsForEvent(event.id)));
+
+            dispatch(onFetchEventLocationsSuccess(groupLocationsByTeam(eventLocations, events)));
+        } catch (error) {
+            dispatch(onFetchEventLocationsError(error));
+        }
     }
 }
 
