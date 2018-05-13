@@ -11,7 +11,7 @@ import * as Colors from "../config/Colors";
 import {Provider} from 'react-redux';
 import {persistor, store} from '../store/store';
 import {PersistGate} from "redux-persist/integration/react";
-import LoginScreen from '../Login/screen';
+import LoginScreen from '../login/screen';
 
 const drawerButton = (navigation) =>
     (<Icon name='menu' style={{paddingLeft: 10, color: 'white'}} onPress={() => navigation.navigate('DrawerToggle')}/>);

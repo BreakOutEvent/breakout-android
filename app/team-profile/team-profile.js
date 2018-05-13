@@ -59,7 +59,7 @@ class TeamPostsView extends React.Component {
     }
 }
 
-export default TabNavigator({
+const Tabnav = TabNavigator({
     Posts: ConnectedTeamPostings,
     Map: TeamMapView,
     Info: ConnectedAboutTeam,
@@ -80,3 +80,18 @@ export default TabNavigator({
         indicatorStyle: {backgroundColor: 'white'}
     },
 });
+
+export default class TeamProfile extends React.PureComponent {
+    constructor(props) {
+        super(props);
+    }
+
+    static navigationOptions = {
+        drawerLabel: 'Dein Team',
+        drawerIcon: () => <Icon name='contact'/>
+    };
+
+    render(){
+        return <Tabnav/>
+    }
+}
