@@ -2,23 +2,35 @@ import React from 'react';
 import {FlatList, Text, View} from "react-native";
 import Posting from "../components/posting";
 
-export default PostingList = (props) => {
-    const renderPosting = (row) => <Posting addLike={props.addLike} {...(row.item)} />;
-    const errorHeader = <ErrorMessageView error={props.fetchNewPostingsError}/>;
-    const errorFooter = <ErrorMessageView error={props.fetchNextPageError}/>;
-    return (
-        <FlatList ListHeaderComponent={errorHeader}
-                  ListFooterComponent={errorFooter}
-                  data={props.postings}
-                  keyExtractor={item => item.id}
-                  style={{margin: 10}}
-                  renderItem={renderPosting}
-                  onEndReached={() => props.nextPage(props.currentPage)}
-                  refreshing={props.refreshing}
-                  onRefresh={() => props.onRefresh(props.teamId)} // pass in team id, it is undefined on all postings and teamId on team page
-        />
-    );
-};
+export default class PostingList extends React.PureComponent {
+
+    constructor(props) {
+        super(props);
+        this.renderPosting = this.renderPosting.bind(this);
+    }
+
+    renderPosting(row) {
+        return <Posting addLike={this.props.addLike} {...(row.item)} />;
+    }
+
+    render() {
+        const props = this.props;
+        const errorHeader = <ErrorMessageView error={props.fetchNewPostingsError}/>;
+        const errorFooter = <ErrorMessageView error={props.fetchNextPageError}/>;
+        return (
+            <FlatList ListHeaderComponent={errorHeader}
+                      ListFooterComponent={errorFooter}
+                      data={props.postings}
+                      keyExtractor={item => item.id}
+                      style={{margin: 10}}
+                      renderItem={this.renderPosting}
+                      onEndReached={() => props.nextPage(props.currentPage)}
+                      refreshing={props.refreshing}
+                      onRefresh={() => props.onRefresh(props.teamId)} // pass in team id, it is undefined on all postings and teamId on team page
+            />
+        );
+    }
+}
 
 const ErrorMessageView = (props) => {
     if (!props.error) {

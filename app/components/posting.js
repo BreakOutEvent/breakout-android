@@ -1,77 +1,115 @@
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 import ProgressBar from "react-native-progress/Bar";
 import * as Colors from "../config/colors";
 import React from 'react';
 import Image from 'react-native-image-progress';
-import {Body, Button, Card, CardItem, Icon, Left, Thumbnail} from "native-base";
+import {Icon, Thumbnail} from "native-base";
 import _ from 'lodash';
 import moment from 'moment';
 import VideoPlayer from "./video-player";
 
-export default Posting = (props) => {
+export default class Posting extends React.PureComponent {
+
+    constructor(props) {
+        super(props);
+        this.style = StyleSheet.create({
+            container: {
+                margin: 10,
+                elevation: 3,
+                backgroundColor: 'white'
+            }
+        })
+    }
+
+    render() {
+        const props = this.props;
+
+        return (
+            <View style={this.style.container}>
+                <CardMedia media={props.media}/>
+                <CardHeader {...props} />
+                <CardBody text={props.text} challenge={props.challenge}/>
+                <CardChallenge challenge={props.proves}/>
+                <CardCommentsAndLikes addLike={props.addLike}
+                                      hasLiked={props.hasLiked}
+                                      comments={props.comments}
+                                      likes={props.likes}
+                                      postingId={props.id}
+                />
+            </View>
+        );
+    }
+}
+
+const cardCommentsAndLikesStyle = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        paddingBottom: 10
+    },
+    buttonStyle: {
+        padding: 0,
+        margin: 0
+    },
+    likesText: {
+        textAlign: 'center',
+        marginRight: 30,
+        marginTop: -3,
+        marginLeft: -5,
+        color: 'grey'
+    },
+    commentsIcon: {
+        color: 'grey',
+        marginLeft: 10,
+        marginRight: 15
+    },
+    commentsText: {
+        textAlign: 'center',
+        marginTop: -3,
+        marginLeft: -5,
+        color: 'grey'
+    }
+});
+
+export const Button = (props) => {
     return (
-        <Card>
-            <CardMedia media={props.media}/>
-            <CardHeader {...props} />
-            <CardBody text={props.text} challenge={props.challenge}/>
-            <CardChallenge challenge={props.proves}/>
-            <CardCommentsAndLikes addLike={props.addLike}
-                                  hasLiked={props.hasLiked}
-                                  comments={props.comments}
-                                  likes={props.likes}
-                                  postingId={props.id}
-            />
-        </Card>
-    );
+        <TouchableWithoutFeedback onPress={props.onPress}>
+            {props.children}
+        </TouchableWithoutFeedback>
+    )
 };
 
-const CardCommentsAndLikes = (props) => {
+class CardCommentsAndLikes extends React.PureComponent {
 
-    const likeColor = (props.hasLiked) ? Colors.LikeRed : 'grey';
+    constructor(props) {
+        super(props);
+        this.onPress = this.onPress.bind(this, props.postingId)
+    }
 
-    const styles = StyleSheet.create({
-        container: {
-            flexDirection: 'row',
-            alignItems: 'center'
-        },
-        buttonStyle: {
-            padding: 0,
-            margin: 0
-        },
-        likesIcon: {
-            color: likeColor,
-        },
-        likesText: {
-            textAlign: 'center',
-            marginRight: 30,
-            marginTop: -3,
-            marginLeft: -5,
-            color: 'grey'
-        },
-        commentsIcon: {color: 'grey'},
-        commentsText: {
-            textAlign: 'center',
-            marginTop: -3,
-            marginLeft: -5,
-            color: 'grey'
-        }
-    });
+    onPress(postingId) {
+        this.props.addLike(postingId)
+    }
 
-    return (
-        <CardItem style={styles.container}>
-            <Button small
-                    transparent
-                    onPress={() => props.addLike(props.postingId)}>
-                <Icon active={props.hasLiked} name='heart' style={styles.likesIcon}/>
-            </Button>
-            <Text style={styles.likesText}>{props.likes} Likes</Text>
-            <Button small transparent>
-                <Icon name='text' style={styles.commentsIcon}/>
-            </Button>
-            <Text style={styles.commentsText}>{_.get(props, 'comments.length', 0)} Kommentare</Text>
-        </CardItem>
-    );
-};
+    render() {
+        const props = this.props;
+        const likeColor = (props.hasLiked) ? Colors.LikeRed : 'grey';
+
+        return (
+            <View style={cardCommentsAndLikesStyle.container}>
+                <Button onPress={this.onPress}>
+                    <Icon active={props.hasLiked} name='heart' style={{color: likeColor, marginLeft: 15, marginRight: 15}}/>
+                </Button>
+                <Text style={cardCommentsAndLikesStyle.likesText}>{props.likes} Likes</Text>
+                <Button>
+                    <Icon name='text' style={cardCommentsAndLikesStyle.commentsIcon}/>
+                </Button>
+                <Text
+                    style={cardCommentsAndLikesStyle.commentsText}>{_.get(props, 'comments.length', 0)} Kommentare</Text>
+            </View>
+        );
+    }
+}
 
 const CardChallenge = (props) => {
     if (!props.challenge) {
@@ -97,30 +135,52 @@ const CardChallenge = (props) => {
     );
 };
 
+const headerStyle = StyleSheet.create({
+    container: {
+        paddingLeft: 15,
+        paddingTop: 17,
+        paddingBottom: 4,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start'
+    },
+    profilePic: {
+        paddingRight: 10
+    },
+    title: {
+        fontWeight: 'bold'
+    },
+    subtitle: {
+        fontSize: 13,
+        paddingTop: 2,
+        color: Colors.Subtitle
+    }
+});
+
 const CardHeader = (props) => {
-    const styles = StyleSheet.create({
-        title: {
-            fontWeight: 'bold'
-        },
-        subtitle: {
-            fontSize: 13,
-            paddingTop: 2,
-            color: Colors.Subtitle
-        }
-    });
 
     return (
-        <CardItem header style={{paddingTop: 17, paddingBottom: 4}}>
-            <Left>
+        <View style={headerStyle.container}>
+            <View style={headerStyle.profilePic}>
                 <ProfilePic url={_.get(props, 'user.profilePic.url')}/>
-                <Body>
-                <Text style={styles.title}>{'Team ' + _.get(props, 'user.participant.teamName', 'no name')}</Text>
-                <Text style={styles.subtitle}>{generateSubtitle(props)}</Text>
-                </Body>
-            </Left>
-        </CardItem>
+            </View>
+            <View>
+                <Text style={headerStyle.title}>{'Team ' + _.get(props, 'user.participant.teamName', 'no name')}</Text>
+                <Text style={headerStyle.subtitle}>{generateSubtitle(props)}</Text>
+            </View>
+        </View>
     );
 };
+
+const cardBodyStyle = StyleSheet.create({
+    container: {
+        paddingLeft: 15,
+        paddingRight: 15,
+        paddingTop: 10,
+        paddingBottom: 10
+    }
+});
 
 const CardBody = (props) => {
 
@@ -129,9 +189,9 @@ const CardBody = (props) => {
     }
 
     return (
-        <CardItem>
+        <View style={cardBodyStyle.container}>
             <Text>{props.text}</Text>
-        </CardItem>
+        </View>
     )
 };
 
