@@ -6,6 +6,7 @@ import postingReducer from '../postings/reducer';
 import loginReducer from '../login/reducer';
 import teamProfileReducer from '../team-profile/reducer';
 import createPostingReducer from '../create-posting/reducer';
+import allTeamsReducer from '../all-teams/reducer';
 import storage from 'redux-persist/lib/storage';
 import {persistReducer, persistStore} from "redux-persist";
 
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
     postings: postingReducer,
     login: loginReducer,
     team: teamProfileReducer,
-    createPosting: createPostingReducer
+    createPosting: createPostingReducer,
+    allTeams: allTeamsReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
