@@ -1,6 +1,6 @@
-import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG} from "../secrets/config";
+import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG} from "../../config/secrets";
 import BreakoutApi from "breakout-api-client";
-import {withAccessToken} from "../utils/utils";
+import {withAccessToken} from "../../utils/utils";
 import {FETCH_TEAM_LOCATIONS_ERROR, FETCH_TEAM_LOCATIONS_SUCCESS} from "../locations/actions";
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);

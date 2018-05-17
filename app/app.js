@@ -1,17 +1,16 @@
 import React from 'react';
 import {DrawerNavigator, StackNavigator} from 'react-navigation';
 import {Icon} from 'native-base'
-import ConnectedPostingList from "../screens/PostingList";
-import MapScreen from "../screens/MapScreen";
-import AllTeamsScreen from "../screens/AllTeamsScreen";
-import ChatScreen from "../screens/ChatScreen";
-import TeamOverviewScreen from "../team-profile/team-profile";
-import CreatePostingScreen from "../create-posting/screen";
-import * as Colors from "../config/Colors";
+import ConnectedPostingList from "./screens/postings/screen";
+import MapScreen from "./components/map";
+import AllTeams from "./screens/all-teams/screen";
+import TeamOverviewScreen from "./screens/team-profile/team-profile";
+import CreatePostingScreen from "./screens/create-posting/screen";
+import * as Colors from "./config/colors";
 import {Provider} from 'react-redux';
-import {persistor, store} from '../store/store';
+import {persistor, store} from './store/store';
 import {PersistGate} from "redux-persist/integration/react";
-import LoginScreen from '../login/screen';
+import LoginScreen from './screens/login/screen';
 
 console.ignoredYellowBox = ['Remote debugger'];
 
@@ -35,9 +34,8 @@ const DrawerStack = DrawerNavigator({
     yourTeam: {screen: stacked(TeamOverviewScreen, 'Your Team', borderLess = true)},
     login: {screen: stacked(LoginScreen)},
     allPostings: {screen: stacked(ConnectedPostingList)},
-    chat: {screen: stacked(ChatScreen)},
     map: {screen: stacked(MapScreen)},
-    allTeams: {screen: stacked(AllTeamsScreen)},
+    allTeams: {screen: stacked(AllTeams)},
 });
 
 export default App = () => (

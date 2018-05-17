@@ -1,9 +1,10 @@
 import BreakoutApi from "breakout-api-client";
-import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, CLOUDINARY_API_KEY, DEBUG} from "../secrets/config";
+import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, CLOUDINARY_API_KEY, DEBUG} from "../../config/secrets";
 
 import RNFetchBlob from 'react-native-fetch-blob';
-import {withAccessToken} from "../utils/utils";
+import {withAccessToken} from "../../utils/utils";
 
+// TODO: Move api key to conf
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, "breakout", "955374861429162", DEBUG);
 
 export const ON_FETCH_CHALLENGES_FOR_TEAM_SUCCESS = 'ON_FETCH_CHALLENGES_FOR_TEAM_SUCCESS';

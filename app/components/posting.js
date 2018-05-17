@@ -1,12 +1,12 @@
 import {StyleSheet, Text, View} from "react-native";
 import ProgressBar from "react-native-progress/Bar";
-import * as Colors from "../config/Colors";
+import * as Colors from "../config/colors";
 import React from 'react';
 import Image from 'react-native-image-progress';
 import {Body, Button, Card, CardItem, Icon, Left, Thumbnail} from "native-base";
 import _ from 'lodash';
 import moment from 'moment';
-import VideoPlayer from "../components/VideoPlayer";
+import VideoPlayer from "./video-player";
 
 export default Posting = (props) => {
     return (

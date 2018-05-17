@@ -2,7 +2,7 @@ import React from "react";
 import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
 import {connect} from "react-redux";
 import {loadTeams} from "./actions";
-import * as Colors from "../config/Colors";
+import * as Colors from "../../config/colors";
 import {Icon} from "native-base";
 
 function transform(parameters, url) {

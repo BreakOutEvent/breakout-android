@@ -1,7 +1,7 @@
 import BreakoutApi from 'breakout-api-client';
-import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG} from "../secrets/config";
-import {store} from '../store/store';
-import {withAccessToken} from "../utils/utils";
+import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG} from "../../config/secrets";
+import {store} from '../../store/store';
+import {withAccessToken} from "../../utils/utils";
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 

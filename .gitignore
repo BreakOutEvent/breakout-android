@@ -52,4 +52,4 @@ buck-out/
 */fastlane/Preview.html
 */fastlane/screenshots
 node_modules/ 
-app/secrets/config.js
+app/secrets/secrets.js

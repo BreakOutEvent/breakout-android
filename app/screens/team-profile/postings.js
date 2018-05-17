@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {addLike} from "../postings/actions";
 import {connect} from "react-redux";
 import {Icon, View} from "native-base";
-import PostingList from "../components/posting-list";
+import PostingList from "../../components/posting-list";
 import {fetchNewPostingsForTeam} from "./actions";
 
 class Postings extends Component {

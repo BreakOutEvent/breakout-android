@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Icon} from "native-base";
 import {connect} from "react-redux";
-import {addLike, fetchNewPostings, fetchNextPage} from "../postings/actions";
-import PostingList from "../components/posting-list";
+import {addLike, fetchNewPostings, fetchNextPage} from "./actions";
+import PostingList from "../../components/posting-list";
 
 class PostingListScreen extends Component {
 

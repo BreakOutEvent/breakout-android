@@ -1,12 +1,12 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import thunk from 'redux-thunk';
 import {logger} from "redux-logger";
-import locationReducer from '../locations/reducer';
-import postingReducer from '../postings/reducer';
-import loginReducer from '../login/reducer';
-import teamProfileReducer from '../team-profile/reducer';
-import createPostingReducer from '../create-posting/reducer';
-import allTeamsReducer from '../all-teams/reducer';
+import locationReducer from '../screens/locations/reducer';
+import postingReducer from '../screens/postings/reducer';
+import loginReducer from '../screens/login/reducer';
+import teamProfileReducer from '../screens/team-profile/reducer';
+import createPostingReducer from '../screens/create-posting/reducer';
+import allTeamsReducer from '../screens/all-teams/reducer';
 import storage from 'redux-persist/lib/storage';
 import {persistReducer, persistStore} from "redux-persist";
 

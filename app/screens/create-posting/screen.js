@@ -3,8 +3,8 @@ import {ActivityIndicator, Picker, Text, ToastAndroid, View} from "react-native"
 import {Button, Icon, Textarea} from "native-base";
 import ImagePicker from "react-native-image-picker";
 import Image from 'react-native-image-progress';
-import * as Colors from "../config/Colors";
-import {onCreatePostingScreenMounted} from "../create-posting/actions";
+import * as Colors from "../../config/colors";
+import {onCreatePostingScreenMounted} from "./actions";
 import {connect} from "react-redux";
 import {
     onChallengeSelected,

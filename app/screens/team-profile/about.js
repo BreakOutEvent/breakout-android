@@ -53,7 +53,7 @@ class AboutTeam extends React.Component {
         const profilePicUrl = _.get(props, 'profilePic.url');
         const TeamThumbnail = () => (profilePicUrl)
             ? <Thumbnail large source={{uri: profilePicUrl}}/>
-            : <Thumbnail large source={require('../assets/profile_pic_placeholder.jpg')}/>;
+            : <Thumbnail large source={require('../../assets/profile_pic_placeholder.jpg')}/>;
 
         return (
             <View>
@@ -74,11 +74,10 @@ class AboutTeam extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    const teamId = _.get(state, 'login.me.participant.teamId');
+const mapStateToProps = (state, ownProps) => {
     return {
-        teamId: teamId,
-        ...state.team[teamId]
+        teamId: ownProps.teamId,
+        ...state.team[ownProps.teamId]
     }
 };
 const ConnectedAboutTeam = connect(

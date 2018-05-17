@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Image, StyleSheet, Text, View} from 'react-native';
-import * as Colors from "../config/Colors";
+import * as Colors from "../../config/colors";
 import {Form, Icon, Input, Item, Label} from "native-base";
 import {connect} from "react-redux";
 import {onPasswordChanged, onPressLogin, onUsernameChanged} from "./actions";
@@ -54,7 +54,7 @@ class LoginScreen extends React.PureComponent {
         return (
             <View style={style.view}>
                 <View style={style.top}>
-                    <Image style={style.image} source={require('../assets/breakout_logo.png')}/>
+                    <Image style={style.image} source={require('../../assets/breakout_logo.png')}/>
                 </View>
                 <View style={style.bottom}>
                     <Form style={style.form}>

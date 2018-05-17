@@ -3,7 +3,7 @@ import {StyleSheet, View} from "react-native";
 import {Icon} from "native-base";
 import MapView, {Polyline, Marker} from 'react-native-maps';
 import {connect} from "react-redux";
-import {fetchEventLocations} from "../locations/actions";
+import {fetchEventLocations} from "../screens/locations/actions";
 
 const mapStyle = [
     {
@@ -243,7 +243,7 @@ function getEventsMapContent(locations) {
 }
 
 
-export class MapScreen extends Component {
+export class Map extends Component {
     static navigationOptions = {
         drawerLabel: 'Karte',
         drawerIcon: () => <Icon name='map'/>
@@ -293,5 +293,5 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-const ConnectedMapScreen = connect(mapStateToProps, mapDispatchToProps)(MapScreen);
+const ConnectedMapScreen = connect(mapStateToProps, mapDispatchToProps)(Map);
 export default ConnectedMapScreen;

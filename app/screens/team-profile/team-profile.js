@@ -1,13 +1,12 @@
 import React from "react";
 import {TabBarTop, TabNavigator} from "react-navigation";
-import {Body, Icon, ListItem, Text, View} from "native-base";
-import * as Colors from "../config/Colors";
-import {FlatList} from 'react-native';
+import {Icon, Text, View} from "native-base";
+import * as Colors from "../../config/colors";
 import ConnectedAboutTeam from "./about";
 import ConnectedChallenges from "./challenges";
 import ConnectedSponsorings from "./sponsorings";
 import ConnectedTeamPostings from "./postings";
-import {MapScreen} from "../screens/MapScreen";
+import {Map} from "../../components/map";
 import {connect} from "react-redux";
 import {fetchTeamLocations} from "./actions";
 
@@ -62,7 +61,7 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-const ConnectedMapScreen = connect(mapStateToProps, mapDispatchToProps)(MapScreen);
+const ConnectedMapScreen = connect(mapStateToProps, mapDispatchToProps)(Map);
 
 class TeamMapView extends React.Component {
     static navigationOptions = {
