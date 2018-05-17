@@ -59,8 +59,8 @@ class Challenges extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    const teamId = _.get(state, 'login.me.participant.teamId');
+function mapStateToProps(state, props) {
+    const teamId = props.screenProps.teamId;
     let challenges;
     if (state.team[teamId]) {
         challenges = state.team[teamId].challenges

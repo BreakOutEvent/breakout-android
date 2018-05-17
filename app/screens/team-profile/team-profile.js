@@ -39,8 +39,8 @@ const elem = (props) => {
     );
 };
 
-const mapStateToProps = (state) => {
-    const teamId = _.get(state, 'login.me.participant.teamId');
+const mapStateToProps = (state, props) => {
+    const teamId = props.screenProps.teamId;
 
     let locations;
     if (state.team[teamId]) {
@@ -70,7 +70,7 @@ class TeamMapView extends React.Component {
     };
 
     render() {
-        return <ConnectedMapScreen/>
+        return <ConnectedMapScreen screenProps={this.props.screenProps}/>
     }
 }
 
@@ -118,6 +118,7 @@ export default class TeamProfile extends React.PureComponent {
     };
 
     render() {
-        return <Tabnav/>
+        const teamId = this.props.teamId || this.props.navigation.getParam("teamId");
+        return <Tabnav screenProps={{teamId}}/>
     }
 }

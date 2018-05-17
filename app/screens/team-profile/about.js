@@ -74,10 +74,10 @@ class AboutTeam extends React.Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state, props) => {
     return {
-        teamId: ownProps.teamId,
-        ...state.team[ownProps.teamId]
+        teamId: props.screenProps.teamId,
+        ...state.team[props.screenProps.teamId]
     }
 };
 const ConnectedAboutTeam = connect(

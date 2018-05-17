@@ -43,8 +43,8 @@ class Sponsorings extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    const teamId = _.get(state, 'login.me.participant.teamId');
+function mapStateToProps(state, props) {
+    const teamId = props.screenProps.teamId;
     let sponsorings;
     if (state.team[teamId]) {
         sponsorings = state.team[teamId].sponsorings

@@ -16,8 +16,8 @@ class Postings extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    const teamId = _.get(state, 'login.me.participant.teamId');
+const mapStateToProps = (state, props) => {
+    const teamId = props.screenProps.teamId;
     let postings;
     if (state.team[teamId]) {
         postings = state.team[teamId].postings

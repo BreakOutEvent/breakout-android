@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {loadTeams} from "./actions";
 import * as Colors from "../../config/colors";
 import {Icon} from "native-base";
+import {Button} from "../../components/posting";
 
 function transform(parameters, url) {
     if (!url) {
@@ -80,9 +81,11 @@ class AllTeams extends React.PureComponent {
         return (
             <View style={styles.item}>
                 {imageOrPlaceHolder}
+                <Button onPress={() => this.props.navigation.navigate("aTeam", {teamId: team.id, teamName: team.name})}>
                 <View style={styles.itemTeamName}>
                     <Text adjustsFontSizeToFit numberOfLines={2} style={styles.itemTeamNameText}>{team.name}</Text>
                 </View>
+                </Button>
             </View>
         )
     }

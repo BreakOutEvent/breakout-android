@@ -29,13 +29,59 @@ const stacked = (Screen, title='BreakOut', borderLess = false) => StackNavigator
         }),
 });
 
+function buildNavOptions({navigation}) {
+
+    const routeName = _.get(navigation, 'state.routeName');
+    const teamName = _.get(navigation, 'state.params.teamName');
+
+    if (routeName === "aTeam") {
+        return {
+            headerStyle: {backgroundColor: Colors.Primary, borderBottomWidth: 0, elevation: 0},
+            title: `${teamName}`,
+            headerTintColor: 'white',
+        }
+    } else {
+        return {
+            headerStyle: {backgroundColor: Colors.Primary},
+            headerLeft: drawerButton(navigation),
+            headerTintColor: 'white',
+            title: 'All Teams'
+        }
+    }
+}
+
+const AllTeamsStack = StackNavigator({
+    allTeams: {screen: AllTeams},
+    aTeam: {screen: TeamOverviewScreen}
+}, {
+    navigationOptions: buildNavOptions,
+});
+
+const YourTeam = StackNavigator({
+    aTeam: {
+        screen: () => {
+            const teamId = _.get(store.getState(), 'login.me.participant.teamId');
+            console.log("t is ", teamId);
+            return <TeamOverviewScreen teamId={teamId}/>
+        }
+    }
+}, {
+    navigationOptions: ({navigation}) => ({
+        headerStyle: {backgroundColor: Colors.Primary, borderBottomWidth: 0, elevation: 0},
+        title: `Your Team`,
+        headerTintColor: 'white',
+        headerLeft: drawerButton(navigation),
+        drawerIcon: () => <Icon name='contact'/>
+    })
+});
+
 const DrawerStack = DrawerNavigator({
     postStatus: {screen: stacked(CreatePostingScreen)},
-    yourTeam: {screen: stacked(TeamOverviewScreen, 'Your Team', borderLess = true)},
+    yourTeam: {screen: YourTeam},
     login: {screen: stacked(LoginScreen)},
     allPostings: {screen: stacked(ConnectedPostingList)},
     map: {screen: stacked(MapScreen)},
-    allTeams: {screen: stacked(AllTeams)},
+    allTeams: {screen: AllTeamsStack},
 });
 
 export default App = () => (
