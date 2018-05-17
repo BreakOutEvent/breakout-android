@@ -3,6 +3,7 @@ import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
 import {connect} from "react-redux";
 import {loadTeams} from "./actions";
 import * as Colors from "../config/Colors";
+import {Icon} from "native-base";
 
 function transform(parameters, url) {
     if (!url) {
@@ -20,6 +21,11 @@ function transform(parameters, url) {
 }
 
 class AllTeams extends React.PureComponent {
+
+    static navigationOptions = {
+        drawerLabel: 'All Teams',
+        drawerIcon: () => <Icon name="people" />
+    };
 
     constructor(props) {
         super(props);
@@ -87,6 +93,7 @@ class AllTeams extends React.PureComponent {
                 style={{padding: 10}}
                 numColumns={2}
                 renderItem={this.renderItem}
+                keyExtractor={(elem, idx) => elem.name + idx}
                 contentContainerStyle={{paddingBottom: 20}}
                 data={this.props.teams}
             />
