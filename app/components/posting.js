@@ -7,6 +7,7 @@ import {Icon, Thumbnail} from "native-base";
 import _ from 'lodash';
 import moment from 'moment';
 import VideoPlayer from "./video-player";
+import {transform} from "../screens/all-teams/screen";
 
 export default class Posting extends React.PureComponent {
 
@@ -205,7 +206,7 @@ const CardMedia = (props) => {
             case 'image':
                 return (
                     <Image
-                        source={{uri: url}}
+                        source={{uri: transform('h_400,f_auto,q_auto:eco', url)}}
                         style={{height: 200, width: null, flex: 1, backgroundColor: Colors.Secondary}}
                         indicator={ProgressBar}
                         cache='force-cache'

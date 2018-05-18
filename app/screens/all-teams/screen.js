@@ -6,7 +6,7 @@ import * as Colors from "../../config/colors";
 import {Icon} from "native-base";
 import {Button} from "../../components/posting";
 
-function transform(parameters, url) {
+export function transform(parameters, url) {
     if (!url) {
         return;
     }
