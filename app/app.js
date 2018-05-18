@@ -59,10 +59,9 @@ const AllTeamsStack = StackNavigator({
 
 const YourTeam = StackNavigator({
     aTeam: {
-        screen: () => {
+        screen: ({navigation}) => {
             const teamId = _.get(store.getState(), 'login.me.participant.teamId');
-            console.log("t is ", teamId);
-            return <TeamOverviewScreen teamId={teamId}/>
+            return <TeamOverviewScreen teamId={teamId} navigation={{...navigation}}/>
         }
     }
 }, {
@@ -76,18 +75,39 @@ const YourTeam = StackNavigator({
 });
 
 const DrawerStack = DrawerNavigator({
+    drawerLogin: {screen: stacked(LoginScreen)},
     postStatus: {screen: stacked(CreatePostingScreen)},
     yourTeam: {screen: YourTeam},
-    login: {screen: stacked(LoginScreen)},
     allPostings: {screen: stacked(ConnectedPostingList)},
-    map: {screen: stacked(MapScreen)},
     allTeams: {screen: AllTeamsStack},
+    map: {screen: stacked(MapScreen)},
+}, {
+    initialRouteName: 'allPostings'
 });
+
+const RootNav = StackNavigator({
+    init: (props) => {
+        if (isUserLoggedIn()) {
+            props.navigation.navigate('drawer');
+        } else {
+            props.navigation.navigate('login');
+        }
+        return (null)
+    },
+    login: {screen: LoginScreen},
+    drawer: {screen: DrawerStack}
+}, {
+    headerMode: 'none',
+});
+
+function isUserLoggedIn() {
+    return !!(_.get(store.getState(), 'login.access_token'));
+}
 
 export default App = () => (
     <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-            <DrawerStack/>
+            <RootNav/>
         </PersistGate>
     </Provider>
 );

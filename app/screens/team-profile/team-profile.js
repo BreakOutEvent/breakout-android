@@ -117,6 +117,12 @@ export default class TeamProfile extends React.PureComponent {
         drawerIcon: () => <Icon name='contact'/>
     };
 
+    componentWillMount() {
+        const teamId = this.props.teamId || this.props.navigation.getParam("teamId");
+        if (!teamId) {
+            this.props.navigation.navigate("drawerLogin");
+        }
+    }
     render() {
         const teamId = this.props.teamId || this.props.navigation.getParam("teamId");
         return <Tabnav screenProps={{teamId}}/>

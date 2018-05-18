@@ -164,7 +164,7 @@ class CreatePostingScreen extends React.Component {
 
     componentDidMount() {
         if (!this.props.isLoggedIn) {
-            this.props.navigation.navigate("login", {});
+            this.props.navigation.navigate("drawerLogin", {});
         } else {
             this.props.onCreatePostingScreenMounted(this.props.teamId);
         }

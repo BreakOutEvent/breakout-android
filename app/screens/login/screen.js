@@ -78,6 +78,9 @@ class LoginScreen extends React.PureComponent {
                     <View style={style.buttonView}>
                         <Button color={Colors.Primary} title='Login'
                                 onPress={() => props.onPressLogin(props.username, props.password)}/>
+                        <View style={{height: 10}} />
+                        <Button color={Colors.Grey} title='Continue without login'
+                                onPress={() => props.navigation.navigate('drawer')}/>
                     </View>
                 </View>
             </View>
