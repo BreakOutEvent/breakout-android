@@ -3,6 +3,7 @@ import {StyleSheet, Text, View} from "react-native";
 import {connect} from "react-redux";
 import {onTeamProfileOpened} from "./actions";
 import {Icon, Thumbnail} from "native-base";
+import LocalizedStrings from 'react-native-localization';
 
 class AboutTeam extends React.Component {
 
@@ -66,7 +67,7 @@ class AboutTeam extends React.Component {
                     </View>
                 </View>
                 <View style={styles.bottom}>
-                    <Text style={{fontSize: 15, fontWeight: 'bold', paddingBottom: 5}}>Über uns</Text>
+                    <Text style={{fontSize: 15, fontWeight: 'bold', paddingBottom: 5}}>{strings.aboutUs}</Text>
                     <Text style={{fontSize: 13}}>{props.description}</Text>
                 </View>
             </View>
@@ -86,5 +87,14 @@ const ConnectedAboutTeam = connect(
         onTeamProfileOpened: (teamId) => dispatch(onTeamProfileOpened(teamId))
     })
 )(AboutTeam);
+
+let strings = new LocalizedStrings({
+ "en-US":{
+	 aboutUs:'About us'
+ },
+ de:{
+   aboutUs:'Über uns'
+ }
+});
 
 export default ConnectedAboutTeam;
