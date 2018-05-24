@@ -4,11 +4,12 @@ import * as Colors from "../../config/colors";
 import {Form, Icon, Input, Item, Label} from "native-base";
 import {connect} from "react-redux";
 import {onPasswordChanged, onPressLogin, onUsernameChanged} from "./actions";
+import LocalizedStrings from 'react-native-localization';
 
 class LoginScreen extends React.PureComponent {
 
     static navigationOptions = {
-        drawerLabel: 'Login',
+        drawerLabel: () => strings.drawerLabelLogin,
         drawerIcon: () => <Icon name='person'/>
     };
 
@@ -59,14 +60,14 @@ class LoginScreen extends React.PureComponent {
                 <View style={style.bottom}>
                     <Form style={style.form}>
                         <Item floatingLabel style={style.item}>
-                            <Label style={style.label}>Email</Label>
+                            <Label style={style.label}>{strings.email}</Label>
                             <Input style={style.label}
                                    onChangeText={props.onUsernameChanged}
                                    value={props.username}
                             />
                         </Item>
                         <Item floatingLabel style={style.item}>
-                            <Label style={style.label}>Password</Label>
+                            <Label style={style.label}>{strings.password}</Label>
                             <Input secureTextEntry={true}
                                    style={style.label}
                                    onChangeText={props.onPasswordChanged}
@@ -76,10 +77,10 @@ class LoginScreen extends React.PureComponent {
                     </Form>
                     <ErrorMessageView error={props.error}/>
                     <View style={style.buttonView}>
-                        <Button color={Colors.Primary} title='Login'
+                        <Button color={Colors.Primary} title={strings.logInButton}
                                 onPress={() => props.onPressLogin(props.username, props.password)}/>
                         <View style={{height: 10}} />
-                        <Button color={Colors.Grey} title='Continue without login'
+                        <Button color={Colors.Grey} title={strings.contWithOutLoginButton}
                                 onPress={() => props.navigation.navigate('drawer')}/>
                     </View>
                 </View>
@@ -115,5 +116,22 @@ const mapDispatchToProps = (dispatch) => {
         onPressLogin: (username, password) => dispatch(onPressLogin(username, password))
     }
 };
+
+let strings = new LocalizedStrings({
+ "en-US":{
+	 email:'Email',
+   password:'Password',
+   logInButton:'Login',
+   contWithOutLoginButton:'Continue without Login',
+   drawerLabelLogin:'Login'
+ },
+ de:{
+   email:'Email',
+    password:'Passwort',
+    logInButton:'Login',
+    contWithOutLoginButton:'Fortfahren ohne Login',
+    drawerLabelLogin:'Login'
+ }
+});
 
 export default ConnectedLoginForm = connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

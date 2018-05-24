@@ -8,6 +8,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import VideoPlayer from "./video-player";
 import {transform} from "../screens/all-teams/screen";
+import LocalizedStrings from 'react-native-localization';
 
 export default class Posting extends React.PureComponent {
 
@@ -101,12 +102,12 @@ class CardCommentsAndLikes extends React.PureComponent {
                 <Button onPress={this.onPress}>
                     <Icon active={props.hasLiked} name='heart' style={{color: likeColor, marginLeft: 15, marginRight: 15}}/>
                 </Button>
-                <Text style={cardCommentsAndLikesStyle.likesText}>{props.likes} Likes</Text>
+                <Text style={cardCommentsAndLikesStyle.likesText}>{props.likes} {strings.likes}</Text>
                 <Button>
                     <Icon name='text' style={cardCommentsAndLikesStyle.commentsIcon}/>
                 </Button>
                 <Text
-                    style={cardCommentsAndLikesStyle.commentsText}>{_.get(props, 'comments.length', 0)} Kommentare</Text>
+                    style={cardCommentsAndLikesStyle.commentsText}>{_.get(props, 'comments.length', 0)} {strings.comments}</Text>
             </View>
         );
     }
@@ -261,3 +262,14 @@ const ProfilePic = (props) => {
         return <Thumbnail small source={require('../assets/profile_pic_placeholder.jpg')}/>
     }
 };
+
+let strings = new LocalizedStrings({
+ "en-US":{
+	 comments:'Comments',
+   likes:'Likes'
+ },
+ de:{
+   comments:'Kommentare',
+   likes:'Likes'
+ }
+});

@@ -137,6 +137,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-localization')
+    compile project(':react-native-maps')
     compile project(':react-native-fetch-blob')
     compile 'com.android.support:multidex:1.0.0'
     compile project(':react-native-image-picker')

@@ -15,6 +15,7 @@ import {
 } from "./actions";
 
 import {Pie} from 'react-native-progress';
+import LocalizedStrings from 'react-native-localization';
 
 const SelectOrPreviewImage = (props) => {
 
@@ -72,9 +73,9 @@ const SelectChallenge = (props) => {
 
     const renderPickers = () => {
         if (props.error) {
-            return <Picker.Item key={-1} label="Unable to load challenges" value={-1}/>
+            return <Picker.Item key={-1} label={strings.unableToLoadChallenges} value={-1}/>
         } else {
-            const label = <Picker.Item key={-1} label="Select a challenge!" value={-1}/>;
+            const label = <Picker.Item key={-1} label={strings.selectChallenge} value={-1}/>;
             const pickers = props.challenges.map(challenge => <Picker.Item key={challenge.id}
                                                                            label={challenge.description}
                                                                            value={challenge.id}/>);
@@ -100,7 +101,7 @@ const PostingText = (props) => {
     return <Textarea
         style={{marginTop: 10, marginLeft: 7}}
         rowSpan={5}
-        placeholder="Was machst du gerade?"
+        placeholder={strings.whatAreYouDoing}
         onChangeText={props.onPostingTextChanged}
         value={props.text}
     />
@@ -126,8 +127,8 @@ const ShowLocation = (props) => {
     const longitude = _.get(props, 'coords.longitude');
 
     const text = (latitude && longitude)
-        ? `Your location: ${latitude.toFixed(3)}, ${longitude.toFixed(3)}`
-        : `Could not determine location`;
+        ? `${strings.yourLocation}: ${latitude.toFixed(3)}, ${longitude.toFixed(3)}`
+        : strings.couldNotDetermineLocation;
 
     return (
         <View style={{
@@ -153,7 +154,7 @@ const ConnectedSubmitPostingButton = connect((state) => ({
 
 class CreatePostingScreen extends React.Component {
     static navigationOptions = {
-        drawerLabel: 'Einen Status posten',
+        drawerLabel: () => strings.postStatusLabel,
         drawerIcon: () => <Icon name='send'/>,
         headerRight: <ConnectedSubmitPostingButton/>
     };
@@ -172,7 +173,7 @@ class CreatePostingScreen extends React.Component {
 
     handleMediaSelect(mediaType) {
         const options = {
-            title: `Select a ${mediaType}`,
+            title: `${strings.selectMedia} ${mediaType}`,
             mediaType: mediaType,
             quality: 0.1,
             videoQuality: 'low',
@@ -208,11 +209,11 @@ class CreatePostingScreen extends React.Component {
         let message;
 
         if (this.props.uploadPostingError) {
-            message = "Failed to upload posting";
+            message = strings.failedPostingUpload;
         } else if (this.props.success && this.props.fulfillChallengeError) {
-            message = "Created new posting but couldn't fulfill challenge";
+            message = strings.failedChallengePostingSuccess;
         } else if (this.props.success) {
-            message = "Created new posting";
+            message = strings.postingSuccess;
         }
 
         if (message) {
@@ -277,5 +278,32 @@ const mapDispatchToProps = (dispatch) => {
         onChallengeSelected: (challengeId) => dispatch(onChallengeSelected(challengeId))
     }
 };
+
+let strings = new LocalizedStrings({
+ "en-US":{
+	 unableToLoadChallenges:'Error fetching Challenges',
+   selectChallenge:'Select a Challenge!',
+   whatAreYouDoing:'What are you doing right now?',
+   yourLocation:'Your location',
+   couldNotDetermineLocation:'Could not determine location',
+   postStatusLabel:'Post a status',
+   selectMedia:'Select',
+   failedPostingUpload:'Failed to upload posting',
+   failedChallengePostingSuccess:"Created new posting but couldn't fulfill challenge",
+   postingSuccess:"Created new posting"
+ },
+ de:{
+   unableToLoadChallenges:'Fehler beim abrufen der Challenges',
+    selectChallenge:'Wähle eine Challenge aus!',
+    whatAreYouDoing:'Was tust du gerade?',
+    yourLocation:'Dein Standort',
+    couldNotDetermineLocation:'Konnte Standort nicht ermitteln',
+    postStatusLabel:'Poste einen Status',
+    selectMedia:'Wähle ein',
+    failedPostingUpload:'Konnte Status nicht erstellen',
+    failedChallengePostingSuccess:"Neuer Status erstellt, konnte Challenge allerdings nicht als efüllt eintragen",
+    postingSuccess:"Neues Posting erstellt"
+ }
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreatePostingScreen)

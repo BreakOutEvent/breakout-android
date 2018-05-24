@@ -3,11 +3,12 @@ import {Icon} from "native-base";
 import {connect} from "react-redux";
 import {addLike, fetchNewPostings, fetchNextPage} from "./actions";
 import PostingList from "../../components/posting-list";
+import LocalizedStrings from 'react-native-localization';
 
 class PostingListScreen extends Component {
 
     static navigationOptions = {
-        drawerLabel: 'Alle Postings', // TODO: i18n
+        drawerLabel: () => strings.allPostingsLabel,
         drawerIcon: () => <Icon name='flag'/>
     };
 
@@ -33,6 +34,15 @@ const mapDispatchToProps = (dispatch) => {
         addLike: (postingId) => dispatch(addLike(postingId))
     }
 };
+
+let strings = new LocalizedStrings({
+ "en-US":{
+	 allPostingsLabel:'All Postings'
+ },
+ de:{
+   allPostingsLabel:'Alle Postings'
+ }
+});
 
 const ConnectedPostingList = connect(mapStateToProps, mapDispatchToProps)(PostingListScreen);
 export default ConnectedPostingList;
