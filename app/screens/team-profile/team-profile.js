@@ -9,6 +9,7 @@ import ConnectedTeamPostings from "./postings";
 import {Map} from "../../components/map";
 import {connect} from "react-redux";
 import {fetchTeamLocations} from "./actions";
+import LocalizedStrings from 'react-native-localization';
 
 const elem = (props) => {
     console.log(props);
@@ -113,7 +114,7 @@ export default class TeamProfile extends React.PureComponent {
     }
 
     static navigationOptions = {
-        drawerLabel: 'Dein Team',
+        drawerLabel: () => strings.yourTeamLabel,
         drawerIcon: () => <Icon name='contact'/>
     };
 
@@ -128,3 +129,12 @@ export default class TeamProfile extends React.PureComponent {
         return <Tabnav screenProps={{teamId}}/>
     }
 }
+
+let strings = new LocalizedStrings({
+ "en-US":{
+	 yourTeamLabel:'Your Team'
+ },
+ de:{
+   yourTeamLabel:'Dein Team'
+ }
+});

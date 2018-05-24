@@ -5,6 +5,7 @@ import {loadTeams} from "./actions";
 import * as Colors from "../../config/colors";
 import {Icon} from "native-base";
 import {Button} from "../../components/posting";
+import LocalizedStrings from 'react-native-localization';
 
 export function transform(parameters, url) {
     if (!url) {
@@ -24,7 +25,7 @@ export function transform(parameters, url) {
 class AllTeams extends React.PureComponent {
 
     static navigationOptions = {
-        drawerLabel: 'All Teams',
+        drawerLabel: () => strings.allTeamsLabel,
         drawerIcon: () => <Icon name="people" />
     };
 
@@ -115,5 +116,14 @@ function mapDispatchToProps(dispatch) {
         loadTeams: () => dispatch(loadTeams())
     }
 }
+
+let strings = new LocalizedStrings({
+ "en-US":{
+	 allTeamsLabel:'All Teams'
+ },
+ de:{
+   allTeamsLabel:'Alle Teams'
+ }
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllTeams);

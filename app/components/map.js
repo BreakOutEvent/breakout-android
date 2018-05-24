@@ -4,6 +4,7 @@ import {Icon} from "native-base";
 import MapView, {Polyline, Marker} from 'react-native-maps';
 import {connect} from "react-redux";
 import {fetchEventLocations} from "../screens/locations/actions";
+import LocalizedStrings from 'react-native-localization';
 
 const mapStyle = [
     {
@@ -136,7 +137,7 @@ function getTeamMapContent(locations) {
 
     const lastPosMarker = <Marker
         key="last_pos"
-        title="Letzte Position"
+        title={strings.lastPosition}
         opacity={1}
         coordinate={{
             latitude: maxDistanceTeamLocation.latitude,
@@ -148,7 +149,7 @@ function getTeamMapContent(locations) {
 
     const firstPosMarker = <Marker
         key="first_pos"
-        title="Start"
+        title={strings.startingPosition}
         opacity={1}
         coordinate={{
             latitude: minDistanceTeamLocation.latitude,
@@ -217,7 +218,7 @@ function getEventsMapContent(locations) {
 
     const munichMarker = <Marker
         key="München"
-        title="Start München"
+        title={strings.startMunich}
         coordinate={{
             latitude: 48.150676,
             longitude: 11.580984,
@@ -225,7 +226,7 @@ function getEventsMapContent(locations) {
 
     const berlinMarker = <Marker
         key="Berlin"
-        title="Start Berlin"
+        title={strings.startBerlin}
         coordinate={{
             latitude: 52.512643,
             longitude: 13.321876,
@@ -233,7 +234,7 @@ function getEventsMapContent(locations) {
 
     const barcelonaMarker = <Marker
         key="Barcelona"
-        title="Start Barcelona"
+        title={strings.startBarcelona}
         coordinate={{
             latitude: 41.3947688,
             longitude: 2.0787279,
@@ -245,7 +246,7 @@ function getEventsMapContent(locations) {
 
 export class Map extends Component {
     static navigationOptions = {
-        drawerLabel: 'Karte',
+        drawerLabel: () => strings.mapLabel,
         drawerIcon: () => <Icon name='map'/>
     };
 
@@ -292,6 +293,26 @@ const mapDispatchToProps = (dispatch) => {
         onRefresh: (teamId) => dispatch(fetchEventLocations()),
     }
 };
+
+let strings = new LocalizedStrings({
+ "en-US":{
+	 mapLabel:'Map',
+   lastPosition:'Last position',
+   startingPosition:"Start",
+   startMunich:'Start Munich',
+   startBerlin:'Start Berlin',
+   startBarcelona:'Start Barcelona'
+
+ },
+ de:{
+   mapLabel:'Karte',
+   lastPosition:'Letzte Position',
+   startingPosition:"Start",
+   startMunich:'Start München',
+   startBerlin:'Start Berlin',
+   startBarcelona:'Start Barcelona'
+ }
+});
 
 const ConnectedMapScreen = connect(mapStateToProps, mapDispatchToProps)(Map);
 export default ConnectedMapScreen;
