@@ -1,4 +1,5 @@
 import React from 'react';
+import {AppState} from 'react-native';
 import {DrawerNavigator, StackNavigator} from 'react-navigation';
 import {Icon} from 'native-base'
 import ConnectedPostingList from "./screens/postings/screen";
@@ -11,6 +12,7 @@ import {Provider} from 'react-redux';
 import {persistor, store} from './store/store';
 import {PersistGate} from "redux-persist/integration/react";
 import LoginScreen from './screens/login/screen';
+import {onAppStateChanged} from "./screens/login/actions";
 
 console.ignoredYellowBox = ['Remote debugger'];
 
@@ -104,11 +106,24 @@ function isUserLoggedIn() {
     return !!(_.get(store.getState(), 'login.access_token'));
 }
 
-export default App = () => (
-    <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-            <RootNav/>
-        </PersistGate>
-    </Provider>
-);
+export default class App extends React.Component {
 
+    componentDidMount() {
+        AppState.addEventListener('change', this.handleAppStateChange);
+    }
+
+    handleAppStateChange(newAppState) {
+        const oldAppState = _.get(store.getState(), 'login.appState');
+        store.dispatch(onAppStateChanged(oldAppState, newAppState))
+    }
+
+    render() {
+        return (
+            <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                    <RootNav/>
+                </PersistGate>
+            </Provider>
+        )
+    }
+}

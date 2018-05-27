@@ -9,6 +9,33 @@ export const ON_LOGIN_SUCCESS = 'ON_LOGIN_SUCCESS';
 export const ON_LOGIN_ERROR = 'ON_LOGIN_ERROR';
 export const ON_FETCH_ME_SUCCESS = 'ON_FETCH_ME_SUCCESS';
 export const ON_FETCH_ME_ERROR = 'ON_FETCH_ME_ERROR';
+export const ON_APP_STATE_CHANGED = 'ON_APP_STATE_CHANGED';
+
+function appStateChanged(newAppState) {
+    return {
+        type: ON_APP_STATE_CHANGED,
+        payload: {newState: newAppState}
+    }
+}
+
+export function onAppStateChanged(oldState, newState) {
+    return (dispatch, getState) => {
+
+        dispatch(appStateChanged(newState));
+
+        if (oldState && oldState.match(/inactive|background/) && newState === 'active') {
+            // TODO: This is a workaround b.c. the api client has no support for refresh tokens yet!
+            const username = _.get(getState(), 'login.username');
+            const password = _.get(getState(), 'login.password');
+
+            if (username && password) {
+                api.login(username, password)
+                    .then(resp => dispatch(onLoginSuccess(resp)))
+                    .catch(err => dispatch(onLoginError(err)))
+            }
+        }
+    }
+}
 
 export function onUsernameChanged(username) {
     return {

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import {
+    ON_APP_STATE_CHANGED,
     ON_FETCH_ME_ERROR,
     ON_FETCH_ME_SUCCESS, ON_LOGIN_ERROR, ON_LOGIN_SUCCESS, ON_PASSWORD_CHANGED,
     ON_USERNAME_CHANGED
@@ -8,7 +9,8 @@ import {
 const initialState = {
     username: '',
     password: '',
-    me: null
+    me: null,
+    appState: "firstRun"
 };
 
 export default loginReducer = (state = initialState, action) => {
@@ -55,6 +57,12 @@ export default loginReducer = (state = initialState, action) => {
                 me: {
                     error: {...action.payload.error}
                 }
+            };
+
+        case ON_APP_STATE_CHANGED:
+            return {
+                ...state,
+                appState: action.payload.newState
             };
         default:
             return state;
