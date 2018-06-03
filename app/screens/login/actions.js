@@ -51,10 +51,16 @@ export function onPasswordChanged(password) {
     }
 }
 
-export function onPressLogin(username, password) {
+// This callback thing is a workaround to navigate somewhere after
+// successful login. This should be changed if we know a useful pattern
+// on how to do so
+export function onPressLogin(username, password, cb = () => {}) {
     return dispatch => {
         api.login(username, password)
-            .then(resp => dispatch(onLoginSuccess(resp)))
+            .then(resp => {
+                dispatch(onLoginSuccess(resp));
+                cb();
+            })
             .catch(err => dispatch(onLoginError(err)))
     };
 }
