@@ -21,6 +21,7 @@
     "react-native-maps": "^0.21.0",
     "react-native-progress": "^3.4.0",
     "react-native-scrollable-tab-view": "^0.8.0",
+    "react-native-sentry": "^0.37.0",
     "react-native-video": "^2.0.0",
     "react-navigation": "^1.5.12",
     "react-redux": "^5.0.6",

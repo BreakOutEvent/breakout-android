@@ -1,5 +1,6 @@
 import BreakoutApi from "breakout-api-client";
 import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG} from "../../config/secrets";
+import {Sentry} from 'react-native-sentry';
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 
@@ -97,8 +98,16 @@ function onFetchMeSuccess(me) {
 }
 
 function onFetchMeError(error) {
-    return {
-        type: ON_FETCH_ME_ERROR,
-        payload: {error}
+    return (dispatch, state) => {
+
+        Sentry.captureException(error, {
+            type: ON_FETCH_ME_ERROR,
+            state
+        });
+
+        dispatch({
+            type: ON_FETCH_ME_ERROR,
+            payload: {error}
+        });
     }
 }

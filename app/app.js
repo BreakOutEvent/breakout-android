@@ -13,6 +13,10 @@ import {persistor, store} from './store/store';
 import {PersistGate} from "redux-persist/integration/react";
 import LoginScreen from './screens/login/screen';
 import {onAppStateChanged} from "./screens/login/actions";
+import {Sentry} from 'react-native-sentry';
+import {SENTRY_DSN} from './config/secrets';
+
+Sentry.config(SENTRY_DSN).install();
 
 console.ignoredYellowBox = ['Remote debugger'];
 

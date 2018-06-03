@@ -4,15 +4,16 @@ import {Button, Icon, Textarea} from "native-base";
 import ImagePicker from "react-native-image-picker";
 import Image from 'react-native-image-progress';
 import * as Colors from "../../config/colors";
-import {onCreatePostingScreenMounted} from "./actions";
-import {connect} from "react-redux";
 import {
     onChallengeSelected,
     onCreatePostingPressed,
+    onCreatePostingScreenMounted,
     onImageSelected,
     onPostingTextChanged,
     onVideoSelected
 } from "./actions";
+import {connect} from "react-redux";
+import Sentry from 'react-native-sentry';
 
 import {Pie} from 'react-native-progress';
 import LocalizedStrings from 'react-native-localization';
@@ -186,12 +187,13 @@ class CreatePostingScreen extends React.Component {
         ImagePicker.showImagePicker(options, (response) => {
 
             if (response.didCancel) {
-                // TODO: handle me!
                 console.log('User cancelled image picker');
             }
             else if (response.error) {
-                // TODO: handle me!
                 console.log('ImagePicker Error: ', response.error);
+                Sentry.captureException(response.error, {
+                    response
+                });
             }
             else {
                 if (mediaType === 'image') {

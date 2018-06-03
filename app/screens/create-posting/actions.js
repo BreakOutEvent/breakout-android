@@ -3,6 +3,7 @@ import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, CLOUDINARY_API_KEY, DEBUG} from ".
 
 import RNFetchBlob from 'react-native-fetch-blob';
 import {withAccessToken} from "../../utils/utils";
+import {Sentry} from "react-native-sentry";
 
 // TODO: Move api key to conf
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, "breakout", "955374861429162", DEBUG);
@@ -53,6 +54,7 @@ function uploadMedia(file, signedParams, onProgress) {
         .then(response => JSON.parse(response.data))
         .catch(err => {
             // TODO: Fetch blob doesn't properly throw errors when something went wrong for some reason...
+            Sentry.captureException(err, {context: 'Failed to upload media to cloudinary'});
             console.error(err);
             throw err;
         });
@@ -115,9 +117,17 @@ function onUploadProgress(a, b) {
 }
 
 function onFulfillChallengeError(error) {
-    return {
-        type: ON_FULFILL_CHALLENGE_ERROR,
-        payload: {error}
+    return (dispatch, state) => {
+
+        Sentry.captureException(error, {
+            type: ON_FULFILL_CHALLENGE_ERROR,
+            state
+        });
+
+        dispatch({
+            type: ON_FULFILL_CHALLENGE_ERROR,
+            payload: {error}
+        })
     }
 }
 
@@ -134,15 +144,23 @@ function onUploadPostingSuccess() {
 }
 
 function onUploadPostingError(error) {
-    return {
-        type: ON_UPLOAD_POSTING_ERROR,
-        payload: {error}
+    return (dispatch, state) => {
+
+        Sentry.captureException(error, {
+            type: ON_UPLOAD_POSTING_ERROR,
+            state
+        });
+
+        dispatch({
+            type: ON_UPLOAD_POSTING_ERROR,
+            payload: {error}
+        })
     }
 }
 
 export function onCreatePostingScreenMounted(teamId) {
 
-    return async dispatch => {
+    return async (dispatch, state) => {
 
         dispatch(clearState());
 
@@ -194,11 +212,19 @@ function onGetCurrentPositionSuccess(location) {
 }
 
 function onGetCurrentPositionError(error) {
-    return {
-        type: ON_GET_CURRENT_POSITION_ERROR,
-        payload: {
-            error
-        }
+    return (dispatch, state) => {
+
+        Sentry.captureException(error, {
+            state,
+            type: ON_GET_CURRENT_POSITION_ERROR,
+        });
+
+        dispatch({
+            type: ON_GET_CURRENT_POSITION_ERROR,
+            payload: {
+                error
+            }
+        })
     }
 }
 
@@ -241,8 +267,16 @@ function onFetchChallengesForTeamSuccess(challenges) {
 }
 
 function onFetchChallengesForTeamError(error) {
-    return {
-        type: ON_FETCH_CHALLENGES_FOR_TEAM_ERROR,
-        payload: {error}
+    return (dispatch, state) => {
+
+        Sentry.captureException(error, {
+            type: ON_FETCH_CHALLENGES_FOR_TEAM_ERROR,
+            state
+        });
+
+        dispatch({
+            type: ON_FETCH_CHALLENGES_FOR_TEAM_ERROR,
+            payload: {error}
+        })
     }
 }
