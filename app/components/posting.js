@@ -17,6 +17,7 @@ export default class Posting extends React.PureComponent {
         this.style = StyleSheet.create({
             container: {
                 margin: 10,
+                marginBottom: 2,
                 elevation: 3,
                 backgroundColor: 'white'
             }

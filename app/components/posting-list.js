@@ -22,7 +22,6 @@ export default class PostingList extends React.PureComponent {
                       ListFooterComponent={errorFooter}
                       data={props.postings}
                       keyExtractor={item => item.id}
-                      style={{margin: 10}}
                       renderItem={this.renderPosting}
                       onEndReached={() => props.nextPage(props.currentPage)}
                       refreshing={props.refreshing}
