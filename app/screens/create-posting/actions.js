@@ -177,8 +177,8 @@ export function onCreatePostingScreenMounted(teamId) {
         try {
             const options = {
                 maximumAge: 1000 * 60 * 20,
-                enableHighAccuracy: true,
-                timeout: 3000
+                enableHighAccuracy: false,
+                timeout: 30000
             };
             locations = await new Promise((resolve, reject) => {
                 navigator.geolocation.getCurrentPosition(resolve, reject, options)
