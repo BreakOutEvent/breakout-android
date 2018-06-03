@@ -27,6 +27,8 @@ export const ON_UPLOAD_POSTING_ERROR = 'ON_UPLOAD_POSTING_ERROR';
 
 export const ON_FULFILL_CHALLENGE_ERROR = 'ON_FULFILL_CHALLENGE_ERROR';
 
+export const ON_GET_CURRENT_POSITION_IN_PROGRESS= 'ON_GET_CURRENT_POSITION_IN_PROGRESS';
+
 function uploadMedia(file, signedParams, onProgress) {
 
     if (!onProgress) {
@@ -180,6 +182,7 @@ export function onCreatePostingScreenMounted(teamId) {
                 enableHighAccuracy: false,
                 timeout: 30000
             };
+            dispatch(onGetCurrentPositionInProgress());
             locations = await new Promise((resolve, reject) => {
                 navigator.geolocation.getCurrentPosition(resolve, reject, options)
             });
@@ -199,6 +202,12 @@ export function onCreatePostingScreenMounted(teamId) {
 function clearState() {
     return {
         type: 'CLEAR_STATE'
+    }
+}
+
+function onGetCurrentPositionInProgress() {
+    return {
+        type: ON_GET_CURRENT_POSITION_IN_PROGRESS
     }
 }
 

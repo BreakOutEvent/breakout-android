@@ -3,7 +3,7 @@ import {
     ON_FETCH_CHALLENGES_FOR_TEAM_ERROR,
     ON_FETCH_CHALLENGES_FOR_TEAM_SUCCESS,
     ON_FULFILL_CHALLENGE_ERROR,
-    ON_GET_CURRENT_POSITION_ERROR,
+    ON_GET_CURRENT_POSITION_ERROR, ON_GET_CURRENT_POSITION_IN_PROGRESS,
     ON_GET_CURRENT_POSITION_SUCCESS,
     ON_IMAGE_SELECTED,
     ON_POSTING_TEXT_CHANGED,
@@ -40,13 +40,23 @@ export default createPostingReducer = (state = initialState, action) => {
         case ON_GET_CURRENT_POSITION_SUCCESS:
             return {
                 ...state,
-                location: action.payload.location
+                location: action.payload.location,
+                getCurrentPositionInProgress: false,
+                getCurrentPositionError: false
             };
         case ON_GET_CURRENT_POSITION_ERROR:
             // TODO: handle me
             return {
                 ...state,
-                getCurrentPositionError: action.payload.error
+                getCurrentPositionError: action.payload.error,
+                getCurrentPositionInProgress: false
+            };
+
+        case ON_GET_CURRENT_POSITION_IN_PROGRESS:
+            return {
+                ...state,
+                getCurrentPositionInProgress: true,
+                getCurrentPositionError: false
             };
 
         case ON_CHALLENGE_SELECTED:

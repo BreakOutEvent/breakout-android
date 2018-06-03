@@ -45,7 +45,7 @@ const SelectOrPreviewImage = (props) => {
                         onPress={props.onSelectVideo}>
                     <Icon name="videocam" style={{color: 'white', fontSize: 60}}/>
                 </Button>
-                <ShowLocation coords={props.coords}/>
+                <ShowLocation coords={props.coords} locationLoading={props.locationLoading} locationError={props.locationError}/>
             </View>
         );
     } else {
@@ -64,7 +64,7 @@ const SelectOrPreviewImage = (props) => {
                        }}>
                     {progress}
                 </Image>
-                <ShowLocation coords={props.coords}/>
+                <ShowLocation coords={props.coords} locationLoading={props.locationLoading} locationError={props.locationError}/>
             </View>
         )
     }
@@ -127,9 +127,14 @@ const ShowLocation = (props) => {
     const latitude = _.get(props, 'coords.latitude');
     const longitude = _.get(props, 'coords.longitude');
 
-    const text = (latitude && longitude)
-        ? `${strings.yourLocation}: ${latitude.toFixed(3)}, ${longitude.toFixed(3)}`
-        : strings.couldNotDetermineLocation;
+    let text;
+    if (latitude && longitude) {
+        text = `${strings.yourLocation}: ${latitude.toFixed(3)}, ${longitude.toFixed(3)}`
+    } else if (props.locationLoading) {
+        text = strings.locationIsLoading;
+    } else if (props.locationError) {
+        text = strings.couldNotDetermineLocation;
+    }
 
     return (
         <View style={{
@@ -234,7 +239,10 @@ class CreatePostingScreen extends React.Component {
                     onSelectImage={() => this.handleMediaSelect('image')}
                     onSelectVideo={() => this.handleMediaSelect('video')}
                     progress={this.props.progress}
-                    coords={this.props.coords}/>
+                    coords={this.props.coords}
+                    locationLoading={this.props.getCurrentPositionInProgress}
+                    locationError={this.props.getCurrentPositionError}
+                />
 
                 <SelectChallenge challenges={this.props.challenges || []}
                                  onChallengeSelected={this.props.onChallengeSelected}
@@ -262,7 +270,9 @@ const mapStateToProps = (state) => {
         inProgress: state.createPosting.inProgress,
         success: state.createPosting.success,
 
+        getCurrentPositionInProgress: state.createPosting.getCurrentPositionInProgress,
         getCurrentPositionError: state.createPosting.getCurrentPositionError,
+
         fetchChallengesForTeamError: state.createPosting.fetchChallengesForTeamError,
         uploadPostingError: state.createPosting.uploadPostingError,
         fulfillChallengeError: state.createPosting.fulfillChallengeError,
@@ -292,7 +302,8 @@ let strings = new LocalizedStrings({
    selectMedia:'Select',
    failedPostingUpload:'Failed to upload posting',
    failedChallengePostingSuccess:"Created new posting but couldn't fulfill challenge",
-   postingSuccess:"Created new posting"
+   postingSuccess:"Created new posting",
+     locationIsLoading: "Location is loading..."
  },
  de:{
    unableToLoadChallenges:'Fehler beim abrufen der Challenges',
@@ -304,7 +315,8 @@ let strings = new LocalizedStrings({
     selectMedia:'Wähle ein',
     failedPostingUpload:'Konnte Status nicht erstellen',
     failedChallengePostingSuccess:"Neuer Status erstellt, konnte Challenge allerdings nicht als efüllt eintragen",
-    postingSuccess:"Neues Posting erstellt"
+    postingSuccess:"Neues Posting erstellt",
+     locationIsLoading: "Standort wird abgefragt..."
  }
 });
 
