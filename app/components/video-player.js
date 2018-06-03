@@ -3,6 +3,8 @@ import Video from "react-native-video";
 import React from "react";
 import {Icon} from "native-base";
 import {Button} from "./posting";
+import Image from 'react-native-image-progress';
+import {transform} from "../screens/all-teams/screen";
 
 const style = StyleSheet.create({
     view: {
@@ -39,38 +41,50 @@ export default class VideoPlayer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            playing: false
+            playing: false,
+            initialView: true
         }
     }
 
     togglePlaying() {
         this.setState({
-            playing: !this.state.playing
+            playing: !this.state.playing,
+            initialView: false
         })
     }
 
     render() {
-        return (
-            <View style={style.view}>
-                <Video style={style.video}
-                       resizeMode="contain"
-                       source={{uri: transformVideo('f_auto,q_auto:eco', this.props.url)}}
-                       poster={getPosterForVideo(this.props.url)}
-                       posterResizeMode="contain"
-                       paused={!this.state.playing}
-                />
-                <Button onPress={this.togglePlaying.bind(this)}>
-                    { (!this.state.playing) ? <Icon name='play' style={style.pauseIconStyle} active/>
-                                              : <Icon name='pause' style={style.pauseIconStyle} active/> }
-                </Button>
-            </View>
-        );
+        if (this.state.initialView) {
+            const previewUrl = transform('h_400,f_auto,q_auto:eco', getPosterForVideo(this.props.url));
+            return (
+                <View style={style.view}>
+                    <Image style={style.video} source={{uri: previewUrl}}/>
+                    <Button onPress={this.togglePlaying.bind(this)}>
+                        {(!this.state.playing) ? <Icon name='play' style={style.pauseIconStyle} active/>
+                            : <Icon name='pause' style={style.pauseIconStyle} active/>}
+                    </Button>
+                </View>
+            )
+        } else {
+            return (
+                <View style={style.view}>
+                    <Video style={style.video}
+                           resizeMode="contain"
+                           source={{uri: transformVideo('f_auto,q_auto:eco', this.props.url)}}
+                           paused={!this.state.playing}
+                    />
+                    <Button onPress={this.togglePlaying.bind(this)}>
+                        {(!this.state.playing) ? <Icon name='play' style={style.pauseIconStyle} active/>
+                            : <Icon name='pause' style={style.pauseIconStyle} active/>}
+                    </Button>
+                </View>
+            );
+        }
     }
 }
 
 function getPosterForVideo(url) {
-    const poster = url.replace(/\.[^/.]+$/, ".png");
-    return poster;
+    return url.replace(/\.[^/.]+$/, ".png");
 }
 
 function transformVideo(parameters, url) {
