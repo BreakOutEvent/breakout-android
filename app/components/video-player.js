@@ -50,28 +50,40 @@ export default class VideoPlayer extends React.Component {
     }
 
     render() {
-
-        if (!this.state.playing) {
-            return (
-                <View style={style.view}>
-                    <Button onPress={this.togglePlaying.bind(this)}>
-                        <Icon name='play'
-                              style={style.playIconStyle}
-                              active/>
-                    </Button>
-                </View>
-            )
-        } else {
-            return (
-                <View style={style.view}>
-                    <Video style={style.video} source={{uri: this.props.url}}/>
-                    <Button onPress={this.togglePlaying.bind(this)}>
-                        <Icon name='pause'
-                              style={style.pauseIconStyle}
-                              active/>
-                    </Button>
-                </View>
-            );
-        }
+        return (
+            <View style={style.view}>
+                <Video style={style.video}
+                       resizeMode="contain"
+                       source={{uri: transformVideo('f_auto,q_auto:eco', this.props.url)}}
+                       poster={getPosterForVideo(this.props.url)}
+                       posterResizeMode="contain"
+                       paused={!this.state.playing}
+                />
+                <Button onPress={this.togglePlaying.bind(this)}>
+                    { (!this.state.playing) ? <Icon name='play' style={style.pauseIconStyle} active/>
+                                              : <Icon name='pause' style={style.pauseIconStyle} active/> }
+                </Button>
+            </View>
+        );
     }
 }
+
+function getPosterForVideo(url) {
+    const poster = url.replace(/\.[^/.]+$/, ".png");
+    return poster;
+}
+
+function transformVideo(parameters, url) {
+    if (!url) {
+        return;
+    }
+
+    let newUrl;
+    if (!url.includes('cloudinary')) {
+        // cannot transform images that are not from cloudinary
+        return url;
+    } else {
+        newUrl = url.replace(/video\/upload\/.*\//, `video/upload/${parameters}/`);
+        return newUrl;
+    }
+};
