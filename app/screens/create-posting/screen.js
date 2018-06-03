@@ -1,5 +1,5 @@
 import React from "react";
-import {ActivityIndicator, Picker, Text, ToastAndroid, View} from "react-native";
+import {ActivityIndicator, Picker, ScrollView, Text, ToastAndroid, View} from "react-native";
 import {Button, Icon, Textarea} from "native-base";
 import ImagePicker from "react-native-image-picker";
 import Image from 'react-native-image-progress';
@@ -228,7 +228,7 @@ class CreatePostingScreen extends React.Component {
         this.displayErrorsAndSuccesses();
 
         return (
-            <View>
+            <ScrollView>
                 <SelectOrPreviewImage
                     uri={_.get(this.props, 'media.uri')}
                     onSelectImage={() => this.handleMediaSelect('image')}
@@ -243,7 +243,7 @@ class CreatePostingScreen extends React.Component {
 
                 <PostingText onPostingTextChanged={this.props.onPostingTextChanged}
                              postingText={this.props.text}/>
-            </View>
+            </ScrollView>
         )
     }
 }
