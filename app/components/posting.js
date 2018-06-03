@@ -243,13 +243,27 @@ function generateLocationString(location) {
     if (!location) {
         return "";
     } else {
+
+        // see https://developers.google.com/maps/documentation/geocoding/intro?hl=de
+        // for more details on what those mean
         const locality = _.get(location, 'locationData.LOCALITY');
         const country = _.get(location, 'locationData.COUNTRY');
 
+        const adminLevel1 = _.get(location, 'locationData.ADMINISTRATIVE_AREA_LEVEL_1');
+        const adminLevel2 = _.get(location, 'locationData.ADMINISTRATIVE_AREA_LEVEL_2');
+        const adminLevel3 = _.get(location, 'locationData.ADMINISTRATIVE_AREA_LEVEL_3');
+        const adminLevel4 = _.get(location, 'locationData.ADMINISTRATIVE_AREA_LEVEL_4');
+
+        const lowestLevel = _.head([adminLevel4, adminLevel3, adminLevel2, adminLevel1]);
+
         if (locality && country) {
             return `in ${locality}, ${country}`
+        } else if (lowestLevel && country) {
+            return `in ${lowestLevel}, ${country}`
+        } else if (country) {
+            return `in ${country}`
         } else if (location.latitude && location.longitude) {
-            return `(${location.latitude}, ${location.longitude})`
+            return `(${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)})`
         }
     }
 }
