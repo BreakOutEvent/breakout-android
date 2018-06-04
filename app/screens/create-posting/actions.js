@@ -6,6 +6,7 @@ import RNFetchBlob from 'react-native-fetch-blob';
 import {withAccessToken} from "../../utils/utils";
 import {Sentry} from "react-native-sentry";
 import {navigatorRef} from "../../app";
+import {fetchNewPostings} from "../postings/actions";
 
 // TODO: Move api key to conf
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, "breakout", "955374861429162", DEBUG);
@@ -147,6 +148,7 @@ function onUploadPostingSuccess() {
             type: ON_UPLOAD_POSTING_SUCCESS,
         });
 
+        dispatch(fetchNewPostings());
         navigatorRef.dispatch(NavigationActions.navigate({routeName: 'allPostings'}))
     };
 }
