@@ -78,7 +78,7 @@ class LoginScreen extends React.PureComponent {
                     <ErrorMessageView error={props.error}/>
                     <View style={style.buttonView}>
                         <Button color={Colors.Primary} title={strings.logInButton}
-                                onPress={() => props.onPressLogin(props.username, props.password, () => {props.navigation.navigate('drawer')})}/>
+                                onPress={() => props.onPressLogin(props.username, props.password)}/>
                         <View style={{height: 10}} />
                         <Button color={Colors.Grey} title={strings.contWithOutLoginButton}
                                 onPress={() => props.navigation.navigate('drawer')}/>
@@ -113,7 +113,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onUsernameChanged: (username) => dispatch(onUsernameChanged(username)),
         onPasswordChanged: (password) => dispatch(onPasswordChanged(password)),
-        onPressLogin: (username, password, cb) => dispatch(onPressLogin(username, password, cb))
+        onPressLogin: (username, password) => dispatch(onPressLogin(username, password))
     }
 };
 

@@ -1,6 +1,8 @@
 import BreakoutApi from "breakout-api-client";
 import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG} from "../../config/secrets";
 import {Sentry} from 'react-native-sentry';
+import {navigatorRef} from "../../app";
+import {NavigationActions} from "react-navigation";
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 
@@ -52,22 +54,22 @@ export function onPasswordChanged(password) {
     }
 }
 
-// This callback thing is a workaround to navigate somewhere after
-// successful login. This should be changed if we know a useful pattern
-// on how to do so
-export function onPressLogin(username, password, cb = () => {}) {
-    return dispatch => {
-        api.login(username, password)
-            .then(resp => {
-                dispatch(onLoginSuccess(resp));
-                cb();
-            })
-            .catch(err => dispatch(onLoginError(err)))
+export function onPressLogin(username, password) {
+    return async dispatch => {
+        try {
+            const resp = await api.login(username, password);
+            dispatch(onLoginSuccess(resp));
+        } catch (err) {
+            dispatch(onLoginError(err))
+        }
     };
 }
 
 function onLoginSuccess(response) {
-    return dispatch => {
+    return async dispatch => {
+
+        navigatorRef.dispatch(NavigationActions.navigate({routeName: 'drawer'}));
+
         dispatch({
             type: ON_LOGIN_SUCCESS,
             payload: {
@@ -75,9 +77,13 @@ function onLoginSuccess(response) {
                 refresh_token: response.refresh_token
             }
         });
-        api.getMe()
-            .then(me => dispatch(onFetchMeSuccess(me)))
-            .catch(error => dispatch(onFetchMeError(error)))
+
+        try {
+            const me = await api.getMe();
+            dispatch(onFetchMeSuccess(me));
+        } catch (err) {
+            dispatch(onFetchMeError(err));
+        }
     };
 }
 
