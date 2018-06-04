@@ -15,13 +15,14 @@ import LoginScreen from './screens/login/screen';
 import {onAppStateChanged} from "./screens/login/actions";
 import {Sentry} from 'react-native-sentry';
 import {SENTRY_DSN} from './config/secrets';
+import {onGeoLocationError, onGeoLocationReceived} from "./background-tracking/actions";
 
 Sentry.config(SENTRY_DSN).install();
 
 console.ignoredYellowBox = ['Remote debugger'];
 
 const drawerButton = (navigation) =>
-    (<Icon name='menu' style={{paddingLeft: 10, color: 'white'}} onPress={() => navigation.navigate('DrawerToggle')}/>);
+    (<Icon name='menu' style={{padding: 10, paddingRight: 20, color: 'white'}} onPress={() => navigation.navigate('DrawerToggle')}/>);
 
 const stacked = (Screen, title='BreakOut', borderLess = false) => StackNavigator({
     screen: Screen
