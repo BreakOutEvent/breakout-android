@@ -219,8 +219,6 @@ class CreatePostingScreen extends React.Component {
             message = strings.failedPostingUpload;
         } else if (this.props.success && this.props.fulfillChallengeError) {
             message = strings.failedChallengePostingSuccess;
-        } else if (this.props.success) {
-            message = strings.postingSuccess;
         }
 
         if (message) {
