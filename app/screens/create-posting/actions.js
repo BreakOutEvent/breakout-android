@@ -1,9 +1,11 @@
 import BreakoutApi from "breakout-api-client";
 import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, CLOUDINARY_API_KEY, DEBUG} from "../../config/secrets";
 
+import {NavigationActions} from 'react-navigation'
 import RNFetchBlob from 'react-native-fetch-blob';
 import {withAccessToken} from "../../utils/utils";
 import {Sentry} from "react-native-sentry";
+import {navigatorRef} from "../../app";
 
 // TODO: Move api key to conf
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, "breakout", "955374861429162", DEBUG);
@@ -140,9 +142,13 @@ function onUploadPostingInProgress() {
 }
 
 function onUploadPostingSuccess() {
-    return {
-        type: ON_UPLOAD_POSTING_SUCCESS,
-    }
+    return dispatch => {
+        dispatch({
+            type: ON_UPLOAD_POSTING_SUCCESS,
+        });
+
+        navigatorRef.dispatch(NavigationActions.navigate({routeName: 'allPostings'}))
+    };
 }
 
 function onUploadPostingError(error) {

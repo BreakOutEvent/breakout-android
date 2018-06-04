@@ -110,10 +110,13 @@ function isUserLoggedIn() {
     return !!(_.get(store.getState(), 'login.access_token'));
 }
 
+export let navigatorRef;
+
 export default class App extends React.Component {
 
     componentDidMount() {
         AppState.addEventListener('change', this.handleAppStateChange);
+        navigatorRef = this.navigator;
     }
 
     handleAppStateChange(newAppState) {
@@ -125,7 +128,7 @@ export default class App extends React.Component {
         return (
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
-                    <RootNav/>
+                    <RootNav ref={nav=> {navigatorRef = nav}}/>
                 </PersistGate>
             </Provider>
         )
