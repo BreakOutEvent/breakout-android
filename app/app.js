@@ -118,7 +118,23 @@ export default class App extends React.Component {
     componentDidMount() {
         AppState.addEventListener('change', this.handleAppStateChange);
         navigatorRef = this.navigator;
+        this.setupBackgroundTracking();
     }
+
+    setupBackgroundTracking() {
+        navigator.geolocation.watchPosition((res) => {
+            store.dispatch(onGeoLocationReceived(res));
+        }, (err) => {
+            store.didCancel(onGeoLocationError(err));
+        }, {
+            maximumAge: 1000 * 60 * 15, // 15 mins
+            enableHighAccuracy: false,
+            timeout: 1000 * 60 * 5, // 5 minutes,
+            distanceFilter: 1000, // 1km
+        });
+    }
+
+
 
     handleAppStateChange(newAppState) {
         const oldAppState = _.get(store.getState(), 'login.appState');
