@@ -28,5 +28,5 @@ export function onGeoLocationReceived(location) {
 }
 
 export function onGeoLocationError(error) {
-    console.error(error);
+    console.warn("Did not track user location because of error: ", error);
 }

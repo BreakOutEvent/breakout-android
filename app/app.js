@@ -1,5 +1,5 @@
 import React from 'react';
-import {AppState} from 'react-native';
+import {AppState, PermissionsAndroid} from 'react-native';
 import {DrawerNavigator, StackNavigator} from 'react-navigation';
 import {Icon} from 'native-base'
 import ConnectedPostingList from "./screens/postings/screen";
@@ -118,20 +118,31 @@ export default class App extends React.Component {
     componentDidMount() {
         AppState.addEventListener('change', this.handleAppStateChange);
         navigatorRef = this.navigator;
-        this.setupBackgroundTracking();
+        this.setupBackgroundTracking(); // ignore result promise. We just fire and forget here
     }
 
-    setupBackgroundTracking() {
-        navigator.geolocation.watchPosition((res) => {
-            store.dispatch(onGeoLocationReceived(res));
-        }, (err) => {
-            store.didCancel(onGeoLocationError(err));
-        }, {
-            maximumAge: 1000 * 60 * 15, // 15 mins
-            enableHighAccuracy: false,
-            timeout: 1000 * 60 * 5, // 5 minutes,
-            distanceFilter: 1000, // 1km
+    async setupBackgroundTracking() {
+
+        const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
+            title: "Allow access to locations for background tracking",
+            message: "BreakOut tracks your travel during the event to calculate your score and show " +
+            "your followers how far you have come. For this we need to you give us access to your location"
         });
+
+        if (granted) {
+            navigator.geolocation.watchPosition((res) => {
+                store.dispatch(onGeoLocationReceived(res));
+            }, (err) => {
+                store.didCancel(onGeoLocationError(err));
+            }, {
+                maximumAge: 1000 * 60 * 15, // 15 mins
+                enableHighAccuracy: false,
+                timeout: 1000 * 60 * 5, // 5 minutes,
+                distanceFilter: 1000,   // 1km
+            });
+        } else {
+            Sentry.captureMessage("No access to location data for background tracking");
+        }
     }
 
 
