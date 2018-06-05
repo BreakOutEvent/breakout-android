@@ -123,31 +123,26 @@ export default class App extends React.Component {
 
     async setupBackgroundTracking() {
 
-        try {
-            const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
-                title: "Allow access to locations for background tracking",
-                message: "BreakOut tracks your travel during the event to calculate your score and show " +
-                "your followers how far you have come. For this we need to you give us access to your location"
-            });
+        const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
+            title: "Allow access to locations for background tracking",
+            message: "BreakOut tracks your travel during the event to calculate your score and show " +
+            "your followers how far you have come. For this we need to you give us access to your location"
+        });
 
-            if (granted) {
-                navigator.geolocation.watchPosition((res) => {
-                    store.dispatch(onGeoLocationReceived(res));
-                }, (err) => {
-                    store.dispatch(onGeoLocationError(err));
-                }, {
-                    maximumAge: 1000 * 60 * 15, // 15 mins
-                    enableHighAccuracy: false,
-                    timeout: 1000 * 60 * 5, // 5 minutes,
-                    distanceFilter: 1000,   // 1km
-                });
-            } else {
-                Sentry.captureMessage("No access to location data for background tracking");
-            }
-        } catch (err) {
-            Sentry.captureException(err, {
-                message: "An unexpected error happened during background tracking"
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+
+            navigator.geolocation.watchPosition((res) => {
+                store.dispatch(onGeoLocationReceived(res));
+            }, (err) => {
+                store.dispatch(onGeoLocationError(err));
+            }, {
+                maximumAge: 1000 * 60 * 15, // 15 mins
+                enableHighAccuracy: false,
+                timeout: 1000 * 60 * 5, // 5 minutes,
+                distanceFilter: 1000,   // 1km
             });
+        } else {
+            console.log("User denied permission to access location");
         }
     }
 

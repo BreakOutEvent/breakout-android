@@ -7,6 +7,7 @@ import {withAccessToken} from "../../utils/utils";
 import {Sentry} from "react-native-sentry";
 import {navigatorRef} from "../../app";
 import {fetchNewPostings} from "../postings/actions";
+import {PermissionsAndroid} from "react-native";
 
 // TODO: Move api key to conf
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, "breakout", "955374861429162", DEBUG);
@@ -191,9 +192,20 @@ export function onCreatePostingScreenMounted(teamId) {
                 timeout: 30000
             };
             dispatch(onGetCurrentPositionInProgress());
-            locations = await new Promise((resolve, reject) => {
-                navigator.geolocation.getCurrentPosition(resolve, reject, options)
+
+            const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
+                title: "Allow access to locations for posting",
+                message: "BreakOut tracks your travel during the event to calculate your score and show " +
+                "your followers how far you have come. For this we need to you give us access to your location."
             });
+
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                locations = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, options)
+                });
+            } else {
+                throw new Error("User denied permission to access location");
+            }
         } catch (error) {
             dispatch(onGetCurrentPositionError(error))
         }
