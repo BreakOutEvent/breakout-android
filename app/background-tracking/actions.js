@@ -3,6 +3,8 @@ import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG} from "../config/secrets";
 import {withAccessToken} from "../utils/utils";
 import {ToastAndroid} from "react-native";
 
+const GEO_LOCATION_ERROR = "GEO_LOCATION_ERROR";
+
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, "breakout", "955374861429162", DEBUG);
 
 export function onGeoLocationReceived(location) {
@@ -29,4 +31,8 @@ export function onGeoLocationReceived(location) {
 
 export function onGeoLocationError(error) {
     console.warn("Did not track user location because of error: ", error);
+    return {
+        type: GEO_LOCATION_ERROR,
+        payload: {error}
+    };
 }
