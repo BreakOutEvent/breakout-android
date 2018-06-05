@@ -58,17 +58,19 @@ export function onPressLogin(username, password) {
     return async dispatch => {
         try {
             const resp = await api.login(username, password);
-            dispatch(onLoginSuccess(resp));
+            dispatch(onLoginSuccess(resp, true));
         } catch (err) {
             dispatch(onLoginError(err))
         }
     };
 }
 
-function onLoginSuccess(response) {
+function onLoginSuccess(response, fromLoginScreen = false) {
     return async dispatch => {
 
-        navigatorRef.dispatch(NavigationActions.navigate({routeName: 'drawer'}));
+        if (fromLoginScreen) {
+            navigatorRef.dispatch(NavigationActions.navigate({routeName: 'drawer'}));
+        }
 
         dispatch({
             type: ON_LOGIN_SUCCESS,
