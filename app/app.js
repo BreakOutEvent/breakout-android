@@ -1,6 +1,6 @@
 import React from 'react';
-import {AppState, PermissionsAndroid} from 'react-native';
-import {DrawerNavigator, StackNavigator} from 'react-navigation';
+import {AppState, PermissionsAndroid, Text, View} from 'react-native';
+import {DrawerItems, DrawerNavigator, StackNavigator} from 'react-navigation';
 import {Icon} from 'native-base'
 import ConnectedPostingList from "./screens/postings/screen";
 import MapScreen from "./components/map";
@@ -8,7 +8,7 @@ import AllTeams from "./screens/all-teams/screen";
 import TeamOverviewScreen from "./screens/team-profile/team-profile";
 import CreatePostingScreen from "./screens/create-posting/screen";
 import * as Colors from "./config/colors";
-import {Provider} from 'react-redux';
+import {connect, Provider} from 'react-redux';
 import {persistor, store} from './store/store';
 import {PersistGate} from "redux-persist/integration/react";
 import LoginScreen from './screens/login/screen';
@@ -16,6 +16,7 @@ import {onAppStateChanged} from "./screens/login/actions";
 import {Sentry} from 'react-native-sentry';
 import {SENTRY_DSN} from './config/secrets';
 import {onGeoLocationError, onGeoLocationReceived} from "./background-tracking/actions";
+import {ProfilePic} from "./components/posting";
 
 Sentry.config(SENTRY_DSN).install();
 
@@ -81,6 +82,67 @@ const YourTeam = StackNavigator({
     })
 });
 
+const DrawerHeader = (props) => {
+    const teamName = props.teamName;
+    const teamId = props.teamId;
+    const firstname = props.firstname;
+    const lastname = props.lastname;
+    const isLoggedIn = props.isLoggedIn;
+
+    if (!isLoggedIn) {
+        return (null);
+    }
+
+    return (
+        <View style={{
+            backgroundColor: Colors.Secondary,
+            height: 100,
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingLeft: 10,
+            paddingRight: 30
+        }}>
+            <ProfilePic url={props.profilePicUrl} size="big"/>
+            <View style={{paddingLeft: 25}}>
+                <Text style={{
+                    color: 'white',
+                    fontSize: 15,
+                    fontWeight: 'bold',
+                    paddingBottom: 10
+                }}>{firstname} {lastname}</Text>
+                <Text style={{color: 'white', fontSize: 12, fontWeight: 'bold'}}>{teamName} #{teamId}</Text>
+            </View>
+        </View>
+    );
+};
+
+const Drawer = (props) => {
+
+    const appVersion = props.appVersion;
+
+    return (
+        <View style={{display: 'flex', height: '100%'}}>
+            <DrawerHeader {...props} />
+            <DrawerItems {...props} />
+            <Text style={{position: 'absolute', bottom: 0, fontSize: 10, padding: 10}}>
+                BreakOut Android Version {appVersion}
+            </Text>
+        </View>
+    );
+};
+
+const ConnectedDrawer = connect(state => ({
+    isLoggedIn: _.get(state, 'login.me', false),
+    firstname: _.get(state, 'login.me.firstname', ''),
+    lastname: _.get(state, 'login.me.lastname', ''),
+    profilePicUrl: _.get(state, 'login.me.profilePic.url'),
+    teamId: _.get(state, 'login.me.participant.teamId', ''),
+    teamName: _.get(state, 'login.me.participant.teamName', ''),
+    appVersion: 33
+}))(Drawer);
+
+
 const DrawerStack = DrawerNavigator({
     drawerLogin: {screen: stacked(LoginScreen)},
     postStatus: {screen: stacked(CreatePostingScreen)},
@@ -89,7 +151,8 @@ const DrawerStack = DrawerNavigator({
     allTeams: {screen: AllTeamsStack},
     map: {screen: stacked(MapScreen)},
 }, {
-    initialRouteName: 'allPostings'
+    initialRouteName: 'allPostings',
+    contentComponent: ConnectedDrawer
 });
 
 const RootNav = StackNavigator({

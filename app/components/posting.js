@@ -269,12 +269,20 @@ function generateLocationString(location) {
     }
 }
 
-const ProfilePic = (props) => {
+export const ProfilePic = (props) => {
 
-    if (props.url) {
-        return <Thumbnail small source={{uri: props.url}}/>
+    if (props.size === "big") {
+        if (props.url) {
+            return <Thumbnail big source={{uri: props.url}}/>
+        } else {
+            return <Thumbnail big source={require('../assets/profile_pic_placeholder.jpg')}/>
+        }
     } else {
-        return <Thumbnail small source={require('../assets/profile_pic_placeholder.jpg')}/>
+        if (props.url) {
+            return <Thumbnail small source={{uri: props.url}}/>
+        } else {
+            return <Thumbnail small source={require('../assets/profile_pic_placeholder.jpg')}/>
+        }
     }
 };
 
