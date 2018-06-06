@@ -129,7 +129,9 @@ export default class App extends React.Component {
             "your followers how far you have come. For this we need to you give us access to your location"
         });
 
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        // old android versions might return boolean true here whereas newer versions
+        // return PermissionsAndroid.RESULTS.GRANTED. Do not use `==` here!
+        if (granted === PermissionsAndroid.RESULTS.GRANTED || granted === true) {
 
             navigator.geolocation.watchPosition((res) => {
                 store.dispatch(onGeoLocationReceived(res));

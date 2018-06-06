@@ -199,12 +199,14 @@ export function onCreatePostingScreenMounted(teamId) {
                 "your followers how far you have come. For this we need to you give us access to your location."
             });
 
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            // old android versions might return boolean true here whereas newer versions
+            // return PermissionsAndroid.RESULTS.GRANTED. Do not use `==` here!
+            if (granted === PermissionsAndroid.RESULTS.GRANTED || granted === true) {
                 locations = await new Promise((resolve, reject) => {
                     navigator.geolocation.getCurrentPosition(resolve, reject, options)
                 });
             } else {
-                throw new Error("User denied permission to access location");
+                throw new Error("User didn't give access to geolocation. Permissions are: " + granted);
             }
         } catch (error) {
             dispatch(onGetCurrentPositionError(error))
