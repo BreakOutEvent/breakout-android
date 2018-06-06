@@ -102,23 +102,23 @@ android {
         applicationId "org.break_out.breakout"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 33
-        versionName "33"
+        versionCode 35
+        versionName "35"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
     }
 
     signingConfigs {
-        release {
-            if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
-                storeFile file(MYAPP_RELEASE_STORE_FILE)
-                storePassword MYAPP_RELEASE_STORE_PASSWORD
-                keyAlias MYAPP_RELEASE_KEY_ALIAS
-                keyPassword MYAPP_RELEASE_KEY_PASSWORD
-            }
-        }
-    }
+         release {
+           if (project.hasProperty('BREAKOUT_RELEASE_STORE_FILE')) {
+             storeFile file(BREAKOUT_RELEASE_STORE_FILE)
+             storePassword BREAKOUT_RELEASE_STORE_PASSWORD
+             keyAlias BREAKOUT_RELEASE_KEY_ALIAS
+             keyPassword BREAKOUT_RELEASE_KEY_PASSWORD
+           }
+         }
+       }
 
     splits {
         abi {

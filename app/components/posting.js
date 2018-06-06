@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
+import {StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
 import ProgressBar from "react-native-progress/Bar";
 import * as Colors from "../config/colors";
 import React from 'react';
@@ -7,7 +7,7 @@ import {Icon, Thumbnail} from "native-base";
 import _ from 'lodash';
 import moment from 'moment';
 import VideoPlayer from "./video-player";
-import {transform} from "../screens/all-teams/screen";
+import {changeFileEnding, transform} from "../screens/all-teams/screen";
 import LocalizedStrings from 'react-native-localization';
 
 export default class Posting extends React.PureComponent {
@@ -215,7 +215,8 @@ const CardMedia = (props) => {
                     />
                 );
             case 'video':
-                return <VideoPlayer url={url}
+                const newUrl = changeFileEnding(transform('h_400,q_auto:eco', url), 'mp4');
+                return <VideoPlayer url={newUrl}
                                     paused={true}/>;
             default:
                 console.error(`Unsupported media type ${type} from url ${url}`);

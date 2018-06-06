@@ -22,6 +22,22 @@ export function transform(parameters, url) {
     }
 }
 
+export function changeFileEnding(url, newFileEnding) {
+    try {
+        if (url.includes('breakoutmedia.blob.core.windows.net')) {
+            // this video is served from our old azure blob storage where
+            return url;
+        }
+
+        // replace the ending of the video with .png. This will use cloudinary
+        // to automatically generate a thumbnail based on the video url for us
+        return url.substr(0, url.lastIndexOf('.')) + '.'+ newFileEnding;
+
+    } catch (err) {
+        logger.error(`Error changing extension to ${newFileEnding} for url '${url}'`);
+    }
+}
+
 class AllTeams extends React.PureComponent {
 
     static navigationOptions = {

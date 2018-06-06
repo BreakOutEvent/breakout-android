@@ -139,7 +139,7 @@ const ConnectedDrawer = connect(state => ({
     profilePicUrl: _.get(state, 'login.me.profilePic.url'),
     teamId: _.get(state, 'login.me.participant.teamId', ''),
     teamName: _.get(state, 'login.me.participant.teamName', ''),
-    appVersion: 33
+    appVersion: 35
 }))(Drawer);
 
 
