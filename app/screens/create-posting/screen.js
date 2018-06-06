@@ -20,9 +20,14 @@ import LocalizedStrings from 'react-native-localization';
 
 const SelectOrPreviewImage = (props) => {
 
-    const progress = (props.progress && props.progress !== 0)
-        ? <Pie progress={props.progress} size={70} style={{marginBottom: 30}} color={Colors.Primary}/>
-        : (null);
+    let progress;
+    if (props.uri && !props.progress) {
+        progress = <Text>{strings.readyforUpload}</Text>;
+    } else if (props.progress && props.progress !== 0) {
+        progress = <Pie progress={props.progress} size={70} style={{marginBottom: 30}} color={Colors.Primary}/>;
+    } else {
+        progress = (null);
+    }
 
     if (!props.uri) {
         return (
@@ -301,7 +306,8 @@ let strings = new LocalizedStrings({
    failedPostingUpload:'Failed to upload posting',
    failedChallengePostingSuccess:"Created new posting but couldn't fulfill challenge",
    postingSuccess:"Created new posting",
-     locationIsLoading: "Location is loading..."
+   locationIsLoading: "Location is loading...",
+   readyforUpload: "Image or video ready for upload"
  },
  de:{
    unableToLoadChallenges:'Fehler beim abrufen der Challenges',
@@ -314,7 +320,8 @@ let strings = new LocalizedStrings({
     failedPostingUpload:'Konnte Status nicht erstellen',
     failedChallengePostingSuccess:"Neuer Status erstellt, konnte Challenge allerdings nicht als efüllt eintragen",
     postingSuccess:"Neues Posting erstellt",
-     locationIsLoading: "Standort wird abgefragt..."
+    locationIsLoading: "Standort wird abgefragt...",
+    readyforUpload: "Foto oder Video bereit zum hochladen"
  }
 });
 
