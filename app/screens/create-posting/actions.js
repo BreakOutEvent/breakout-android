@@ -292,7 +292,6 @@ export function onPostingTextChanged(text) {
 function onFetchChallengesForTeamSuccess(challenges) {
     return {
         type: ON_FETCH_CHALLENGES_FOR_TEAM_SUCCESS,
-        // TODO: Filter me!
         payload: {challenges}
     }
 }

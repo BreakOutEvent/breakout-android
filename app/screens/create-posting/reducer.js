@@ -26,9 +26,14 @@ export default createPostingReducer = (state = initialState, action) => {
         case 'CLEAR_STATE':
             return {};
         case ON_FETCH_CHALLENGES_FOR_TEAM_SUCCESS:
+
+            const filteredChallenges = action.payload.challenges.filter(challenge =>
+                challenge.status !== 'PROOF_REJECTED' && challenge.status !== 'WITHDRAWN' && challenge.status !== 'WITH_PROOF'
+            );
+
             return {
                 ...state,
-                challenges: action.payload.challenges
+                challenges: filteredChallenges
             };
         case ON_FETCH_CHALLENGES_FOR_TEAM_ERROR:
             // TODO: Handle me
