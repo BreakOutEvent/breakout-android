@@ -186,7 +186,7 @@ class CreatePostingScreen extends React.Component {
         const options = {
             title: `${strings.selectMedia} ${mediaType}`,
             mediaType: mediaType,
-            quality: 0.1,
+            quality: 0.8,
             videoQuality: 'low',
             storageOptions: {
                 skipBackup: true,
