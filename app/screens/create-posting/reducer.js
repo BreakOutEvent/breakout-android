@@ -23,6 +23,9 @@ const initialState = {
 
 export default createPostingReducer = (state = initialState, action) => {
     switch (action.type) {
+        case 'CLEAN_ALL':
+            return initialState;
+
         case 'CLEAR_STATE':
             return {};
         case ON_FETCH_CHALLENGES_FOR_TEAM_SUCCESS:

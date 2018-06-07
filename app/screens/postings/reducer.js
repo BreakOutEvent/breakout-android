@@ -17,6 +17,9 @@ const initialState = {
 
 export default postingReducer = (state = initialState, action) => {
     switch (action.type) {
+        case 'CLEAN_ALL':
+            return initialState;
+
         case FETCH_NEXT_PAGE_SUCCESS:
             return {
                 ...state,

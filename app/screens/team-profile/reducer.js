@@ -95,6 +95,9 @@ export default teamProfileReducer = (state = initialState, action) => {
     let teamId;
 
     switch (action.type) {
+        case 'CLEAN_ALL':
+            return initialState;
+
         case ON_FETCH_TEAM_SUCCESS:
             return {
                 [action.payload.team.id]: {

@@ -9,6 +9,9 @@ const initialState = {
 
 export default locationReducer = (state = initialState, action) => {
     switch (action.type) {
+        case 'CLEAN_ALL':
+            return initialState;
+
         case FETCH_EVENT_LOCATIONS_SUCCESS:
             return {
                 ...state,

@@ -6,6 +6,9 @@ const initialState = {
 
 export default allTeamsReducer = (state = initialState, action) => {
     switch (action.type) {
+        case 'CLEAN_ALL':
+            return initialState;
+
         case FETCH_TEAMS_SUCCESS:
             return {
                 teams: action.payload.teams

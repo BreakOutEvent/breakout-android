@@ -15,6 +15,9 @@ const initialState = {
 
 export default loginReducer = (state = initialState, action) => {
     switch (action.type) {
+        case 'CLEAN_ALL':
+            return initialState;
+
         case ON_USERNAME_CHANGED:
             return {
                 ...state,
