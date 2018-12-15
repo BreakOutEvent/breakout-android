@@ -70,6 +70,9 @@ class AllTeams extends React.PureComponent {
                 fontWeight: 'bold',
                 padding: 10
             },
+            imageContainer: {
+                overflow: 'hidden'
+            },
             image: {
                 height: 150,
                 width: 200
@@ -92,13 +95,12 @@ class AllTeams extends React.PureComponent {
         const styles = this.styles;
 
         const imageOrPlaceHolder = (profilePicUri)
-            ? <Image style={styles.image}
-                     source={{uri: transform('w_200,h_150,c_fill_pad,g_auto,b_auto,q_auto:eco', profilePicUri)}}/>
+            ? <Image style={styles.image} source={{uri: transform('w_200,h_150,c_fill_pad,g_auto,b_auto,q_auto:eco', profilePicUri)}}/>
             : <View style={styles.placeholder}/>;
 
         return (
             <View style={styles.item}>
-                {imageOrPlaceHolder}
+                <View style={styles.imageContainer}>{imageOrPlaceHolder}</View>
                 <Button onPress={() => this.props.navigation.navigate("aTeam", {teamId: team.id, teamName: team.name})}>
                 <View style={styles.itemTeamName}>
                     <Text adjustsFontSizeToFit numberOfLines={2} style={styles.itemTeamNameText}>{team.name}</Text>
