@@ -1,9 +1,11 @@
 {
-  "name": "BreakOut",
+  "name": "break-out-android",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "android-build-release": "cd android && ./gradlew assembleRelease",
     "test": "jest"
   },
   "dependencies": {

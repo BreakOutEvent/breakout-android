@@ -140,7 +140,7 @@ const ConnectedDrawer = connect(state => ({
     profilePicUrl: _.get(state, 'login.me.profilePic.url'),
     teamId: _.get(state, 'login.me.participant.teamId', ''),
     teamName: _.get(state, 'login.me.participant.teamName', ''),
-    appVersion: 36
+    appVersion: 37
 }))(Drawer);
 
 class SettingsScreen extends React.PureComponent {
