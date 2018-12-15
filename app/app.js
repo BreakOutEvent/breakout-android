@@ -18,6 +18,7 @@ import {Sentry} from 'react-native-sentry';
 import {SENTRY_DSN} from './config/secrets';
 import {onGeoLocationError, onGeoLocationReceived} from "./background-tracking/actions";
 import {ProfilePic} from "./components/posting";
+import _ from 'lodash';
 
 Sentry.config(SENTRY_DSN).install();
 

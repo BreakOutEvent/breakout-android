@@ -1,4 +1,5 @@
 import {store} from '../store/store';
+import _ from "lodash";
 
 /**
  * Takes an instance of BreakoutApi and returns that instance with an access token set

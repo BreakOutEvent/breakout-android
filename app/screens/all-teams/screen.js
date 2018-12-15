@@ -6,6 +6,7 @@ import * as Colors from "../../config/colors";
 import {Icon} from "native-base";
 import {Button} from "../../components/posting";
 import LocalizedStrings from 'react-native-localization';
+import _ from "lodash";
 
 export function transform(parameters, url) {
     if (!url) {

@@ -15,6 +15,10 @@ class PostingListScreen extends Component {
     render() {
         return <PostingList {...this.props}/>
     }
+
+    componentDidMount() {
+        this.props.fetchNewPostings();
+    }
 }
 
 const mapStateToProps = (state) => {
@@ -30,6 +34,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         nextPage: (page) => dispatch(fetchNextPage(page)),
+        fetchNewPostings: () => dispatch(fetchNewPostings()),
         onRefresh: () => dispatch(fetchNewPostings()),
         addLike: (postingId) => dispatch(addLike(postingId))
     }

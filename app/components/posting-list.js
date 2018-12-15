@@ -21,7 +21,7 @@ export default class PostingList extends React.PureComponent {
             <FlatList ListHeaderComponent={errorHeader}
                       ListFooterComponent={errorFooter}
                       data={props.postings}
-                      keyExtractor={item => item.id}
+                      keyExtractor={item => item.id.toString()}
                       renderItem={this.renderPosting}
                       onEndReached={() => props.nextPage(props.currentPage)}
                       refreshing={props.refreshing}

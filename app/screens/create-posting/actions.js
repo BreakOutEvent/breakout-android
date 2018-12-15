@@ -8,6 +8,7 @@ import {Sentry} from "react-native-sentry";
 import {navigatorRef} from "../../app";
 import {fetchNewPostings} from "../postings/actions";
 import {PermissionsAndroid} from "react-native";
+import _ from "lodash";
 
 // TODO: Move api key to conf
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, "breakout", "955374861429162", DEBUG);

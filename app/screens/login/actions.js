@@ -3,6 +3,7 @@ import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG} from "../../config/secrets"
 import {Sentry} from 'react-native-sentry';
 import {navigatorRef} from "../../app";
 import {NavigationActions} from "react-navigation";
+import _ from "lodash";
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 
