@@ -15,6 +15,7 @@ export default class PostingList extends React.PureComponent {
 
     render() {
         const props = this.props;
+        if(props.postings.length === 0) props.nextPage(0);
         const errorHeader = <ErrorMessageView error={props.fetchNewPostingsError}/>;
         const errorFooter = <ErrorMessageView error={props.fetchNextPageError}/>;
         return (

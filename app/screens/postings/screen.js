@@ -16,9 +16,6 @@ class PostingListScreen extends Component {
         return <PostingList {...this.props}/>
     }
 
-    componentDidMount() {
-        this.props.fetchNewPostings();
-    }
 }
 
 const mapStateToProps = (state) => {
@@ -34,19 +31,18 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         nextPage: (page) => dispatch(fetchNextPage(page)),
-        fetchNewPostings: () => dispatch(fetchNewPostings()),
         onRefresh: () => dispatch(fetchNewPostings()),
         addLike: (postingId) => dispatch(addLike(postingId))
     }
 };
 
 let strings = new LocalizedStrings({
- "en-US":{
-	 allPostingsLabel:'All Postings'
- },
- de:{
-   allPostingsLabel:'Alle Postings'
- }
+    "en-US": {
+        allPostingsLabel: 'All Postings'
+    },
+    de: {
+        allPostingsLabel: 'Alle Postings'
+    }
 });
 
 const ConnectedPostingList = connect(mapStateToProps, mapDispatchToProps)(PostingListScreen);
