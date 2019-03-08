@@ -13,9 +13,13 @@ export default class PostingList extends React.PureComponent {
         return <Posting addLike={this.props.addLike} {...(row.item)} />;
     }
 
+    componentDidMount() {
+        if (this.props.postings && this.props.postings.length === 0) {
+            this.props.nextPage(0);
+        }
+    }
     render() {
         const props = this.props;
-        if(props.postings.length === 0) props.nextPage(0);
         const errorHeader = <ErrorMessageView error={props.fetchNewPostingsError}/>;
         const errorFooter = <ErrorMessageView error={props.fetchNextPageError}/>;
         return (
