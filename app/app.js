@@ -1,6 +1,7 @@
 import React from 'react';
 import {AppState, PermissionsAndroid, Text, View} from 'react-native';
 import {DrawerItems, DrawerNavigator, StackNavigator} from 'react-navigation';
+import DeviceInfo from 'react-native-device-info';
 import {Icon, List, ListItem} from 'native-base'
 import {NavigationActions} from 'react-navigation';
 import ConnectedPostingList from "./screens/postings/screen";
@@ -141,7 +142,7 @@ const ConnectedDrawer = connect(state => ({
     profilePicUrl: _.get(state, 'login.me.profilePic.url'),
     teamId: _.get(state, 'login.me.participant.teamId', ''),
     teamName: _.get(state, 'login.me.participant.teamName', ''),
-    appVersion: 37
+    appVersion: DeviceInfo.getBuildNumber()
 }))(Drawer);
 
 class SettingsScreen extends React.PureComponent {

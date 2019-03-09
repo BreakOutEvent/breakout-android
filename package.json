@@ -16,6 +16,7 @@
     "native-base": "^2.12.1",
     "react": "^16.8.4",
     "react-native": "^0.57.8",
+    "react-native-device-info": "^0.26.4",
     "react-native-image-picker": "^0.27.2",
     "react-native-image-progress": "^1.1.1",
     "react-native-localization": "^2.1.0",
