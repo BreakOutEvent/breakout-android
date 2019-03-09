@@ -3,6 +3,7 @@ import React from 'react';
 import {connect} from "react-redux";
 import {FlatList, Text} from "react-native";
 import {Body, Icon, ListItem} from "native-base";
+import _ from "lodash";
 
 const ChallengeListItem = (challenge) => {
 

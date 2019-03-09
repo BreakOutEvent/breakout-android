@@ -14,6 +14,7 @@ import {
 } from "./actions";
 import {connect} from "react-redux";
 import Sentry from 'react-native-sentry';
+import _ from "lodash";
 
 import {Pie} from 'react-native-progress';
 import LocalizedStrings from 'react-native-localization';

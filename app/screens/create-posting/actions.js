@@ -2,12 +2,13 @@ import BreakoutApi from "breakout-api-client";
 import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, CLOUDINARY_API_KEY, DEBUG} from "../../config/secrets";
 
 import {NavigationActions} from 'react-navigation'
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 import {withAccessToken} from "../../utils/utils";
 import {Sentry} from "react-native-sentry";
 import {navigatorRef} from "../../app";
 import {fetchNewPostings} from "../postings/actions";
 import {PermissionsAndroid} from "react-native";
+import _ from "lodash";
 
 // TODO: Move api key to conf
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, "breakout", "955374861429162", DEBUG);

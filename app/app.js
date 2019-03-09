@@ -18,6 +18,7 @@ import {Sentry} from 'react-native-sentry';
 import {SENTRY_DSN} from './config/secrets';
 import {onGeoLocationError, onGeoLocationReceived} from "./background-tracking/actions";
 import {ProfilePic} from "./components/posting";
+import _ from 'lodash';
 
 Sentry.config(SENTRY_DSN).install();
 
@@ -140,7 +141,7 @@ const ConnectedDrawer = connect(state => ({
     profilePicUrl: _.get(state, 'login.me.profilePic.url'),
     teamId: _.get(state, 'login.me.participant.teamId', ''),
     teamName: _.get(state, 'login.me.participant.teamName', ''),
-    appVersion: 36
+    appVersion: 37
 }))(Drawer);
 
 class SettingsScreen extends React.PureComponent {

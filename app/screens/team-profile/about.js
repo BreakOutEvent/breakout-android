@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {onTeamProfileOpened} from "./actions";
 import {Icon, Thumbnail} from "native-base";
 import LocalizedStrings from 'react-native-localization';
+import _ from "lodash";
 
 class AboutTeam extends React.Component {
 

@@ -95,30 +95,30 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "org.break_out.breakout"
-        minSdkVersion 16
-        targetSdkVersion 26
-        versionCode 36
-        versionName "36"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 38
+        versionName "38"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
     }
 
     signingConfigs {
-         release {
-           if (project.hasProperty('BREAKOUT_RELEASE_STORE_FILE')) {
-             storeFile file(BREAKOUT_RELEASE_STORE_FILE)
-             storePassword BREAKOUT_RELEASE_STORE_PASSWORD
-             keyAlias BREAKOUT_RELEASE_KEY_ALIAS
-             keyPassword BREAKOUT_RELEASE_KEY_PASSWORD
-           }
-         }
-       }
+        release {
+            if (project.hasProperty('BREAKOUT_RELEASE_STORE_FILE')) {
+                storeFile file(BREAKOUT_RELEASE_STORE_FILE)
+                storePassword BREAKOUT_RELEASE_STORE_PASSWORD
+                keyAlias BREAKOUT_RELEASE_KEY_ALIAS
+                keyPassword BREAKOUT_RELEASE_KEY_PASSWORD
+            }
+        }
+    }
 
     splits {
         abi {
@@ -151,17 +151,16 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-sentry')
-    compile project(':react-native-localization')
-    compile project(':react-native-maps')
-    compile project(':react-native-fetch-blob')
-    compile 'com.android.support:multidex:1.0.0'
-    compile project(':react-native-image-picker')
+    compile project(':rn-fetch-blob')
     compile project(':react-native-video')
-    compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:26.0.1"
-    compile ("com.facebook.react:react-native:0.49.5") { force = true }
-    implementation project(':react-native-maps')
+    compile project(':react-native-sentry')
+    compile project(':react-native-maps')
+    compile project(':react-native-localization')
+    compile project(':react-native-image-picker')
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.android.support:support-v4:${rootProject.ext.supportLibVersion}"
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    implementation "com.facebook.react:react-native:+"  // From node_modules
 }
 
 // Run this once to be able to run the application with BUCK

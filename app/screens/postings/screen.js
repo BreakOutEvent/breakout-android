@@ -15,6 +15,7 @@ class PostingListScreen extends Component {
     render() {
         return <PostingList {...this.props}/>
     }
+
 }
 
 const mapStateToProps = (state) => {
@@ -36,12 +37,12 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 let strings = new LocalizedStrings({
- "en-US":{
-	 allPostingsLabel:'All Postings'
- },
- de:{
-   allPostingsLabel:'Alle Postings'
- }
+    "en-US": {
+        allPostingsLabel: 'All Postings'
+    },
+    de: {
+        allPostingsLabel: 'Alle Postings'
+    }
 });
 
 const ConnectedPostingList = connect(mapStateToProps, mapDispatchToProps)(PostingListScreen);

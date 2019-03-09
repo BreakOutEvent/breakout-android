@@ -1,17 +1,15 @@
-package com.breakout;
-import android.support.multidex.MultiDexApplication;
-
+package org.break_out.breakout;
 
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import io.sentry.RNSentryPackage;
-import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
-import com.airbnb.android.react.maps.MapsPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
-import com.imagepicker.ImagePickerPackage;
 import com.brentvatne.react.ReactVideoPackage;
-import com.facebook.react.ReactApplication;
+import io.sentry.RNSentryPackage;
+import com.airbnb.android.react.maps.MapsPackage;
+import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
+import com.imagepicker.ImagePickerPackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -20,7 +18,7 @@ import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainApplication extends MultiDexApplication implements ReactApplication {
+public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -32,12 +30,12 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNSentryPackage(MainApplication.this),
-            new ReactNativeLocalizationPackage(),
+            new RNFetchBlobPackage(),
+            new ReactVideoPackage(),
+            new RNSentryPackage(),
             new MapsPackage(),
-          new RNFetchBlobPackage(),
-          new ReactVideoPackage(),
-          new ImagePickerPackage()
+            new ReactNativeLocalizationPackage(),
+            new ImagePickerPackage()
       );
     }
 

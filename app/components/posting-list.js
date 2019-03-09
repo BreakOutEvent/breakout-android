@@ -13,6 +13,11 @@ export default class PostingList extends React.PureComponent {
         return <Posting addLike={this.props.addLike} {...(row.item)} />;
     }
 
+    componentDidMount() {
+        if (this.props.postings && this.props.postings.length === 0) {
+            this.props.nextPage(0);
+        }
+    }
     render() {
         const props = this.props;
         const errorHeader = <ErrorMessageView error={props.fetchNewPostingsError}/>;
@@ -21,7 +26,7 @@ export default class PostingList extends React.PureComponent {
             <FlatList ListHeaderComponent={errorHeader}
                       ListFooterComponent={errorFooter}
                       data={props.postings}
-                      keyExtractor={item => item.id}
+                      keyExtractor={item => item.id.toString()}
                       renderItem={this.renderPosting}
                       onEndReached={() => props.nextPage(props.currentPage)}
                       refreshing={props.refreshing}

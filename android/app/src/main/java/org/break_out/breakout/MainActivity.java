@@ -1,4 +1,4 @@
-package com.breakout;
+package org.break_out.breakout;
 
 import com.facebook.react.ReactActivity;
 
