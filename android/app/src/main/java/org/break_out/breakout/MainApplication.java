@@ -3,6 +3,7 @@ package org.break_out.breakout;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import io.sentry.RNSentryPackage;
 import com.airbnb.android.react.maps.MapsPackage;
@@ -29,12 +30,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFetchBlobPackage(),
             new ReactVideoPackage(),
             new RNSentryPackage(),
             new MapsPackage(),
             new ReactNativeLocalizationPackage(),
-            new ImagePickerPackage(),
-            new RNFetchBlobPackage()
+            new ImagePickerPackage()
       );
     }
 
