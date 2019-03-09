@@ -1,5 +1,5 @@
 import BreakoutApi from "breakout-api-client";
-import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, CLOUDINARY_API_KEY, DEBUG} from "../../config/secrets";
+import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, CLOUDINARY_API_KEY, CLOUDINARY_CLOUD, DEBUG} from "../../config/secrets";
 
 import {NavigationActions} from 'react-navigation'
 import RNFetchBlob from 'rn-fetch-blob';
@@ -10,8 +10,7 @@ import {fetchNewPostings} from "../postings/actions";
 import {PermissionsAndroid} from "react-native";
 import _ from "lodash";
 
-// TODO: Move api key to conf
-const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, "breakout", "955374861429162", DEBUG);
+const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, CLOUDINARY_CLOUD, CLOUDINARY_API_KEY, DEBUG);
 
 export const ON_FETCH_CHALLENGES_FOR_TEAM_SUCCESS = 'ON_FETCH_CHALLENGES_FOR_TEAM_SUCCESS';
 export const ON_FETCH_CHALLENGES_FOR_TEAM_ERROR = 'ON_FETCH_CHALLENGES_FOR_TEAM_ERROR';

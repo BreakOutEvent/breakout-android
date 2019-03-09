@@ -16,7 +16,8 @@ export function transform(parameters, url) {
     let newUrl;
     if (!url.includes('cloudinary')) {
         // cannot transform images that are not from cloudinary
-        return url;
+        newUrl = "https://images.break-out.org/x400,q80/" + url;
+        return newUrl;
     } else {
         newUrl = url.replace(/image\/upload\/.*\//, `image/upload/${parameters}/`);
         return newUrl;
