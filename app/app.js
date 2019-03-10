@@ -57,13 +57,23 @@ function buildNavOptions({navigation}) {
 
     if (routeName === "aTeam") {
         return {
-            headerStyle: {backgroundColor: Colors.Primary, borderBottomWidth: 0, elevation: 0},
+            headerStyle: {
+                backgroundColor: Colors.Primary,
+                borderBottomWidth: 0,
+                elevation: 0,
+                paddingTop: StatusBar.currentHeight,
+                height: StatusBar.currentHeight + 56
+            },
             title: `${teamName}`,
             headerTintColor: 'white',
         }
     } else {
         return {
-            headerStyle: {backgroundColor: Colors.Primary},
+            headerStyle: {
+                backgroundColor: Colors.Primary,
+                paddingTop: StatusBar.currentHeight,
+                height: StatusBar.currentHeight + 56
+            },
             headerLeft: drawerButton(navigation),
             headerTintColor: 'white',
             title: 'All Teams'
