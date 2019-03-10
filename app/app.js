@@ -1,5 +1,5 @@
 import React from 'react';
-import {AppState, PermissionsAndroid, Text, View} from 'react-native';
+import {AppState, PermissionsAndroid, Text, View, StatusBar} from 'react-native';
 import {DrawerItems, DrawerNavigator, StackNavigator} from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
 import {Icon, List, ListItem} from 'native-base'
@@ -26,18 +26,23 @@ Sentry.config(SENTRY_DSN).install();
 console.ignoredYellowBox = ['Remote debugger'];
 
 const drawerButton = (navigation) =>
-    (<Icon name='menu' style={{padding: 10, paddingRight: 20, color: 'white'}} onPress={() => navigation.navigate('DrawerToggle')}/>);
+    (<Icon name='menu' style={{padding: 10, paddingRight: 20, color: 'white'}}
+           onPress={() => navigation.navigate('DrawerToggle')}/>);
 
-const stacked = (Screen, title='BreakOut', borderLess = false) => StackNavigator({
+const stacked = (Screen, title = 'BreakOut', borderLess = false) => StackNavigator({
     screen: Screen
 }, {
     navigationOptions: ({navigation}) => ({
-            headerStyle: (borderLess) ? {backgroundColor: Colors.Primary, borderBottomWidth: 0, elevation: 0} : {backgroundColor: Colors.Primary},
-            headerTintColor: 'white',
-            gesturesEnabled: false,
-            headerLeft: drawerButton(navigation),
-            title: title,
-        }),
+        headerStyle: (borderLess) ? {
+            backgroundColor: Colors.Primary,
+            borderBottomWidth: 0,
+            elevation: 0
+        } : {backgroundColor: Colors.Primary},
+        headerTintColor: 'white',
+        gesturesEnabled: false,
+        headerLeft: drawerButton(navigation),
+        title: title,
+    }),
 });
 
 function buildNavOptions({navigation}) {
@@ -60,6 +65,12 @@ function buildNavOptions({navigation}) {
         }
     }
 }
+
+const MyStatusBar = ({backgroundColor, ...props}) => (
+    <View style={[{height: StatusBar.currentHeight}]}>
+        <StatusBar translucent backgroundColor={Colors.Primary} {...props} />
+    </View>
+);
 
 const AllTeamsStack = StackNavigator({
     allTeams: {screen: AllTeams},
@@ -106,6 +117,7 @@ const DrawerHeader = (props) => {
             paddingLeft: 10,
             paddingRight: 30
         }}>
+
             <ProfilePic url={props.profilePicUrl} size="big"/>
             <View style={{paddingLeft: 25}}>
                 <Text style={{
@@ -217,7 +229,7 @@ export default class App extends React.Component {
         const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
             title: "Allow access to locations for background tracking",
             message: "BreakOut tracks your travel during the event to calculate your score and show " +
-            "your followers how far you have come. For this we need to you give us access to your location"
+                "your followers how far you have come. For this we need to you give us access to your location"
         });
 
         // old android versions might return boolean true here whereas newer versions
@@ -240,7 +252,6 @@ export default class App extends React.Component {
     }
 
 
-
     handleAppStateChange(newAppState) {
         const oldAppState = _.get(store.getState(), 'login.appState');
         store.dispatch(onAppStateChanged(oldAppState, newAppState))
@@ -250,7 +261,12 @@ export default class App extends React.Component {
         return (
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
-                    <RootNav ref={nav=> {navigatorRef = nav}}/>
+                    <MyStatusBar backgroundColor={Colors.Primary}/>
+
+                    <RootNav ref={nav => {
+                        navigatorRef = nav
+                    }}/>
+
                 </PersistGate>
             </Provider>
         )
