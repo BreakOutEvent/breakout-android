@@ -113,7 +113,9 @@ const DrawerHeader = (props) => {
     const isLoggedIn = props.isLoggedIn;
 
     if (!isLoggedIn) {
-        return (null);
+        return (<View style={{
+            paddingTop: StatusBar.currentHeight,
+        }}/>)
     }
 
     return (
@@ -124,6 +126,7 @@ const DrawerHeader = (props) => {
             flexDirection: 'row',
             alignItems: 'center',
             paddingLeft: 10,
+            paddingTop: StatusBar.currentHeight,
             paddingRight: 30
         }}>
 

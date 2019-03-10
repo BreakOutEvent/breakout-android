@@ -3,6 +3,7 @@ import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG} from "../../config/secrets"
 import {Sentry} from 'react-native-sentry';
 import {navigatorRef} from "../../app";
 import {NavigationActions} from "react-navigation";
+import { Keyboard } from 'react-native'
 import _ from "lodash";
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
@@ -68,6 +69,8 @@ export function onPressLogin(username, password) {
 
 function onLoginSuccess(response, fromLoginScreen = false) {
     return async dispatch => {
+
+        Keyboard.dismiss();
 
         if (fromLoginScreen) {
             navigatorRef.dispatch(NavigationActions.navigate({routeName: 'drawer'}));
