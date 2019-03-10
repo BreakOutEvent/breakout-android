@@ -62,6 +62,7 @@ class LoginScreen extends React.PureComponent {
                         <Item floatingLabel style={style.item}>
                             <Label style={style.label}>{strings.email}</Label>
                             <Input style={style.label}
+                                   keyboardType='email-address'
                                    onChangeText={props.onUsernameChanged}
                                    value={props.username}
                             />
@@ -79,7 +80,7 @@ class LoginScreen extends React.PureComponent {
                     <View style={style.buttonView}>
                         <Button color={Colors.Primary} title={strings.logInButton}
                                 onPress={() => props.onPressLogin(props.username, props.password)}/>
-                        <View style={{height: 10}} />
+                        <View style={{height: 10}}/>
                         <Button color={Colors.Grey} title={strings.contWithOutLoginButton}
                                 onPress={() => props.navigation.navigate('drawer')}/>
                     </View>
@@ -118,20 +119,20 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 let strings = new LocalizedStrings({
- "en-US":{
-	 email:'Email',
-   password:'Password',
-   logInButton:'Login',
-   contWithOutLoginButton:'Continue without Login',
-   drawerLabelLogin:'Login'
- },
- de:{
-   email:'Email',
-    password:'Passwort',
-    logInButton:'Login',
-    contWithOutLoginButton:'Fortfahren ohne Login',
-    drawerLabelLogin:'Login'
- }
+    "en-US": {
+        email: 'Email',
+        password: 'Password',
+        logInButton: 'Login',
+        contWithOutLoginButton: 'Continue without Login',
+        drawerLabelLogin: 'Login'
+    },
+    de: {
+        email: 'Email',
+        password: 'Passwort',
+        logInButton: 'Login',
+        contWithOutLoginButton: 'Fortfahren ohne Login',
+        drawerLabelLogin: 'Login'
+    }
 });
 
 export default ConnectedLoginForm = connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
