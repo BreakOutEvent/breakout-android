@@ -49,8 +49,9 @@ class AboutTeam extends React.Component {
         }
 
         const distance = _.get(props, 'distance', 0);
+        const score = _.get(props, 'score', 0);
         const sum = _.get(props, 'donateSum.fullSum', 0);
-        const distanceAndSum = `${distance.toFixed(2)}km | ${sum.toFixed(2)}€`;
+        const distanceAndSum = `${Math.round(score)} ${strings.score} | ${distance.toFixed(2)}km | ${sum.toFixed(2)}€`;
 
         const profilePicUrl = _.get(props, 'profilePic.url');
         const TeamThumbnail = () => (profilePicUrl)
@@ -90,12 +91,14 @@ const ConnectedAboutTeam = connect(
 )(AboutTeam);
 
 let strings = new LocalizedStrings({
- "en-US":{
-	 aboutUs:'About us'
- },
- de:{
-   aboutUs:'Über uns'
- }
+    "en-US": {
+        aboutUs: 'About us',
+        score: 'Points'
+    },
+    de: {
+        aboutUs: 'Über uns',
+        score: 'Punkte'
+    }
 });
 
 export default ConnectedAboutTeam;
