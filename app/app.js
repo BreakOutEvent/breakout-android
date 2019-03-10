@@ -36,13 +36,18 @@ const stacked = (Screen, title = 'BreakOut', borderLess = false) => StackNavigat
         headerStyle: (borderLess) ? {
             backgroundColor: Colors.Primary,
             borderBottomWidth: 0,
-            elevation: 0
-        } : {backgroundColor: Colors.Primary},
+            elevation: 0, paddingTop: StatusBar.currentHeight,
+            height: StatusBar.currentHeight + 56
+        } : {
+            backgroundColor: Colors.Primary,
+            paddingTop: StatusBar.currentHeight,
+            height: StatusBar.currentHeight + 56
+        },
         headerTintColor: 'white',
         gesturesEnabled: false,
         headerLeft: drawerButton(navigation),
-        title: title,
-    }),
+        title: title
+    })
 });
 
 function buildNavOptions({navigation}) {
@@ -67,9 +72,7 @@ function buildNavOptions({navigation}) {
 }
 
 const MyStatusBar = ({backgroundColor, ...props}) => (
-    <View style={[{height: StatusBar.currentHeight}]}>
-        <StatusBar translucent backgroundColor={Colors.Primary} {...props} />
-    </View>
+    <StatusBar translucent backgroundColor="rgba(0, 0, 0, 0.20)" {...props} />
 );
 
 const AllTeamsStack = StackNavigator({
@@ -88,7 +91,13 @@ const YourTeam = StackNavigator({
     }
 }, {
     navigationOptions: ({navigation}) => ({
-        headerStyle: {backgroundColor: Colors.Primary, borderBottomWidth: 0, elevation: 0},
+        headerStyle: {
+            backgroundColor: Colors.Primary,
+            borderBottomWidth: 0,
+            elevation: 0,
+            paddingTop: StatusBar.currentHeight,
+            height: StatusBar.currentHeight + 56
+        },
         title: `Your Team`,
         headerTintColor: 'white',
         headerLeft: drawerButton(navigation),
@@ -263,9 +272,10 @@ export default class App extends React.Component {
                 <PersistGate loading={null} persistor={persistor}>
                     <MyStatusBar backgroundColor={Colors.Primary}/>
 
-                    <RootNav ref={nav => {
-                        navigatorRef = nav
-                    }}/>
+                    <RootNav
+                        ref={nav => {
+                            navigatorRef = nav
+                        }}/>
 
                 </PersistGate>
             </Provider>
