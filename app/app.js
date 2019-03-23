@@ -179,22 +179,41 @@ const ConnectedDrawer = connect(state => ({
     appVersion: DeviceInfo.getBuildNumber()
 }))(Drawer);
 
-const DrawerStack = DrawerNavigator({
-    drawerLogin: {screen: stacked(LoginScreen)},
-    postStatus: {screen: stacked(CreatePostingScreen)},
-    yourTeam: {screen: YourTeam},
-    allPostings: {screen: stacked(ConnectedPostingList)},
-    allTeams: {screen: AllTeamsStack},
-    map: {screen: stacked(MapScreen)},
-    settings: {screen: stacked(SettingsScreen)}
-}, {
-    initialRouteName: 'allPostings',
-    contentComponent: ConnectedDrawer
-});
+
+const DrawerStack = (props) => {
+    const DrawerStackNoLogin = DrawerNavigator({
+        drawerLogin: {screen: stacked(LoginScreen)},
+        allPostings: {screen: stacked(ConnectedPostingList)},
+        allTeams: {screen: AllTeamsStack},
+        map: {screen: stacked(MapScreen)},
+        settings: {screen: stacked(SettingsScreen)}
+    }, {
+        initialRouteName: 'allPostings',
+        contentComponent: ConnectedDrawer
+    });
+
+    const DrawerStackWithLogin = DrawerNavigator({
+        postStatus: {screen: stacked(CreatePostingScreen)},
+        yourTeam: {screen: YourTeam},
+        allPostings: {screen: stacked(ConnectedPostingList)},
+        allTeams: {screen: AllTeamsStack},
+        map: {screen: stacked(MapScreen)},
+        settings: {screen: stacked(SettingsScreen)}
+    }, {
+        initialRouteName: 'allPostings',
+        contentComponent: ConnectedDrawer
+    });
+
+    return props.isLoggedIn ? (<DrawerStackWithLogin/>) : (<DrawerStackNoLogin/>);
+};
+
+const DrawerStackScreen = connect(state => ({
+    isLoggedIn: isUserLoggedIn(state)
+}))(DrawerStack);
 
 const RootNav = StackNavigator({
     init: (props) => {
-        if (isUserLoggedIn(store.getState())) {
+        if (props.isLoggedIn) {
             props.navigation.navigate('drawer');
         } else {
             props.navigation.navigate('login');
@@ -202,7 +221,7 @@ const RootNav = StackNavigator({
         return (null)
     },
     login: {screen: LoginScreen},
-    drawer: {screen: DrawerStack}
+    drawer: {screen: DrawerStackScreen}
 }, {
     headerMode: 'none',
 });
