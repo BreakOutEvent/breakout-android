@@ -2,8 +2,7 @@ import React from 'react';
 import {AppState, PermissionsAndroid, Text, View, StatusBar} from 'react-native';
 import {DrawerItems, DrawerNavigator, StackNavigator} from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
-import {Icon, List, ListItem} from 'native-base'
-import {NavigationActions} from 'react-navigation';
+import {Icon} from 'native-base'
 import ConnectedPostingList from "./screens/postings/screen";
 import MapScreen from "./components/map";
 import AllTeams from "./screens/all-teams/screen";
@@ -14,6 +13,7 @@ import {connect, Provider} from 'react-redux';
 import {persistor, store} from './store/store';
 import {PersistGate} from "redux-persist/integration/react";
 import LoginScreen from './screens/login/screen';
+import SettingsScreen from './screens/settings/screen';
 import {onAppStateChanged} from "./screens/login/actions";
 import {Sentry} from 'react-native-sentry';
 import {SENTRY_DSN} from './config/secrets';
@@ -131,7 +131,7 @@ const DrawerHeader = (props) => {
     return (
         <View style={{
             backgroundColor: Colors.Secondary,
-            height: 100,
+            height: 120,
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
@@ -178,31 +178,6 @@ const ConnectedDrawer = connect(state => ({
     teamName: _.get(state, 'login.me.participant.teamName', ''),
     appVersion: DeviceInfo.getBuildNumber()
 }))(Drawer);
-
-class SettingsScreen extends React.PureComponent {
-
-    static navigationOptions = {
-        drawerLabel: () => "Settings",
-        drawerIcon: () => <Icon name='settings'/>
-    };
-
-    resetApp() {
-        store.dispatch({
-            type: 'CLEAN_ALL'
-        });
-        navigatorRef.dispatch(NavigationActions.navigate({routeName: "login"}));
-    }
-
-    render() {
-        return (
-            <List>
-                <ListItem onPress={this.resetApp}>
-                    <Text>Reset app</Text>
-                </ListItem>
-            </List>
-        );
-    }
-}
 
 const DrawerStack = DrawerNavigator({
     drawerLogin: {screen: stacked(LoginScreen)},
