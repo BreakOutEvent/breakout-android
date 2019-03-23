@@ -170,7 +170,7 @@ const Drawer = (props) => {
 };
 
 const ConnectedDrawer = connect(state => ({
-    isLoggedIn: _.get(state, 'login.me', false),
+    isLoggedIn: isUserLoggedIn(state),
     firstname: _.get(state, 'login.me.firstname', ''),
     lastname: _.get(state, 'login.me.lastname', ''),
     profilePicUrl: _.get(state, 'login.me.profilePic.url'),
@@ -194,7 +194,7 @@ const DrawerStack = DrawerNavigator({
 
 const RootNav = StackNavigator({
     init: (props) => {
-        if (isUserLoggedIn()) {
+        if (isUserLoggedIn(store.getState())) {
             props.navigation.navigate('drawer');
         } else {
             props.navigation.navigate('login');
@@ -207,8 +207,8 @@ const RootNav = StackNavigator({
     headerMode: 'none',
 });
 
-function isUserLoggedIn() {
-    return !!(_.get(store.getState(), 'login.access_token'));
+function isUserLoggedIn(state) {
+    return _.get(state, 'login.me', false);
 }
 
 export let navigatorRef;
