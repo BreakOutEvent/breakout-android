@@ -18,6 +18,7 @@ import {onAppStateChanged} from "./screens/login/actions";
 import {Sentry} from 'react-native-sentry';
 import {SENTRY_DSN, ONESIGNAL_APPID} from './config/secrets';
 import {onGeoLocationError, onGeoLocationReceived} from "./background-tracking/actions";
+import {onUpdateNotificationToken} from "./notifications/actions";
 import {ProfilePic} from "./components/posting";
 import _ from 'lodash';
 import OneSignal from "react-native-onesignal";
@@ -262,7 +263,9 @@ export default class App extends React.Component {
     }
 
     onIds(device) {
-        console.log('Device info: ', device);
+        console.log('device: ', device);
+
+        store.dispatch(onUpdateNotificationToken(device.pushToken));
     }
 
     componentDidMount() {
