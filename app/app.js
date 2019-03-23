@@ -16,10 +16,11 @@ import LoginScreen from './screens/login/screen';
 import SettingsScreen from './screens/settings/screen';
 import {onAppStateChanged} from "./screens/login/actions";
 import {Sentry} from 'react-native-sentry';
-import {SENTRY_DSN} from './config/secrets';
+import {SENTRY_DSN, ONESIGNAL_APPID} from './config/secrets';
 import {onGeoLocationError, onGeoLocationReceived} from "./background-tracking/actions";
 import {ProfilePic} from "./components/posting";
 import _ from 'lodash';
+import OneSignal from "react-native-onesignal";
 
 Sentry.config(SENTRY_DSN).install();
 
@@ -233,6 +234,36 @@ function isUserLoggedIn(state) {
 export let navigatorRef;
 
 export default class App extends React.Component {
+
+    constructor(properties) {
+        super(properties);
+        OneSignal.init(ONESIGNAL_APPID);
+        OneSignal.configure();
+        OneSignal.addEventListener('received', this.onReceived);
+        OneSignal.addEventListener('opened', this.onOpened);
+        OneSignal.addEventListener('ids', this.onIds);
+    }
+
+    componentWillUnmount() {
+        OneSignal.removeEventListener('received', this.onReceived);
+        OneSignal.removeEventListener('opened', this.onOpened);
+        OneSignal.removeEventListener('ids', this.onIds);
+    }
+
+    onReceived(notification) {
+        console.log("Notification received: ", notification);
+    }
+
+    onOpened(openResult) {
+        console.log('Message: ', openResult.notification.payload.body);
+        console.log('Data: ', openResult.notification.payload.additionalData);
+        console.log('isActive: ', openResult.notification.isAppInFocus);
+        console.log('openResult: ', openResult);
+    }
+
+    onIds(device) {
+        console.log('Device info: ', device);
+    }
 
     componentDidMount() {
         AppState.addEventListener('change', this.handleAppStateChange);

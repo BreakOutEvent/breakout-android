@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 
 import com.android.build.OutputFile
 
@@ -158,6 +159,7 @@ dependencies {
     compile project(':react-native-maps')
     compile project(':react-native-localization')
     compile project(':react-native-image-picker')
+    compile project(':react-native-onesignal')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:support-v4:${rootProject.ext.supportLibVersion}"
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
