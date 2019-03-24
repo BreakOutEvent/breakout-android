@@ -13,6 +13,7 @@ import {connect, Provider} from 'react-redux';
 import {persistor, store} from './store/store';
 import {PersistGate} from "redux-persist/integration/react";
 import LoginScreen from './screens/login/screen';
+import MessagesOverviewScreen from './screens/messages-overview/screen';
 import SettingsScreen from './screens/settings/screen';
 import {onAppStateChanged} from "./screens/login/actions";
 import {Sentry} from 'react-native-sentry';
@@ -200,11 +201,12 @@ const DrawerStack = (props) => {
         allPostings: {screen: stacked(ConnectedPostingList)},
         allTeams: {screen: AllTeamsStack},
         map: {screen: stacked(MapScreen)},
-        settings: {screen: stacked(SettingsScreen)}
-    }, {
-        initialRouteName: 'allPostings',
-        contentComponent: ConnectedDrawer
-    });
+        messages: {screen: stacked(MessagesOverviewScreen)},
+    settings: {screen: stacked(SettingsScreen)}
+}, {
+    initialRouteName: 'allPostings',
+    contentComponent: ConnectedDrawer
+});
 
     return props.isLoggedIn ? (<DrawerStackWithLogin/>) : (<DrawerStackNoLogin/>);
 };
