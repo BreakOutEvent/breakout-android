@@ -5,6 +5,7 @@ import {
 
 const initialState = {
     groupMessages: [],
+    userId: 1,
     refreshing: false,
     error: null
 };
@@ -18,6 +19,7 @@ export default groupMessagesReducer = (state = initialState, action) => {
             return {
                 ...state,
                 groupMessages: [...action.payload.groupMessages],
+                userId: action.payload.userId,
                 fetchGroupMessagesError: null,
             };
         case FETCH_GROUPMESSAGES_ERROR:

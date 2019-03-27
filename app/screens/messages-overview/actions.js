@@ -23,17 +23,17 @@ export function fetchGroupMessages() {
                     const sortedMessages = groupMessages.sort((a, b) => {
                         return lastMessageTimeStampOrZero(b) - lastMessageTimeStampOrZero(a);
                     });
-                    dispatch(onFetchGroupMessagesSuccess(sortedMessages))
+                    dispatch(onFetchGroupMessagesSuccess(sortedMessages, me.id))
                 })
                 .catch(error => dispatch(onFetchGroupMessagesError(error))))
             .catch(error => dispatch(onFetchGroupMessagesError(error)))
     }
 }
 
-function onFetchGroupMessagesSuccess(groupMessages) {
+function onFetchGroupMessagesSuccess(groupMessages, userId) {
     return {
         type: FETCH_GROUPMESSAGES_SUCCESS,
-        payload: {groupMessages}
+        payload: {groupMessages, userId}
     }
 }
 

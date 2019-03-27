@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Icon} from "native-base";
 import {connect} from "react-redux";
 import LocalizedStrings from 'react-native-localization';
-import {StyleSheet, FlatList, View, Text} from "react-native";
+import {StyleSheet, FlatList, View, Text, TouchableOpacity} from "react-native";
 import {fetchGroupMessages} from "./actions";
 import _ from 'lodash';
 import moment from 'moment';
@@ -28,10 +28,10 @@ class MessagesOverviewScreen extends Component {
         this.props.onRefresh();
     }
 
-    groupMessageThreadView(row) {
+    groupMessageThreadView(item, props) {
 
-        const usersString = row.item.users.map(user => user.firstname).join(", ");
-        const lastMessage = _.last(row.item.messages);
+        const usersString = item.users.map(user => user.firstname).join(", ");
+        const lastMessage = _.last(item.messages);
         const lastMessageCutOrEmpty = lastMessage ? lastMessage.text.slice(0, 20).replace(/\n/g, " ") : "";
         const lastMessageCutIdentifier = lastMessageCutOrEmpty.length == 20 ? lastMessageCutOrEmpty + "..." : lastMessageCutOrEmpty;
         const lastMessageFromNow = lastMessage ? moment.unix(lastMessage.date).fromNow() : "";
@@ -55,12 +55,16 @@ class MessagesOverviewScreen extends Component {
             }
         });
 
+        console.log(props);
+
         return (
-            <View style={this.style.container}>
-                <Text style={this.style.userString}>{usersString}</Text>
-                <Text>{lastMessageCutIdentifier}</Text>
-                <Text style={this.style.dateString}>{lastMessageFromNow}</Text>
-            </View>
+            <TouchableOpacity onPress={() => props.navigation.navigate("messages", {groupMessage: item, userId: props.userId})}>
+                <View style={this.style.container}>
+                    <Text style={this.style.userString}>{usersString}</Text>
+                    <Text>{lastMessageCutIdentifier}</Text>
+                    <Text style={this.style.dateString}>{lastMessageFromNow}</Text>
+                </View>
+            </TouchableOpacity>
         );
     }
 
@@ -70,7 +74,7 @@ class MessagesOverviewScreen extends Component {
         return (
             <FlatList data={props.groupMessages}
                       keyExtractor={item => item.id.toString()}
-                      renderItem={this.groupMessageThreadView}
+                      renderItem={({item}) => (this.groupMessageThreadView(item, props))}
                       refreshing={props.refreshing}
                       onRefresh={() => props.onRefresh()}
             />
@@ -82,6 +86,7 @@ class MessagesOverviewScreen extends Component {
 const mapStateToProps = (state) => {
     return ({
         groupMessages: state.messages.groupMessages,
+        userId: state.messages.userId,
         refreshing: state.messages.refreshing,
     });
 };

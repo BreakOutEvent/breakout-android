@@ -22,6 +22,7 @@ import {onGeoLocationError, onGeoLocationReceived} from "./background-tracking/a
 import {onUpdateNotificationToken} from "./notifications/actions";
 import {ProfilePic} from "./components/posting";
 import _ from 'lodash';
+import MessagesScreen from "./screens/messages/screen";
 import OneSignal from "react-native-onesignal";
 
 Sentry.config(SENTRY_DSN).install();
@@ -182,6 +183,12 @@ const ConnectedDrawer = connect(state => ({
     appVersion: DeviceInfo.getBuildNumber()
 }))(Drawer);
 
+const MessagesStack = StackNavigator({
+    messagesOverview: {screen: MessagesOverviewScreen},
+    messages: {screen: MessagesScreen}
+}, {
+    navigationOptions: buildNavOptions, // TODO own nav options
+});
 
 const DrawerStack = (props) => {
     const DrawerStackNoLogin = DrawerNavigator({
@@ -201,8 +208,8 @@ const DrawerStack = (props) => {
         allPostings: {screen: stacked(ConnectedPostingList)},
         allTeams: {screen: AllTeamsStack},
         map: {screen: stacked(MapScreen)},
-        messages: {screen: stacked(MessagesOverviewScreen)},
-    settings: {screen: stacked(SettingsScreen)}
+        messagesOverview: {screen: MessagesStack},
+        settings: {screen: stacked(SettingsScreen)}
 }, {
     initialRouteName: 'allPostings',
     contentComponent: ConnectedDrawer

@@ -5,3 +5,4 @@ export const Brand = "#3F8FAE";
 export const LikeRed = "#CC1F1F";
 export const Subtitle = "#CCCCCC";
 export const Grey = "#CCCCCC";
+export const White = "#FFFFFF";
