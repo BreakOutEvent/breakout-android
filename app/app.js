@@ -2,8 +2,7 @@ import React from 'react';
 import {AppState, PermissionsAndroid, Text, View, StatusBar} from 'react-native';
 import {DrawerItems, DrawerNavigator, StackNavigator} from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
-import {Icon, List, ListItem} from 'native-base'
-import {NavigationActions} from 'react-navigation';
+import {Icon} from 'native-base'
 import ConnectedPostingList from "./screens/postings/screen";
 import MapScreen from "./components/map";
 import AllTeams from "./screens/all-teams/screen";
@@ -14,6 +13,7 @@ import {connect, Provider} from 'react-redux';
 import {persistor, store} from './store/store';
 import {PersistGate} from "redux-persist/integration/react";
 import LoginScreen from './screens/login/screen';
+import SettingsScreen from './screens/settings/screen';
 import {onAppStateChanged} from "./screens/login/actions";
 import {Sentry} from 'react-native-sentry';
 import {SENTRY_DSN} from './config/secrets';
@@ -131,7 +131,7 @@ const DrawerHeader = (props) => {
     return (
         <View style={{
             backgroundColor: Colors.Secondary,
-            height: 100,
+            height: 120,
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
@@ -170,7 +170,7 @@ const Drawer = (props) => {
 };
 
 const ConnectedDrawer = connect(state => ({
-    isLoggedIn: _.get(state, 'login.me', false),
+    isLoggedIn: isUserLoggedIn(state),
     firstname: _.get(state, 'login.me.firstname', ''),
     lastname: _.get(state, 'login.me.lastname', ''),
     profilePicUrl: _.get(state, 'login.me.profilePic.url'),
@@ -179,47 +179,41 @@ const ConnectedDrawer = connect(state => ({
     appVersion: DeviceInfo.getBuildNumber()
 }))(Drawer);
 
-class SettingsScreen extends React.PureComponent {
 
-    static navigationOptions = {
-        drawerLabel: () => "Settings",
-        drawerIcon: () => <Icon name='settings'/>
-    };
+const DrawerStack = (props) => {
+    const DrawerStackNoLogin = DrawerNavigator({
+        drawerLogin: {screen: stacked(LoginScreen)},
+        allPostings: {screen: stacked(ConnectedPostingList)},
+        allTeams: {screen: AllTeamsStack},
+        map: {screen: stacked(MapScreen)},
+        settings: {screen: stacked(SettingsScreen)}
+    }, {
+        initialRouteName: 'allPostings',
+        contentComponent: ConnectedDrawer
+    });
 
-    resetApp() {
-        store.dispatch({
-            type: 'CLEAN_ALL'
-        });
-        navigatorRef.dispatch(NavigationActions.navigate({routeName: "login"}));
-    }
+    const DrawerStackWithLogin = DrawerNavigator({
+        postStatus: {screen: stacked(CreatePostingScreen)},
+        yourTeam: {screen: YourTeam},
+        allPostings: {screen: stacked(ConnectedPostingList)},
+        allTeams: {screen: AllTeamsStack},
+        map: {screen: stacked(MapScreen)},
+        settings: {screen: stacked(SettingsScreen)}
+    }, {
+        initialRouteName: 'allPostings',
+        contentComponent: ConnectedDrawer
+    });
 
-    render() {
-        return (
-            <List>
-                <ListItem onPress={this.resetApp}>
-                    <Text>Reset app</Text>
-                </ListItem>
-            </List>
-        );
-    }
-}
+    return props.isLoggedIn ? (<DrawerStackWithLogin/>) : (<DrawerStackNoLogin/>);
+};
 
-const DrawerStack = DrawerNavigator({
-    drawerLogin: {screen: stacked(LoginScreen)},
-    postStatus: {screen: stacked(CreatePostingScreen)},
-    yourTeam: {screen: YourTeam},
-    allPostings: {screen: stacked(ConnectedPostingList)},
-    allTeams: {screen: AllTeamsStack},
-    map: {screen: stacked(MapScreen)},
-    settings: {screen: stacked(SettingsScreen)}
-}, {
-    initialRouteName: 'allPostings',
-    contentComponent: ConnectedDrawer
-});
+const DrawerStackScreen = connect(state => ({
+    isLoggedIn: isUserLoggedIn(state)
+}))(DrawerStack);
 
 const RootNav = StackNavigator({
     init: (props) => {
-        if (isUserLoggedIn()) {
+        if (props.isLoggedIn) {
             props.navigation.navigate('drawer');
         } else {
             props.navigation.navigate('login');
@@ -227,13 +221,13 @@ const RootNav = StackNavigator({
         return (null)
     },
     login: {screen: LoginScreen},
-    drawer: {screen: DrawerStack}
+    drawer: {screen: DrawerStackScreen}
 }, {
     headerMode: 'none',
 });
 
-function isUserLoggedIn() {
-    return !!(_.get(store.getState(), 'login.access_token'));
+function isUserLoggedIn(state) {
+    return _.get(state, 'login.me', false);
 }
 
 export let navigatorRef;
