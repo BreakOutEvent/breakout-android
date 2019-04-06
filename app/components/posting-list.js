@@ -10,7 +10,8 @@ export default class PostingList extends React.PureComponent {
     }
 
     renderPosting(row) {
-        return <Posting addLike={this.props.addLike} { ...this.props.navigation, ...row.item } />;
+        const mergedProps = {...this.props.navigation, ...row.item};
+        return <Posting addLike={this.props.addLike} {...mergedProps} />;
     }
 
     componentDidMount() {
@@ -18,6 +19,7 @@ export default class PostingList extends React.PureComponent {
             this.props.nextPage(0);
         }
     }
+
     render() {
         const props = this.props;
         const errorHeader = <ErrorMessageView error={props.fetchNewPostingsError}/>;
