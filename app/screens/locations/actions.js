@@ -27,17 +27,17 @@ export function fetchEventLocations() {
             const currentEvents = events.filter(e => e.isCurrent);
             const eventLocations = await Promise.all(currentEvents.map(event => api.fetchLocationsForEvent(event.id)));
 
-            dispatch(onFetchEventLocationsSuccess(groupLocationsByTeam(eventLocations, events)));
+            dispatch(onFetchEventLocationsSuccess(groupLocationsByTeam(eventLocations, events), currentEvents));
         } catch (error) {
             dispatch(onFetchEventLocationsError(error));
         }
     }
 }
 
-function onFetchEventLocationsSuccess(locations) {
+function onFetchEventLocationsSuccess(locations, currentEvents) {
     return {
         type: FETCH_EVENT_LOCATIONS_SUCCESS,
-        payload: {locations}
+        payload: {locations, currentEvents}
     };
 }
 

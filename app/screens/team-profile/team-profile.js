@@ -11,46 +11,18 @@ import {connect} from "react-redux";
 import {fetchTeamLocations} from "./actions";
 import LocalizedStrings from 'react-native-localization';
 
-const elem = (props) => {
-    console.log(props);
-    return (
-        <View>
-            <View style={{
-                height: 150,
-                backgroundColor: Colors.Primary,
-                display: 'flex',
-                alignItems: 'flex-end',
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                paddingBottom: 50,
-                paddingLeft: 10,
-                paddingRight: 10,
-            }}>
-                <View>
-                    <Text style={{fontSize: 15, fontWeight: 'bold', color: 'white'}}>Team SpiceGirls</Text>
-                    <Text style={{fontSize: 13, color: 'white'}}>Franz & Magdalena</Text>
-                </View>
-                <View>
-                    <Text style={{fontSize: 13, color: 'white'}}>2.134km</Text>
-                    <Text style={{fontSize: 13, color: 'white'}}>3.120,00€</Text>
-                </View>
-            </View>
-            <TabBarTop {...props} style={{backgroundColor: 'transparent', marginTop: -50, height: 50}}/>
-        </View>
-    );
-};
-
 const mapStateToProps = (state, props) => {
     const teamId = props.screenProps.teamId;
 
     let locations;
     if (state.team[teamId]) {
-        locations = state.team[teamId].locations
+        locations = state.team[teamId].locations || [];
     } else {
         locations = [];
     }
     return ({
         showSingleTeam: true,
+        team: state.team[teamId],
         teamId: teamId,
         locations: locations
     });
@@ -72,17 +44,6 @@ class TeamMapView extends React.Component {
 
     render() {
         return <ConnectedMapScreen screenProps={this.props.screenProps}/>
-    }
-}
-
-class TeamPostsView extends React.Component {
-    static navigationOptions = props => ({
-        tabBarIcon: <Icon name='list-box' style={{color: 'white'}}/>,
-        title: ''
-    });
-
-    render() {
-        return <Text>Geil</Text>
     }
 }
 
@@ -119,22 +80,23 @@ export default class TeamProfile extends React.PureComponent {
     };
 
     componentWillMount() {
-        const teamId = this.props.teamId || this.props.navigation.getParam("teamId");
+        const teamId = this.props.navigation.getParam("teamId") || this.props.teamId;
         if (!teamId) {
             this.props.navigation.navigate("drawerLogin");
         }
     }
+
     render() {
-        const teamId = this.props.teamId || this.props.navigation.getParam("teamId");
+        const teamId = this.props.navigation.getParam("teamId") || this.props.teamId;
         return <Tabnav screenProps={{teamId}}/>
     }
 }
 
 let strings = new LocalizedStrings({
- "en-US":{
-	 yourTeamLabel:'Your Team'
- },
- de:{
-   yourTeamLabel:'Dein Team'
- }
+    "en-US": {
+        yourTeamLabel: 'Your Team'
+    },
+    de: {
+        yourTeamLabel: 'Dein Team'
+    }
 });

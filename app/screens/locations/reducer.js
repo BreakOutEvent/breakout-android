@@ -4,7 +4,8 @@ import {
 } from "./actions";
 
 const initialState = {
-    locations: []
+    locations: [],
+    currentEvents: []
 };
 
 export default locationReducer = (state = initialState, action) => {
@@ -15,7 +16,8 @@ export default locationReducer = (state = initialState, action) => {
         case FETCH_EVENT_LOCATIONS_SUCCESS:
             return {
                 ...state,
-                locations: action.payload.locations
+                locations: action.payload.locations,
+                currentEvents: action.payload.currentEvents
             };
         case FETCH_EVENT_LOCATIONS_ERROR:
             return {

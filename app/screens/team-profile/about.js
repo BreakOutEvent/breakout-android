@@ -42,7 +42,7 @@ class AboutTeam extends React.Component {
         let names;
         if (props.members) {
             names = props.members
-                .map((member) => `${member.firstname} ${member.lastname}`)
+                .map((member) => `${member.firstname}`)
                 .reduce((first, second) => first + ' & ' + second);
         } else {
             names = ''
@@ -51,7 +51,6 @@ class AboutTeam extends React.Component {
         const distance = _.get(props, 'distance', 0);
         const score = _.get(props, 'score', 0);
         const sum = _.get(props, 'donateSum.fullSum', 0);
-        const distanceAndSum = `${Math.round(score)} ${strings.score} | ${distance.toFixed(2)}km | ${sum.toFixed(2)}€`;
 
         const profilePicUrl = _.get(props, 'profilePic.url');
         const TeamThumbnail = () => (profilePicUrl)
@@ -63,9 +62,13 @@ class AboutTeam extends React.Component {
                 <View style={styles.top}>
                     <TeamThumbnail/>
                     <View style={{display: 'flex', justifyContent: 'space-between', paddingLeft: 10}}>
-                        <Text style={{fontSize: 15, paddingBottom: 2}}>{props.name}</Text>
+                        <Text style={{fontSize: 19, paddingBottom: 2}}>{props.name}</Text>
                         <Text style={{fontSize: 12, paddingBottom: 2}}>{names}</Text>
-                        <Text style={{fontSize: 12}}>{distanceAndSum}</Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={{fontSize: 12, fontWeight: 'bold'}}>{Math.round(score)} {strings.score}</Text>
+                            <Text style={{fontSize: 12}}> | {distance.toFixed(2)}km</Text>
+                            <Text style={{fontSize: 12}}> | {sum.toFixed(2)}€</Text>
+                        </View>
                     </View>
                 </View>
                 <View style={styles.bottom}>
