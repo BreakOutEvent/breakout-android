@@ -92,7 +92,8 @@ function getCityColor(team) {
     const colorlist = {
         'München': '#F7931D',
         'Berlin': '#5AACA5',
-        'Barcelona': '#415dac'
+        'Barcelona': '#415dac',
+        'Köln': '#6b5aac'
     };
 
     return colorlist[team.event.city];
@@ -112,7 +113,6 @@ function colorGradientByWeight(color1, color2, weight) {
 
 function getHeatMapColor(speed) {
     const normSpeed = Math.log(Math.log(speed + 11.8)) - 0.9;
-    console.log(speed, normSpeed);
     //[255, 128, 0],[106, 185, 255]
     const rgb = colorGradientByWeight([0, 255, 0], [255, 0, 0], normSpeed);
     const rgbToHex = (r, g, b) => '#' + [r, g, b].map(x => {
@@ -123,42 +123,18 @@ function getHeatMapColor(speed) {
     return rgbToHex(rgb[0], rgb[1], rgb[2]);
 }
 
-function getMapContent(showSingleTeam, locations) {
-    if (showSingleTeam) {
-        return getTeamMapContent(locations)
+function getMapContent(props) {
+    if (props.showSingleTeam) {
+        return getTeamMapContent(props)
     } else {
-        return getEventsMapContent(locations)
+        return getEventsMapContent(props)
     }
 }
 
-function getTeamMapContent(locations) {
-    const maxDistanceTeamLocation = locations
-        .reduce((locA, locB) => locA['distance'] >= locB['distance'] ? locA : locB, {});
-
-    const lastPosMarker = <Marker
-        key="last_pos"
-        title={strings.lastPosition}
-        opacity={1}
-        coordinate={{
-            latitude: maxDistanceTeamLocation.latitude,
-            longitude: maxDistanceTeamLocation.longitude,
-        }}/>;
-
-    const minDistanceTeamLocation = locations
-        .reduce((locA, locB) => locA['distance'] <= locB['distance'] ? locA : locB, {});
-
-    const firstPosMarker = <Marker
-        key="first_pos"
-        title={strings.startingPosition}
-        opacity={1}
-        coordinate={{
-            latitude: minDistanceTeamLocation.latitude,
-            longitude: minDistanceTeamLocation.longitude,
-        }}/>;
-
+function getTeamMapContent(props) {
     let priorLocation;
     const teamPolyline = [];
-    locations.forEach(location => {
+    props.locations.forEach(location => {
         route = [priorLocation, location];
         color = getHeatMapColor(location.speed | 0);
 
@@ -174,12 +150,11 @@ function getTeamMapContent(locations) {
         priorLocation = location;
     });
 
-
-    return [lastPosMarker, firstPosMarker, teamPolyline];
+    return teamPolyline;
 }
 
-function getEventsMapContent(locations) {
-    const teamMarkers = locations.map(team => {
+function getEventsMapContent(props) {
+    const teamMarkers = props.locations.map(team => {
         const maxDistanceTeamLocation = team.locations
             .reduce((locA, locB) => locA['distance'] >= locB['distance'] ? locA : locB, {});
 
@@ -192,7 +167,7 @@ function getEventsMapContent(locations) {
                 longitude: maxDistanceTeamLocation.longitude,
             }}/>;
     });
-    const teamPolylines = locations.map(team => {
+    const teamPolylines = props.locations.map(team => {
         const startingLocation = {
             latitude: team.event.startingLocation.latitude,
             longitude: team.event.startingLocation.longitude,
@@ -216,31 +191,20 @@ function getEventsMapContent(locations) {
         />
     });
 
-    const munichMarker = <Marker
-        key="München"
-        title={strings.startMunich}
-        coordinate={{
-            latitude: 48.150676,
-            longitude: 11.580984,
-        }}/>;
 
-    const berlinMarker = <Marker
-        key="Berlin"
-        title={strings.startBerlin}
-        coordinate={{
-            latitude: 52.512643,
-            longitude: 13.321876,
-        }}/>;
+    const startMarkers = props.currentEvents.map(event => {
+        coordinate = {
+            latitude: event.startingLocation.latitude,
+            longitude: event.startingLocation.longitude
+        };
 
-    const barcelonaMarker = <Marker
-        key="Barcelona"
-        title={strings.startBarcelona}
-        coordinate={{
-            latitude: 41.3947688,
-            longitude: 2.0787279,
-        }}/>;
+        return <Marker
+            key={event.city}
+            title={event.city}
+            coordinate={coordinate}/>;
+    });
 
-    return [munichMarker, berlinMarker, barcelonaMarker, teamMarkers, teamPolylines];
+    return [startMarkers, teamMarkers, teamPolylines];
 }
 
 
@@ -256,12 +220,13 @@ export class Map extends Component {
 
 
     render() {
-        let content;
-        if (this.props.locations && this.props.locations.length) {
-            content = getMapContent(this.props.showSingleTeam, this.props.locations);
-        } else {
-            content = [];
-        }
+        let content = () => {
+            if (this.props.locations && this.props.locations.length) {
+                return getMapContent(this.props);
+            } else {
+                return getMapContent(this.props);
+            }
+        };
 
         return (
             <View style={styles.container}>
@@ -269,12 +234,12 @@ export class Map extends Component {
                     style={styles.container}
                     customMapStyle={mapStyle}
                     initialRegion={{
-                        latitude: 48.5690923,
-                        longitude: 7.6920547,
+                        latitude: 48.150676,
+                        longitude: 11.580984,
                         latitudeDelta: 20,
-                        longitudeDelta: 20,
+                        longitudeDelta: 0,
                     }}>
-                    {content}
+                    {content()}
                 </MapView>
             </View>
         );
@@ -284,34 +249,25 @@ export class Map extends Component {
 const mapStateToProps = (state) => {
     return ({
         showSingleTeam: false,
+        team: null,
         locations: state.locations.locations,
+        currentEvents: state.locations.currentEvents
     });
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onRefresh: (teamId) => dispatch(fetchEventLocations()),
+        onRefresh: () => dispatch(fetchEventLocations()),
     }
 };
 
 let strings = new LocalizedStrings({
- "en-US":{
-	 mapLabel:'Map',
-   lastPosition:'Last position',
-   startingPosition:"Start",
-   startMunich:'Start Munich',
-   startBerlin:'Start Berlin',
-   startBarcelona:'Start Barcelona'
-
- },
- de:{
-   mapLabel:'Karte',
-   lastPosition:'Letzte Position',
-   startingPosition:"Start",
-   startMunich:'Start München',
-   startBerlin:'Start Berlin',
-   startBarcelona:'Start Barcelona'
- }
+    "en-US": {
+        mapLabel: 'Map',
+    },
+    de: {
+        mapLabel: 'Karte',
+    }
 });
 
 const ConnectedMapScreen = connect(mapStateToProps, mapDispatchToProps)(Map);

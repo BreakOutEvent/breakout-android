@@ -45,12 +45,13 @@ const mapStateToProps = (state, props) => {
 
     let locations;
     if (state.team[teamId]) {
-        locations = state.team[teamId].locations
+        locations = state.team[teamId].locations || [];
     } else {
         locations = [];
     }
     return ({
         showSingleTeam: true,
+        team: state.team[teamId],
         teamId: teamId,
         locations: locations
     });
@@ -72,17 +73,6 @@ class TeamMapView extends React.Component {
 
     render() {
         return <ConnectedMapScreen screenProps={this.props.screenProps}/>
-    }
-}
-
-class TeamPostsView extends React.Component {
-    static navigationOptions = props => ({
-        tabBarIcon: <Icon name='list-box' style={{color: 'white'}}/>,
-        title: ''
-    });
-
-    render() {
-        return <Text>Geil</Text>
     }
 }
 
@@ -124,6 +114,7 @@ export default class TeamProfile extends React.PureComponent {
             this.props.navigation.navigate("drawerLogin");
         }
     }
+
     render() {
         const teamId = this.props.teamId || this.props.navigation.getParam("teamId");
         return <Tabnav screenProps={{teamId}}/>
@@ -131,10 +122,10 @@ export default class TeamProfile extends React.PureComponent {
 }
 
 let strings = new LocalizedStrings({
- "en-US":{
-	 yourTeamLabel:'Your Team'
- },
- de:{
-   yourTeamLabel:'Dein Team'
- }
+    "en-US": {
+        yourTeamLabel: 'Your Team'
+    },
+    de: {
+        yourTeamLabel: 'Dein Team'
+    }
 });
