@@ -10,7 +10,7 @@ export default class PostingList extends React.PureComponent {
     }
 
     renderPosting(row) {
-        return <Posting addLike={this.props.addLike} {...(row.item)} />;
+        return <Posting addLike={this.props.addLike} {...(Object.assign(this.props.navigation, row.item))} />;
     }
 
     componentDidMount() {

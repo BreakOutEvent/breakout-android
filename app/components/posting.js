@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
+import {StyleSheet, Text, View, TouchableNativeFeedback} from "react-native";
 import ProgressBar from "react-native-progress/Bar";
 import * as Colors from "../config/colors";
 import React from 'react';
@@ -77,9 +77,9 @@ const cardCommentsAndLikesStyle = StyleSheet.create({
 
 export const Button = (props) => {
     return (
-        <TouchableWithoutFeedback onPress={props.onPress}>
+        <TouchableNativeFeedback onPress={props.onPress}>
             {props.children}
-        </TouchableWithoutFeedback>
+        </TouchableNativeFeedback>
     )
 };
 
@@ -91,7 +91,7 @@ class CardCommentsAndLikes extends React.PureComponent {
     }
 
     onPress(postingId) {
-        this.props.addLike(postingId)
+        this.props.addLike(postingId);
     }
 
     render() {
@@ -101,9 +101,13 @@ class CardCommentsAndLikes extends React.PureComponent {
         return (
             <View style={cardCommentsAndLikesStyle.container}>
                 <Button onPress={this.onPress}>
-                    <Icon active={props.hasLiked} name='heart' style={{color: likeColor, marginLeft: 15, marginRight: 15}}/>
+                    <Icon active={props.hasLiked} name='heart'
+                          style={{color: likeColor, marginLeft: 15, marginRight: 15}}/>
                 </Button>
-                <Text style={cardCommentsAndLikesStyle.likesText}>{props.likes} {strings.likes}</Text>
+                <Button onPress={this.onPress}>
+                    <Text style={cardCommentsAndLikesStyle.likesText}>{props.likes} {strings.likes}</Text>
+                </Button>
+
                 <Button>
                     <Icon name='text' style={cardCommentsAndLikesStyle.commentsIcon}/>
                 </Button>
@@ -163,16 +167,22 @@ const headerStyle = StyleSheet.create({
 
 const CardHeader = (props) => {
 
+    const teamName = _.get(props, 'user.participant.teamName', 'no name');
+    const teamId = _.get(props, 'user.participant.teamId', 0);
+
     return (
-        <View style={headerStyle.container}>
-            <View style={headerStyle.profilePic}>
-                <ProfilePic url={_.get(props, 'user.profilePic.url')}/>
+        <Button onPress={() => props.navigate("aTeam", {teamId: teamId, teamName: teamName})}>
+            <View style={headerStyle.container}>
+                <View style={headerStyle.profilePic}>
+                    <ProfilePic url={_.get(props, 'user.profilePic.url')}/>
+                </View>
+                <View>
+                    <Text
+                        style={headerStyle.title}>{`${teamName} #${teamId}`}</Text>
+                    <Text style={headerStyle.subtitle}>{generateSubtitle(props)}</Text>
+                </View>
             </View>
-            <View>
-                <Text style={headerStyle.title}>{'Team ' + _.get(props, 'user.participant.teamName', 'no name')}</Text>
-                <Text style={headerStyle.subtitle}>{generateSubtitle(props)}</Text>
-            </View>
-        </View>
+        </Button>
     );
 };
 
@@ -288,12 +298,12 @@ export const ProfilePic = (props) => {
 };
 
 let strings = new LocalizedStrings({
- "en-US":{
-	 comments:'Comments',
-   likes:'Likes'
- },
- de:{
-   comments:'Kommentare',
-   likes:'Likes'
- }
+    "en-US": {
+        comments: 'Comments',
+        likes: 'Likes'
+    },
+    de: {
+        comments: 'Kommentare',
+        likes: 'Likes'
+    }
 });
