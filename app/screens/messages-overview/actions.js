@@ -8,7 +8,6 @@ const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 export const FETCH_GROUPMESSAGES_SUCCESS = 'FETCH_GROUPMESSAGES_SUCCESS';
 export const FETCH_GROUPMESSAGES_ERROR = 'FETCH_GROUPMESSAGES_ERROR';
 
-
 export function fetchGroupMessages() {
     return dispatch => {
         withAccessToken(api, store.getState())

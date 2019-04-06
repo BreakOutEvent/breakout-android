@@ -2,6 +2,7 @@ import React from 'react'
 import {GiftedChat, Bubble} from 'react-native-gifted-chat'
 import LocalizedStrings from 'react-native-localization';
 import * as Colors from "../../config/colors";
+import placeHolder from "../../assets/profile_pic_placeholder.jpg"
 
 export default class MessagesScreen extends React.PureComponent {
     constructor(props) {
@@ -20,14 +21,22 @@ export default class MessagesScreen extends React.PureComponent {
             messages: groupMessage.messages
                 .sort((a, b) => b.date - a.date)
                 .map(({id, creator, text, date}) => {
+                    const profilePic = () => {
+                        if (creator.profilePic) {
+                            return creator.profilePic.url;
+                        } else {
+                            return placeHolder;
+                        }
+                    };
+
                     return {
                         _id: id,
                         text: text,
                         createdAt: new Date(date * 1000),
                         user: {
                             _id: creator.id,
-                            name: creator.firstname,
-                            avatar: creator.profilePic.url,
+                            name: creator.firstname || "",
+                            avatar: profilePic(),
                         },
                     };
                 }),
