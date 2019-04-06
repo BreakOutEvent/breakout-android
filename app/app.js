@@ -1,6 +1,6 @@
 import React from 'react';
-import {AppState, PermissionsAndroid, Text, View, StatusBar} from 'react-native';
-import {DrawerItems, DrawerNavigator, StackNavigator} from 'react-navigation';
+import {AppState, PermissionsAndroid, StatusBar, Text, View} from 'react-native';
+import {DrawerItems, DrawerNavigator, NavigationActions, StackNavigator} from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
 import {Icon} from 'native-base'
 import ConnectedPostingList from "./screens/postings/screen";
@@ -16,7 +16,7 @@ import LoginScreen from './screens/login/screen';
 import SettingsScreen from './screens/settings/screen';
 import {onAppStateChanged} from "./screens/login/actions";
 import {Sentry} from 'react-native-sentry';
-import {SENTRY_DSN, ONESIGNAL_APPID} from './config/secrets';
+import {ONESIGNAL_APPID, SENTRY_DSN} from './config/secrets';
 import {onGeoLocationError, onGeoLocationReceived} from "./background-tracking/actions";
 import {onUpdateNotificationToken} from "./notifications/actions";
 import {ProfilePic} from "./components/posting";
@@ -239,7 +239,6 @@ export default class App extends React.Component {
     constructor(properties) {
         super(properties);
         OneSignal.init(ONESIGNAL_APPID);
-        OneSignal.configure();
         OneSignal.addEventListener('received', this.onReceived);
         OneSignal.addEventListener('opened', this.onOpened);
         OneSignal.addEventListener('ids', this.onIds);
@@ -264,7 +263,6 @@ export default class App extends React.Component {
 
     onIds(device) {
         console.log('device: ', device);
-
         store.dispatch(onUpdateNotificationToken(device.pushToken));
     }
 
@@ -272,6 +270,7 @@ export default class App extends React.Component {
         AppState.addEventListener('change', this.handleAppStateChange);
         navigatorRef = this.navigator;
         this.setupBackgroundTracking(); // ignore result promise. We just fire and forget here
+        OneSignal.configure();
     }
 
     async setupBackgroundTracking() {
@@ -304,7 +303,7 @@ export default class App extends React.Component {
 
     handleAppStateChange(newAppState) {
         const oldAppState = _.get(store.getState(), 'login.appState');
-        store.dispatch(onAppStateChanged(oldAppState, newAppState))
+        store.dispatch(onAppStateChanged(oldAppState, newAppState));
     }
 
     render() {

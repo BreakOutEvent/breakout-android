@@ -10,12 +10,10 @@ export function onUpdateNotificationToken(notificationToken) {
     return async (dispatch, getState) => {
         const userId = _.get(getState(), 'login.me.id', null);
 
-        if(!userId) return;
+        if (!userId) return;
 
         try {
-            console.log(api);
-            console.log(withAccessToken(api));
-            await withAccessToken(api).updateUserNotificationToken(userId, {
+            const updateUserNotificationToken = await withAccessToken(api).updateUserNotificationToken(userId, {
                 token: notificationToken,
             });
             ToastAndroid.show("notification token was updated", 10);
@@ -29,7 +27,7 @@ export function onUpdateNotificationRemove() {
     return async (dispatch, getState) => {
         const userId = _.get(getState(), 'login.me.id', null);
 
-        if(!userId) return;
+        if (!userId) return;
 
         try {
             await withAccessToken(api).removeUserNotificationToken(userId);
