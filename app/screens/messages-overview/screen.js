@@ -9,10 +9,12 @@ import moment from 'moment';
 
 const strings = new LocalizedStrings({
     "en-US": {
-        drawerLabelMessages: 'Messages'
+        drawerLabelMessages: 'Messages',
+        someUsername: 'Some User'
     },
     de: {
-        drawerLabelMessages: 'Nachrichten'
+        drawerLabelMessages: 'Nachrichten',
+        someUsername: 'Ein Nutzer'
     }
 });
 
@@ -29,11 +31,13 @@ class MessagesOverviewScreen extends Component {
     }
 
     groupMessageThreadView(item, props) {
-
-        const usersString = item.users.map(user => user.firstname).join(", ");
+        const usersString = item.users
+            .filter(user => user.id != props.userId)
+            .map(user => user.firstname ? user.firstname : strings.someUsername)
+            .join(", ");
         const lastMessage = _.last(item.messages);
-        const lastMessageCutOrEmpty = lastMessage ? lastMessage.text.slice(0, 20).replace(/\n/g, " ") : "";
-        const lastMessageCutIdentifier = lastMessageCutOrEmpty.length == 20 ? lastMessageCutOrEmpty + "..." : lastMessageCutOrEmpty;
+        const lastMessageCutOrEmpty = lastMessage ? lastMessage.text.slice(0, 40).replace(/\n/g, " ") : "";
+        const lastMessageCutIdentifier = lastMessageCutOrEmpty.length == 40 ? lastMessageCutOrEmpty + "..." : lastMessageCutOrEmpty;
         const lastMessageFromNow = lastMessage ? moment.unix(lastMessage.date).fromNow() : "";
 
         this.style = StyleSheet.create({
@@ -55,10 +59,9 @@ class MessagesOverviewScreen extends Component {
             }
         });
 
-        console.log(props);
-
         return (
-            <TouchableOpacity onPress={() => props.navigation.navigate("messages", {groupMessage: item, userId: props.userId})}>
+            <TouchableOpacity
+                onPress={() => props.navigation.navigate("messages", {groupMessage: item, userId: props.userId})}>
                 <View style={this.style.container}>
                     <Text style={this.style.userString}>{usersString}</Text>
                     <Text>{lastMessageCutIdentifier}</Text>
