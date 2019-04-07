@@ -251,7 +251,7 @@ const mapStateToProps = (state) => {
         showSingleTeam: false,
         team: null,
         locations: state.locations.locations,
-        currentEvents: state.locations.currentEvents
+        currentEvents: state.locations.currentEvents || []
     });
 };
 
