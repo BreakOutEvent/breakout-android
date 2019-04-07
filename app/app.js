@@ -12,7 +12,6 @@ import {onUpdateNotificationToken} from "./notifications/actions";
 import _ from 'lodash';
 import OneSignal from "react-native-onesignal";
 import Navigation from "./components/navigation";
-import NavigationService from "./utils/navigation-service";
 
 Sentry.config(SENTRY_DSN).install();
 console.ignoredYellowBox = ['Remote debugger'];
@@ -55,7 +54,6 @@ export default class App extends React.Component {
 
     componentDidMount() {
         AppState.addEventListener('change', this.handleAppStateChange);
-        NavigationService.setTopLevelNavigator(this.navigator);
         this.setupBackgroundTracking(); // ignore result promise. We just fire and forget here
         OneSignal.configure();
     }

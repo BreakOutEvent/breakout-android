@@ -87,7 +87,7 @@ const AllTeamsStack = StackNavigator({
 });
 
 const YourTeam = StackNavigator({
-    aTeam: {
+    yourTeamScreen: {
         screen: ({navigation}) => {
             const teamId = _.get(store.getState(), 'login.me.participant.teamId');
             return <TeamOverviewScreen teamId={teamId} navigation={{...navigation}}/>
@@ -180,37 +180,19 @@ const MessagesStack = StackNavigator({
     navigationOptions: buildNavOptions, // TODO own nav options
 });
 
-const DrawerStack = (props) => {
-    const DrawerStackNoLogin = DrawerNavigator({
-        drawerLogin: {screen: stacked(LoginScreen)},
-        allPostings: {screen: stacked(ConnectedPostingList)},
-        allTeams: {screen: AllTeamsStack},
-        map: {screen: stacked(MapScreen)},
-        settings: {screen: stacked(SettingsScreen)}
-    }, {
-        initialRouteName: 'allPostings',
-        contentComponent: ConnectedDrawer
-    });
-
-    const DrawerStackWithLogin = DrawerNavigator({
-        postStatus: {screen: stacked(CreatePostingScreen)},
-        yourTeam: {screen: YourTeam},
-        allPostings: {screen: stacked(ConnectedPostingList)},
-        allTeams: {screen: AllTeamsStack},
-        map: {screen: stacked(MapScreen)},
-        messagesOverview: {screen: MessagesStack},
-        settings: {screen: stacked(SettingsScreen)}
-    }, {
-        initialRouteName: 'allPostings',
-        contentComponent: ConnectedDrawer
-    });
-
-    return props.isLoggedIn ? (<DrawerStackWithLogin/>) : (<DrawerStackNoLogin/>);
-};
-
-const ConnectedDrawerStack = connect(state => ({
-    isLoggedIn: isUserLoggedIn(state)
-}))(DrawerStack);
+const DrawerStack = DrawerNavigator({
+    drawerLogin: {screen: stacked(LoginScreen)},
+    postStatus: {screen: stacked(CreatePostingScreen)},
+    yourTeam: {screen: YourTeam},
+    allPostings: {screen: stacked(ConnectedPostingList)},
+    allTeams: {screen: AllTeamsStack},
+    map: {screen: stacked(MapScreen)},
+    messagesOverview: {screen: MessagesStack},
+    settings: {screen: stacked(SettingsScreen)}
+}, {
+    initialRouteName: 'allPostings',
+    contentComponent: ConnectedDrawer
+});
 
 const Navigator = StackNavigator({
     init: (props) => {
@@ -222,7 +204,7 @@ const Navigator = StackNavigator({
         return (null)
     },
     login: LoginScreen,
-    drawer: ConnectedDrawerStack
+    drawer: DrawerStack
 }, {
     headerMode: 'none',
 });

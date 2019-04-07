@@ -27,6 +27,12 @@ class MessagesOverviewScreen extends Component {
     };
 
     componentDidMount() {
+        if (!this.props.isLoggedIn) {
+            this.props.navigation.navigate("drawerLogin", {});
+        } else {
+            this.props.onCreatePostingScreenMounted(this.props.teamId);
+        }
+
         this.props.onRefresh();
     }
 
