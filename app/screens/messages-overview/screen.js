@@ -29,8 +29,6 @@ class MessagesOverviewScreen extends Component {
     componentDidMount() {
         if (!this.props.isLoggedIn) {
             this.props.navigation.navigate("drawerLogin", {});
-        } else {
-            this.props.onCreatePostingScreenMounted(this.props.teamId);
         }
 
         this.props.onRefresh();
@@ -67,7 +65,11 @@ class MessagesOverviewScreen extends Component {
 
         return (
             <TouchableOpacity
-                onPress={() => props.navigation.navigate("messages", {groupMessage: item, userId: props.userId})}>
+                onPress={() => props.navigation.navigate("messages", {
+                    groupMessage: item,
+                    userId: props.userId,
+                    usersString: usersString
+                })}>
                 <View style={this.style.container}>
                     <Text style={this.style.userString}>{usersString}</Text>
                     <Text>{lastMessageCutIdentifier}</Text>
@@ -94,6 +96,7 @@ class MessagesOverviewScreen extends Component {
 
 const mapStateToProps = (state) => {
     return ({
+        isLoggedIn: _.get(state, 'login.access_token'),
         groupMessages: state.messages.groupMessages,
         userId: state.messages.userId,
         refreshing: state.messages.refreshing,

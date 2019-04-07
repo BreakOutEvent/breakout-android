@@ -4,7 +4,7 @@ import * as Colors from "../config/colors";
 import {StatusBar, Text, View} from "react-native";
 import _ from "lodash";
 import AllTeams from "../screens/all-teams/screen";
-import TeamOverviewScreen from "../screens/team-profile/team-profile";
+import {YourTeamProfile, TeamProfile} from "../screens/team-profile/team-profile";
 import {store} from "../store/store";
 import {ProfilePic} from "./posting";
 import {connect} from "react-redux";
@@ -19,27 +19,27 @@ import CreatePostingScreen from "../screens/create-posting/screen";
 import React from "react";
 import NavigationService from "../utils/navigation-service";
 
-const drawerButton = (navigation) =>
+const drawerButton = () =>
     (<Icon name='menu' style={{padding: 10, paddingRight: 20, color: 'white'}}
-           onPress={() => navigation.navigate('DrawerToggle')}/>);
+           onPress={() => NavigationService.navigate('DrawerToggle')}/>);
 
-const stacked = (Screen, title = 'BreakOut', borderLess = false) => StackNavigator({
+const drawerButtonBack = () =>
+    (<Icon name='arrow-back' style={{padding: 10, paddingRight: 20, color: 'white'}}
+           onPress={() => NavigationService.goBack()}/>);
+
+
+const stacked = (Screen, title = 'BreakOut') => StackNavigator({
     screen: Screen
 }, {
-    navigationOptions: ({navigation}) => ({
-        headerStyle: (borderLess) ? {
-            backgroundColor: Colors.Primary,
-            borderBottomWidth: 0,
-            elevation: 0, paddingTop: StatusBar.currentHeight,
-            height: StatusBar.currentHeight + 56
-        } : {
+    navigationOptions: () => ({
+        headerStyle: {
             backgroundColor: Colors.Primary,
             paddingTop: StatusBar.currentHeight,
             height: StatusBar.currentHeight + 56
         },
         headerTintColor: 'white',
         gesturesEnabled: false,
-        headerLeft: drawerButton(navigation),
+        headerLeft: drawerButton(),
         title: title
     })
 });
@@ -49,52 +49,55 @@ function isUserLoggedIn(state) {
 }
 
 function buildNavOptions({navigation}) {
-
     const routeName = _.get(navigation, 'state.routeName');
-    const teamName = _.get(navigation, 'state.params.teamName');
 
-    if (routeName === "aTeam") {
-        return {
-            headerStyle: {
-                backgroundColor: Colors.Primary,
-                borderBottomWidth: 0,
-                elevation: 0,
-                paddingTop: StatusBar.currentHeight,
-                height: StatusBar.currentHeight + 56
-            },
-            title: `${teamName}`,
-            headerTintColor: 'white',
-        }
-    } else {
-        return {
-            headerStyle: {
-                backgroundColor: Colors.Primary,
-                paddingTop: StatusBar.currentHeight,
-                height: StatusBar.currentHeight + 56
-            },
-            headerLeft: drawerButton(navigation),
-            headerTintColor: 'white',
-            title: 'All Teams'
-        }
+    let headerLeft = drawerButton();
+    let title = 'BreakOut';
+    if (routeName === "allATeam" || routeName === "aTeam") {
+        headerLeft = drawerButtonBack();
+        title = _.get(navigation, 'state.params.teamName');
+    }
+    if (routeName === "messages") {
+        headerLeft = drawerButtonBack();
+        title = _.get(navigation, 'state.params.usersString');
+    }
+    return {
+        headerStyle: {
+            backgroundColor: Colors.Primary,
+            borderBottomWidth: 0,
+            elevation: 0,
+            paddingTop: StatusBar.currentHeight,
+            height: StatusBar.currentHeight + 56
+        },
+        headerLeft: headerLeft,
+        headerTintColor: 'white',
+        title: title
     }
 }
 
 const AllTeamsStack = StackNavigator({
     allTeams: {screen: AllTeams},
-    aTeam: {screen: TeamOverviewScreen}
+    allATeam: {screen: TeamProfile}
 }, {
     navigationOptions: buildNavOptions,
 });
 
-const YourTeam = StackNavigator({
+const AllPostingsStack = StackNavigator({
+    allPostings: {screen: ConnectedPostingList},
+    aTeam: {screen: TeamProfile}
+}, {
+    navigationOptions: buildNavOptions,
+});
+
+const YourTeamScreen = StackNavigator({
     yourTeamScreen: {
         screen: ({navigation}) => {
             const teamId = _.get(store.getState(), 'login.me.participant.teamId');
-            return <TeamOverviewScreen teamId={teamId} navigation={{...navigation}}/>
+            return <YourTeamProfile teamId={teamId} navigation={{...navigation}}/>
         }
     }
 }, {
-    navigationOptions: ({navigation}) => ({
+    navigationOptions: () => ({
         headerStyle: {
             backgroundColor: Colors.Primary,
             borderBottomWidth: 0,
@@ -104,7 +107,7 @@ const YourTeam = StackNavigator({
         },
         title: `Your Team`,
         headerTintColor: 'white',
-        headerLeft: drawerButton(navigation),
+        headerLeft: drawerButton(),
         drawerIcon: () => <Icon name='contact'/>
     })
 });
@@ -183,8 +186,9 @@ const MessagesStack = StackNavigator({
 const DrawerStack = DrawerNavigator({
     drawerLogin: {screen: stacked(LoginScreen)},
     postStatus: {screen: stacked(CreatePostingScreen)},
-    yourTeam: {screen: YourTeam},
-    allPostings: {screen: stacked(ConnectedPostingList)},
+    yourTeam: {screen: YourTeamScreen},
+    aTeam: {screen: stacked(TeamProfile)},
+    allPostings: {screen: AllPostingsStack},
     allTeams: {screen: AllTeamsStack},
     map: {screen: stacked(MapScreen)},
     messagesOverview: {screen: MessagesStack},

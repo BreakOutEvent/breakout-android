@@ -171,6 +171,7 @@ const CardHeader = (props) => {
     const teamName = _.get(props, 'user.participant.teamName', 'no name');
     const teamId = _.get(props, 'user.participant.teamId', 0);
 
+    // TODO make button not clickable from team profile
     return (
         <Button onPress={() => NavigationService.navigate('aTeam', {teamId: teamId, teamName: teamName})}>
             <View style={headerStyle.container}>

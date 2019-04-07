@@ -16,7 +16,14 @@ function navigate(routeName, params) {
     );
 }
 
+function goBack() {
+    navigator.dispatch(
+        NavigationActions.back()
+    );
+}
+
 export default {
     navigate,
+    goBack,
     setTopLevelNavigator,
 };
