@@ -13,6 +13,11 @@ class LoginScreen extends React.PureComponent {
         drawerIcon: () => <Icon name='person'/>
     };
 
+    componentWillMount() {
+        const props = this.props;
+        if (props.password && props.username) props.onPressLogin(props.username, props.password)
+    }
+
     render() {
         const style = StyleSheet.create({
             view: {
