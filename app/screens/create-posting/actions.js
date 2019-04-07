@@ -1,14 +1,13 @@
 import BreakoutApi from "breakout-api-client";
 import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, CLOUDINARY_API_KEY, CLOUDINARY_CLOUD, DEBUG} from "../../config/secrets";
 
-import {NavigationActions} from 'react-navigation'
 import RNFetchBlob from 'rn-fetch-blob';
 import {withAccessToken} from "../../utils/utils";
 import {Sentry} from "react-native-sentry";
-import {navigatorRef} from "../../app";
 import {fetchNewPostings} from "../postings/actions";
 import {PermissionsAndroid} from "react-native";
 import _ from "lodash";
+import NavigationService from "../../utils/navigation-service";
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, CLOUDINARY_CLOUD, CLOUDINARY_API_KEY, DEBUG);
 
@@ -31,7 +30,7 @@ export const ON_UPLOAD_POSTING_ERROR = 'ON_UPLOAD_POSTING_ERROR';
 
 export const ON_FULFILL_CHALLENGE_ERROR = 'ON_FULFILL_CHALLENGE_ERROR';
 
-export const ON_GET_CURRENT_POSITION_IN_PROGRESS= 'ON_GET_CURRENT_POSITION_IN_PROGRESS';
+export const ON_GET_CURRENT_POSITION_IN_PROGRESS = 'ON_GET_CURRENT_POSITION_IN_PROGRESS';
 
 function uploadMedia(file, signedParams, onProgress) {
 
@@ -150,7 +149,7 @@ function onUploadPostingSuccess() {
         });
 
         dispatch(fetchNewPostings());
-        navigatorRef.dispatch(NavigationActions.navigate({routeName: 'allPostings'}))
+        NavigationService.navigate('allPostings');
     };
 }
 
@@ -196,7 +195,7 @@ export function onCreatePostingScreenMounted(teamId) {
             const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
                 title: "Allow access to locations for posting",
                 message: "BreakOut tracks your travel during the event to calculate your score and show " +
-                "your followers how far you have come. For this we need to you give us access to your location."
+                    "your followers how far you have come. For this we need to you give us access to your location."
             });
 
             // old android versions might return boolean true here whereas newer versions

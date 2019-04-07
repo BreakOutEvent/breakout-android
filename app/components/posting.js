@@ -9,6 +9,7 @@ import moment from 'moment';
 import VideoPlayer from "./video-player";
 import {changeFileEnding, transform} from "../screens/all-teams/screen";
 import LocalizedStrings from 'react-native-localization';
+import NavigationService from "../utils/navigation-service";
 
 export default class Posting extends React.PureComponent {
 
@@ -171,7 +172,7 @@ const CardHeader = (props) => {
     const teamId = _.get(props, 'user.participant.teamId', 0);
 
     return (
-        <Button onPress={() => props.navigate("aTeam", {teamId: teamId, teamName: teamName})}>
+        <Button onPress={() => NavigationService.navigate('aTeam', {teamId: teamId, teamName: teamName})}>
             <View style={headerStyle.container}>
                 <View style={headerStyle.profilePic}>
                     <ProfilePic url={_.get(props, 'user.profilePic.url')}/>
