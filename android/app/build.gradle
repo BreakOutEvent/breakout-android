@@ -102,8 +102,8 @@ android {
         applicationId "org.break_out.breakout"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 43
-        versionName "43"
+        versionCode 44
+        versionName "44"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
