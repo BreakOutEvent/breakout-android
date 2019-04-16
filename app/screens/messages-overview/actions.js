@@ -8,6 +8,11 @@ const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 export const FETCH_GROUPMESSAGES_SUCCESS = 'FETCH_GROUPMESSAGES_SUCCESS';
 export const FETCH_GROUPMESSAGES_ERROR = 'FETCH_GROUPMESSAGES_ERROR';
 
+export const SEND_GROUPMESSAGES_SUCCESS = 'SEND_GROUPMESSAGES_SUCCESS';
+export const SEND_GROUPMESSAGES_ERROR = 'SEND_GROUPMESSAGES_ERROR';
+
+export const SET_GROUPMESSAGE_ID_SUCCESS = 'SET_GROUPMESSAGE_ID_SUCCESS';
+
 export function fetchGroupMessages() {
     return dispatch => {
         withAccessToken(api, store.getState())
@@ -29,6 +34,21 @@ export function fetchGroupMessages() {
     }
 }
 
+export function sendGroupMessage(groupMessageId, text) {
+    return dispatch => {
+        withAccessToken(api, store.getState())
+            .groupMessageAddMessage(groupMessageId, {text: text, date: new Date().getTime() / 1000})
+            .then((data) => dispatch(onSendGroupMessagesSuccess(data)))
+            .catch(error => dispatch(onSendGroupMessagesError(error)))
+    }
+}
+
+export function setGroupMessageId(groupMessageId) {
+    return dispatch => {
+        dispatch(onSetGroupMessageIdSuccess(groupMessageId))
+    }
+}
+
 function onFetchGroupMessagesSuccess(groupMessages, userId) {
     return {
         type: FETCH_GROUPMESSAGES_SUCCESS,
@@ -40,5 +60,26 @@ function onFetchGroupMessagesError(error) {
     return {
         type: FETCH_GROUPMESSAGES_ERROR,
         payload: {error}
+    }
+}
+
+function onSendGroupMessagesSuccess(data) {
+    return {
+        type: SEND_GROUPMESSAGES_SUCCESS,
+        payload: {data}
+    }
+}
+
+function onSendGroupMessagesError(error) {
+    return {
+        type: SEND_GROUPMESSAGES_ERROR,
+        payload: {error}
+    }
+}
+
+function onSetGroupMessageIdSuccess(groupMessageId) {
+    return {
+        type: SET_GROUPMESSAGE_ID_SUCCESS,
+        payload: {groupMessageId}
     }
 }
