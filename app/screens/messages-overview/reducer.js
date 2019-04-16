@@ -3,7 +3,8 @@ import {
     FETCH_GROUPMESSAGES_SUCCESS,
     SEND_GROUPMESSAGES_SUCCESS,
     SEND_GROUPMESSAGES_ERROR,
-    SET_GROUPMESSAGE_ID_SUCCESS
+    SET_GROUPMESSAGE_ID_SUCCESS,
+    SET_REFRESHING
 } from "./actions";
 
 const initialState = {
@@ -37,6 +38,7 @@ export default groupMessagesReducer = (state = initialState, action) => {
         case FETCH_GROUPMESSAGES_SUCCESS:
             return {
                 ...state,
+                refreshing: false,
                 groupMessages: [...action.payload.groupMessages],
                 userId: action.payload.userId,
                 fetchGroupMessagesError: null,
@@ -44,6 +46,7 @@ export default groupMessagesReducer = (state = initialState, action) => {
         case FETCH_GROUPMESSAGES_ERROR:
             return {
                 ...state,
+                refreshing: false,
                 fetchGroupMessagesError: {
                     ...action.payload.error,
                     userMessage: 'Failed to load messages' // TODO: i18n
@@ -68,6 +71,12 @@ export default groupMessagesReducer = (state = initialState, action) => {
             return {
                 ...state,
                 groupMessageId: action.payload.groupMessageId,
+            };
+
+        case SET_REFRESHING:
+            return {
+                ...state,
+                refreshing: action.payload.refreshing,
             };
 
         default:

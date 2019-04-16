@@ -13,8 +13,11 @@ export const SEND_GROUPMESSAGES_ERROR = 'SEND_GROUPMESSAGES_ERROR';
 
 export const SET_GROUPMESSAGE_ID_SUCCESS = 'SET_GROUPMESSAGE_ID_SUCCESS';
 
+export const SET_REFRESHING = 'SET_REFRESHING';
+
 export function fetchGroupMessages() {
     return dispatch => {
+        dispatch(setRefreshing());
         withAccessToken(api, store.getState())
             .getMe()
             .then(me => Promise.all(me.groupMessageIds.map(id =>
@@ -60,6 +63,13 @@ function onFetchGroupMessagesError(error) {
     return {
         type: FETCH_GROUPMESSAGES_ERROR,
         payload: {error}
+    }
+}
+
+function setRefreshing(refreshing = true) {
+    return {
+        type: SET_REFRESHING,
+        payload: {refreshing}
     }
 }
 

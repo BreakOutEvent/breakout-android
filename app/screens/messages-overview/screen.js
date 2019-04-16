@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Icon} from "native-base";
 import {connect} from "react-redux";
 import LocalizedStrings from 'react-native-localization';
-import {StyleSheet, FlatList, View, Text, TouchableOpacity} from "react-native";
+import {StyleSheet, FlatList, View, Text, TouchableOpacity, RefreshControl} from "react-native";
 import {fetchGroupMessages} from "./actions";
 import _ from 'lodash';
 import moment from 'moment';
@@ -81,6 +81,8 @@ class MessagesOverviewScreen extends Component {
 
     render() {
         const props = this.props;
+
+        console.log(props)
 
         return (
             <FlatList data={props.groupMessages}
