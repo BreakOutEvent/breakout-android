@@ -6,6 +6,8 @@ import {StyleSheet, FlatList, View, Text, TouchableOpacity, RefreshControl} from
 import {fetchGroupMessages} from "./actions";
 import _ from 'lodash';
 import moment from 'moment';
+import ActionButton from 'react-native-action-button';
+import * as Colors from "../../config/colors";
 
 const strings = new LocalizedStrings({
     "en-US": {
@@ -85,12 +87,20 @@ class MessagesOverviewScreen extends Component {
         console.log(props)
 
         return (
-            <FlatList data={props.groupMessages}
-                      keyExtractor={item => item.id.toString()}
-                      renderItem={({item}) => (this.groupMessageThreadView(item, props))}
-                      refreshing={props.refreshing}
-                      onRefresh={() => props.onRefresh()}
-            />
+            <View>
+                <FlatList data={props.groupMessages}
+                          keyExtractor={item => item.id.toString()}
+                          renderItem={({item}) => (this.groupMessageThreadView(item, props))}
+                          refreshing={props.refreshing}
+                          onRefresh={() => props.onRefresh()}
+                />
+                <ActionButton
+                    buttonColor={Colors.Primary}
+                    onPress={() => {
+                        console.log("hi")
+                    }}
+                />
+            </View>
         )
     }
 

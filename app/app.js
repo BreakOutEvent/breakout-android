@@ -49,7 +49,7 @@ export default class App extends React.Component {
 
     onIds(device) {
         console.log('device: ', device);
-        store.dispatch(onUpdateNotificationToken(device.pushToken));
+        store.dispatch(onUpdateNotificationToken(device.userId));
     }
 
     componentDidMount() {
