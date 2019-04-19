@@ -9,6 +9,7 @@ import {Sentry} from 'react-native-sentry';
 import {ONESIGNAL_APPID, SENTRY_DSN} from './config/secrets';
 import {onGeoLocationError, onGeoLocationReceived} from "./background-tracking/actions";
 import {onUpdateNotificationToken} from "./notifications/actions";
+import {fetchGroupMessages} from "./screens/messages-overview/actions";
 import _ from 'lodash';
 import OneSignal from "react-native-onesignal";
 import Navigation from "./components/navigation";
@@ -25,6 +26,7 @@ export default class App extends React.Component {
     constructor(properties) {
         super(properties);
         OneSignal.init(ONESIGNAL_APPID);
+        OneSignal.inFocusDisplaying(0);
         OneSignal.addEventListener('received', this.onReceived);
         OneSignal.addEventListener('opened', this.onOpened);
         OneSignal.addEventListener('ids', this.onIds);
@@ -38,6 +40,7 @@ export default class App extends React.Component {
 
     onReceived(notification) {
         console.log("Notification received: ", notification);
+        store.dispatch(fetchGroupMessages())
     }
 
     onOpened(openResult) {

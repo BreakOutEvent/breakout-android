@@ -68,9 +68,9 @@ class MessagesOverviewScreen extends Component {
         return (
             <TouchableOpacity
                 onPress={() => props.navigation.navigate("messages", {
-                    groupMessage: item,
                     userId: props.userId,
-                    usersString: usersString
+                    usersString: usersString,
+                    groupMessageId: item.id
                 })}>
                 <View style={this.style.container}>
                     <Text style={this.style.userString}>{usersString}</Text>

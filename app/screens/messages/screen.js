@@ -5,12 +5,18 @@ import * as Colors from "../../config/colors";
 import placeHolder from "../../assets/profile_pic_placeholder.jpg"
 import {sendGroupMessage, setGroupMessageId} from "../messages-overview/actions";
 import {connect} from "react-redux";
+import {store} from '../../store/store';
 
 class MessagesScreen extends React.PureComponent {
     constructor(props) {
         super(props);
-        const groupMessage = this.props.navigation.getParam("groupMessage");
-        this.props.setGroupMessageId(groupMessage.id)
+        const groupMessageId = this.props.navigation.getParam("groupMessageId");
+        this.props.setGroupMessageId(groupMessageId);
+
+        const onChange = () => {
+            setTimeout(() => this.updateData(this.props), 100);
+        };
+        store.subscribe(onChange)
     }
 
     state = {
@@ -18,9 +24,8 @@ class MessagesScreen extends React.PureComponent {
         messages: []
     };
 
-    componentWillMount() {
-        const groupMessage = this.props.navigation.getParam("groupMessage");
-
+    updateData(props) {
+        const groupMessage = props.groupMessages.find(x => x.id === props.groupMessageId);
         this.setState({
             messages: groupMessage.messages
                 .sort((a, b) => b.date - a.date)
@@ -44,8 +49,12 @@ class MessagesScreen extends React.PureComponent {
                         },
                     };
                 }),
-            userId: this.props.navigation.getParam("userId")
+            userId: props.navigation.getParam("userId")
         })
+    }
+
+    componentWillMount() {
+        this.updateData(this.props);
     }
 
     renderBubble = (props) => {
@@ -101,6 +110,7 @@ let strings = new LocalizedStrings({
 const mapStateToProps = (state) => {
     return ({
         groupMessageId: state.messages.groupMessageId,
+        groupMessages: state.messages.groupMessages,
     });
 };
 
