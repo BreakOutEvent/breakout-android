@@ -43,6 +43,9 @@ const stacked = (Screen, title = 'BreakOut') => StackNavigator({
         title: title
     })
 });
+function isUserLoggedInWithoutState() {
+    return !!(isUserLoggedIn(store.getState()));
+}
 
 function isUserLoggedIn(state) {
     return _.get(state, 'login.me', false);
@@ -200,7 +203,7 @@ const DrawerStack = DrawerNavigator({
 
 const Navigator = StackNavigator({
     init: (props) => {
-        if (props.isLoggedIn) {
+        if (isUserLoggedInWithoutState()) {
             props.navigation.navigate('drawer');
         } else {
             props.navigation.navigate('login');
