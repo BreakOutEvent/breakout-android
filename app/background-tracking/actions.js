@@ -23,7 +23,7 @@ export function onGeoLocationReceived(location) {
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude
             });
-            ToastAndroid.show("a new location was uploaded", 10);
+            //ToastAndroid.show("a new location was uploaded", 10);
         } catch (err) {
             console.log(err);
         }
