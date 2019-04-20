@@ -13,10 +13,9 @@ export function onUpdateNotificationToken(notificationToken) {
         if (!userId) return;
 
         try {
-            const updateUserNotificationToken = await withAccessToken(api).updateUserNotificationToken(userId, {
+            await withAccessToken(api).updateUserNotificationToken(userId, {
                 token: notificationToken,
             });
-            ToastAndroid.show("notification token was updated", 10);
         } catch (err) {
             console.log(err);
         }

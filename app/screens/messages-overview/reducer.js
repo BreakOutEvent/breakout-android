@@ -3,8 +3,9 @@ import {
     FETCH_GROUPMESSAGES_SUCCESS,
     SEND_GROUPMESSAGES_SUCCESS,
     SEND_GROUPMESSAGES_ERROR,
-    SET_GROUPMESSAGE_ID_SUCCESS,
-    SET_REFRESHING
+    SET_CURRENT_GROUPMESSAGE_SUCCESS,
+    SET_REFRESHING,
+    transformGroupMessageThread
 } from "./actions";
 
 const initialState = {
@@ -12,22 +13,13 @@ const initialState = {
     userId: 1,
     refreshing: false,
     error: null,
-    groupMessageId: null
+    currentGroupMessage: null
 };
 
-function updateGroupMessagesForThread(groupMessages, updatedTread) {
-    const filteredGroupMessages = groupMessages.filter(g => g.id != updatedTread.id);
-    filteredGroupMessages.push(updatedTread);
-
-    // sorry for copied code from actions
-    const lastMessageTimeStampOrZero = (thread) => {
-        const lastMessage = thread.messages[thread.messages.length - 1];
-        return lastMessage ? lastMessage.date : 0;
-    };
-    const sortedMessages = filteredGroupMessages.sort((a, b) => {
-        return lastMessageTimeStampOrZero(b) - lastMessageTimeStampOrZero(a);
-    });
-    return sortedMessages;
+function updateGroupMessagesForThread(groupMessages, updatedThread, userId) {
+    const filteredGroupMessages = groupMessages.filter(g => g.id != updatedThread.id);
+    filteredGroupMessages.unshift(transformGroupMessageThread(updatedThread, userId));
+    return filteredGroupMessages;
 }
 
 export default groupMessagesReducer = (state = initialState, action) => {
@@ -42,6 +34,7 @@ export default groupMessagesReducer = (state = initialState, action) => {
                 groupMessages: [...action.payload.groupMessages],
                 userId: action.payload.userId,
                 fetchGroupMessagesError: null,
+                currentGroupMessage: state.currentGroupMessage ? action.payload.groupMessages.find(item => item.id === state.currentGroupMessage.id) : null
             };
         case FETCH_GROUPMESSAGES_ERROR:
             return {
@@ -53,11 +46,14 @@ export default groupMessagesReducer = (state = initialState, action) => {
                 }
             };
 
-        case SEND_GROUPMESSAGES_SUCCESS:
+        case SEND_GROUPMESSAGES_SUCCESS: {
+            const updatedGroupMessages = updateGroupMessagesForThread(state.groupMessages, action.payload.data, state.currentGroupMessage.userId);
             return {
                 ...state,
-                groupMessages: updateGroupMessagesForThread(state.groupMessages, action.payload.data)
+                groupMessages: updatedGroupMessages,
+                currentGroupMessage: state.currentGroupMessage ? updatedGroupMessages.find(item => item.id === state.currentGroupMessage.id) : null
             };
+        }
         case SEND_GROUPMESSAGES_ERROR:
             return {
                 ...state,
@@ -67,10 +63,10 @@ export default groupMessagesReducer = (state = initialState, action) => {
                 }
             };
 
-        case SET_GROUPMESSAGE_ID_SUCCESS:
+        case SET_CURRENT_GROUPMESSAGE_SUCCESS:
             return {
                 ...state,
-                groupMessageId: action.payload.groupMessageId,
+                currentGroupMessage: action.payload.currentGroupMessage,
             };
 
         case SET_REFRESHING:
