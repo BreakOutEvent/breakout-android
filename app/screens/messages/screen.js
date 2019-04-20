@@ -23,11 +23,6 @@ class MessagesScreen extends React.PureComponent {
         );
     };
 
-
-    onSend(messages = [], sendMessage) {
-        messages.map(message => sendMessage(this.props.currentGroupMessage.id, message.text));
-    }
-
     render() {
         const props = this.props;
 
@@ -43,15 +38,6 @@ class MessagesScreen extends React.PureComponent {
         )
     }
 }
-
-let strings = new LocalizedStrings({
-    "en-US": {
-        drawerLabelMessages: 'Messages'
-    },
-    de: {
-        drawerLabelMessages: 'Nachrichten'
-    }
-});
 
 const mapStateToProps = (state) => {
     return ({
