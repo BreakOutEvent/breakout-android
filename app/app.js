@@ -9,7 +9,7 @@ import {Sentry} from 'react-native-sentry';
 import {ONESIGNAL_APPID, SENTRY_DSN} from './config/secrets';
 import {onGeoLocationError, onGeoLocationReceived} from "./background-tracking/actions";
 import {onUpdateNotificationToken} from "./notifications/actions";
-import {fetchGroupMessages} from "./screens/messages-overview/actions";
+import {fetchGroupMessages} from "./screens/messages/actions";
 import _ from 'lodash';
 import OneSignal from "react-native-onesignal";
 import Navigation from "./components/navigation";

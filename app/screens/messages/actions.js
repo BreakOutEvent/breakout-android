@@ -3,7 +3,7 @@ import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG} from "../../config/secrets"
 import {store} from '../../store/store';
 import {withAccessToken} from "../../utils/utils";
 import placeHolder from "../../assets/profile_pic_placeholder.jpg";
-import {strings} from "./screen.js";
+import {strings} from "./overview-screen.js";
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 

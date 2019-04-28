@@ -1,8 +1,7 @@
 import React from 'react'
-import {GiftedChat, Bubble} from 'react-native-gifted-chat'
-import LocalizedStrings from 'react-native-localization';
+import {GiftedChat, Bubble} from 'react-native-gifted-chat/index'
 import * as Colors from "../../config/colors";
-import {sendGroupMessage} from "../messages-overview/actions";
+import {sendGroupMessage} from "./actions";
 import {connect} from "react-redux";
 
 class MessagesScreen extends React.PureComponent {
