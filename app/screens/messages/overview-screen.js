@@ -3,7 +3,7 @@ import {Icon} from "native-base";
 import {connect} from "react-redux";
 import LocalizedStrings from 'react-native-localization';
 import {StyleSheet, FlatList, View, Text, TouchableOpacity} from "react-native";
-import {fetchGroupMessages, setCurrentGroupMessage} from "./actions";
+import {fetchGroupMessages, setCurrentGroupMessage, redirectToThread} from "./actions";
 import _ from 'lodash';
 import moment from 'moment';
 import ActionButton from 'react-native-action-button';
@@ -46,10 +46,7 @@ const GroupMessageThreadView = ({item, ...props}) => {
     });
 
     return <TouchableOpacity
-        onPress={() => {
-            props.setCurrentGroupMessage(item);
-            props.navigation.navigate("message", {usersString: item.usersString})
-        }}>
+        onPress={() => props.redirectToThread(item)}>
         <View style={this.style.container}>
             <Text style={this.style.userString}>{item.usersString}</Text>
             <Text>{lastMessageCutIdentifier}</Text>
@@ -88,7 +85,6 @@ class MessagesOverviewScreen extends Component {
                 <ActionButton
                     buttonColor={Colors.Primary}
                     onPress={() => {
-                        console.log("test.1");
                         props.navigation.navigate("newMessage")
                     }}
                 />
@@ -111,6 +107,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setCurrentGroupMessage: (currentGroupMessage) => dispatch(setCurrentGroupMessage(currentGroupMessage)),
         onRefresh: () => dispatch(fetchGroupMessages()),
+        redirectToThread: (thread) => dispatch(redirectToThread(thread)),
     }
 };
 

@@ -9,6 +9,7 @@ import {
     NEW_MESSAGE_USER_SEARCH_SUCCESS,
     NEW_MESSAGE_USER_SEARCH_ERROR,
     RESET_USER_SEARCH,
+    CREATE_GROUPMESSAGES_ERROR,
     transformGroupMessageThread
 } from "./actions";
 
@@ -104,6 +105,16 @@ export default groupMessagesReducer = (state = initialState, action) => {
                 newMessagesUserSearchError: {
                     ...action.payload.error,
                     userMessage: 'Failed to search User' // TODO: i18n
+                }
+            };
+
+        case CREATE_GROUPMESSAGES_ERROR:
+            return {
+                ...state,
+                newMessageSearchRefreshing: false,
+                createGroupMessageError: {
+                    ...action.payload.error,
+                    userMessage: 'Failed to create groupmessage' // TODO: i18n
                 }
             };
 

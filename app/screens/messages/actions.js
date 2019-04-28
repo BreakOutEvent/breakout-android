@@ -4,6 +4,7 @@ import {store} from '../../store/store';
 import {withAccessToken} from "../../utils/utils";
 import placeHolder from "../../assets/profile_pic_placeholder.jpg";
 import {strings} from "./overview-screen.js";
+import NavigationService from "../../utils/navigation-service";
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 
@@ -18,9 +19,13 @@ export const SET_CURRENT_GROUPMESSAGE_SUCCESS = 'SET_CURRENT_GROUPMESSAGE_SUCCES
 export const SET_REFRESHING = 'SET_REFRESHING';
 
 export const SET_NEW_MESSAGE_USER_SEARCH_REFRESHING = 'SET_NEW_MESSAGE_USER_SEARCH_REFRESHING';
+
 export const NEW_MESSAGE_USER_SEARCH_SUCCESS = 'NEW_MESSAGE_USER_SEARCH_SUCCESS';
 export const NEW_MESSAGE_USER_SEARCH_ERROR = 'NEW_MESSAGE_USER_SEARCH_ERROR';
+
 export const RESET_USER_SEARCH = 'RESET_USER_SEARCH';
+
+export const CREATE_GROUPMESSAGES_ERROR = 'CREATE_GROUPMESSAGES_ERROR';
 
 export const transformGroupMessageThread = (thread, userId) => {
     thread.userId = userId;
@@ -76,8 +81,14 @@ function uniqBy(a, key) {
     });
 }
 
+export function redirectToThread(thread) {
+    return dispatch => {
+        dispatch(setCurrentGroupMessage(thread));
+        NavigationService.navigate("message", {usersString: thread.usersString})
+    }
+}
 
-export function fetchGroupMessages() {
+export function fetchGroupMessages(redirectToThreadData = null) {
     return dispatch => {
         dispatch(setRefreshing());
         withAccessToken(api, store.getState())
@@ -86,7 +97,8 @@ export function fetchGroupMessages() {
                 withAccessToken(api, store.getState()).getGroupMessage(id)))
                 .then(groupMessages => {
                     const transformedMessages = transformGroupMessages(groupMessages, me.id);
-                    dispatch(onFetchGroupMessagesSuccess(transformedMessages, me.id))
+                    dispatch(onFetchGroupMessagesSuccess(transformedMessages, me.id));
+                    if (redirectToThreadData) dispatch(redirectToThread(redirectToThreadData));
                 })
                 .catch(error => dispatch(onFetchGroupMessagesError(error))))
             .catch(error => dispatch(onFetchGroupMessagesError(error)))
@@ -112,6 +124,26 @@ export function newMessageUserSearch(text) {
                 dispatch(onNewMessageUserSearchResult(uniqueResults.filter(result => result.firstname)))
             })
             .catch(error => dispatch(onNewMessageUserSearchError(error)))
+    }
+}
+
+export function createGroupMessage(item, groupMessages, userId) {
+    const alreadyExistingGroupMessage = groupMessages
+        .filter(thread => thread.users.length === 2)
+        .find(thread => thread.users.find(user => user.id === item.id));
+
+    return dispatch => {
+        if (alreadyExistingGroupMessage) {
+            dispatch(redirectToThread(alreadyExistingGroupMessage))
+        } else {
+            withAccessToken(api, store.getState())
+                .createGroupMessage([item.id])
+                .then((data) => {
+                    const transformedThread = transformGroupMessageThread(data, userId);
+                    dispatch(fetchGroupMessages(transformedThread))
+                })
+                .catch(error => dispatch(onCreateGroupMessageError(error)))
+        }
     }
 }
 
@@ -179,6 +211,13 @@ function onSendGroupMessagesSuccess(data) {
 function onSendGroupMessagesError(error) {
     return {
         type: SEND_GROUPMESSAGES_ERROR,
+        payload: {error}
+    }
+}
+
+function onCreateGroupMessageError(error) {
+    return {
+        type: CREATE_GROUPMESSAGES_ERROR,
         payload: {error}
     }
 }

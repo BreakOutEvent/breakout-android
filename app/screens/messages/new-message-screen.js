@@ -1,9 +1,10 @@
 import React from 'react'
 import {connect} from "react-redux";
-import {View, Text, FlatList, TouchableOpacity, StyleSheet} from "react-native";
+import {View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator} from "react-native";
 import LocalizedStrings from 'react-native-localization';
 import {Textarea} from "native-base";
-import {newMessageUserSearch, resetUserSearch} from './actions';
+import {newMessageUserSearch, resetUserSearch, createGroupMessage} from './actions';
+import * as Colors from "../../config/colors";
 
 const SearchResultView = ({item, ...props}) => {
     const nameString = item.firstname ? `${item.firstname} ${item.lastname}` : "";
@@ -24,12 +25,7 @@ const SearchResultView = ({item, ...props}) => {
         }
     });
 
-    console.log(nameString);
-
-    return <TouchableOpacity
-        onPress={() => {
-            props.createGroupMessage(item);
-        }}>
+    return <TouchableOpacity onPress={() => props.createGroupMessage(item, props.groupMessages, props.userId)}>
         <View style={this.style.container}>
             <Text style={this.style.userString}>{nameString} {teamString}</Text>
         </View>
@@ -45,20 +41,42 @@ class NewMessageScreen extends React.PureComponent {
     render() {
         const props = this.props;
 
+        this.style = StyleSheet.create({
+            loadingBackground: {
+                opacity: 0.3
+            },
+            loading: {
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                top: 50,
+                bottom: 0,
+                alignItems: 'center',
+                justifyContent: 'center'
+            },
+        });
+
+        const loading = true;
+
         return (
-            <View>
-                <Textarea
-                    style={{margin: 5}}
-                    rowSpan={2}
-                    placeholder={strings.searchPlaceholder}
-                    onChangeText={props.newMessageUserSearch}
-                    value={props.newMessageSearchString}
-                />
-                <FlatList data={props.newMessageSearchResults}
-                          keyExtractor={item => item.id.toString()}
-                          renderItem={({item}) => <SearchResultView item={item} {...props}/>}
-                          refreshing={props.newMessageSearchRefreshing}
-                />
+            <View pointerEvents={loading ? 'none' : 'auto'}>
+                {loading ?
+                    (<View style={this.style.loading}><ActivityIndicator size={100} color={Colors.Primary}/></View>)
+                    : null}
+                <View style={loading ? this.style.loadingBackground : null}>
+                    <Textarea
+                        style={{margin: 5}}
+                        rowSpan={2}
+                        placeholder={strings.searchPlaceholder}
+                        onChangeText={props.newMessageUserSearch}
+                        value={props.newMessageSearchString}
+                    />
+                    <FlatList data={props.newMessageSearchResults}
+                              keyExtractor={item => item.id.toString()}
+                              renderItem={({item}) => <SearchResultView item={item} {...props}/>}
+                              refreshing={props.newMessageSearchRefreshing}
+                    />
+                </View>
             </View>
         )
     }
@@ -68,14 +86,16 @@ const mapStateToProps = (state) => {
     return ({
         newMessageSearchString: state.messages.newMessageSearchString,
         newMessageSearchResults: state.messages.newMessageSearchResults,
-        newMessageSearchRefreshing: state.messages.newMessageSearchRefreshing
+        newMessageSearchRefreshing: state.messages.newMessageSearchRefreshing,
+        groupMessages: state.messages.groupMessages,
+        userId: state.messages.userId
     });
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         newMessageUserSearch: (text) => dispatch(newMessageUserSearch(text)),
-        createGroupMessage: (item) => console.log(item),//dispatch(createGroupMessage(item))
+        createGroupMessage: (item, groupMessages) => dispatch(createGroupMessage(item, groupMessages)),
         resetUserSearch: () => dispatch(resetUserSearch())
     }
 };
