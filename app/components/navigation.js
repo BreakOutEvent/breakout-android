@@ -43,6 +43,7 @@ const stacked = (Screen, title = 'BreakOut') => StackNavigator({
         title: title
     })
 });
+
 function isUserLoggedInWithoutState() {
     return !!(isUserLoggedIn(store.getState()));
 }

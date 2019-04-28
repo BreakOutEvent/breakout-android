@@ -13,6 +13,7 @@ import {fetchGroupMessages} from "./screens/messages-overview/actions";
 import _ from 'lodash';
 import OneSignal from "react-native-onesignal";
 import Navigation from "./components/navigation";
+import NavigationService from "utils/navigation-service";
 
 Sentry.config(SENTRY_DSN).install();
 console.ignoredYellowBox = ['Remote debugger'];
@@ -40,7 +41,9 @@ export default class App extends React.Component {
 
     onReceived(notification) {
         console.log("Notification received: ", notification);
-        store.dispatch(fetchGroupMessages())
+        if (notification.payload.additionalData.type && notification.payload.additionalData.type == "ADDED_TO_MESSAGE" || notification.payload.additionalData.type == "NEW_MESSAGE") {
+            store.dispatch(fetchGroupMessages())
+        }
     }
 
     onOpened(openResult) {
@@ -48,6 +51,9 @@ export default class App extends React.Component {
         console.log('Data: ', openResult.notification.payload.additionalData);
         console.log('isActive: ', openResult.notification.isAppInFocus);
         console.log('openResult: ', openResult);
+        if (notification.payload.additionalData.type && notification.payload.additionalData.type == "ADDED_TO_MESSAGE" || notification.payload.additionalData.type == "NEW_MESSAGE") {
+            NavigationService.navigate("messagesOverview");
+        }
     }
 
     onIds(device) {
