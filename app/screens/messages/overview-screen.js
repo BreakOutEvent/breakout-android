@@ -48,7 +48,7 @@ const GroupMessageThreadView = ({item, ...props}) => {
     return <TouchableOpacity
         onPress={() => {
             props.setCurrentGroupMessage(item);
-            props.navigation.navigate("messages", {usersString: item.usersString})
+            props.navigation.navigate("message", {usersString: item.usersString})
         }}>
         <View style={this.style.container}>
             <Text style={this.style.userString}>{item.usersString}</Text>
@@ -88,7 +88,8 @@ class MessagesOverviewScreen extends Component {
                 <ActionButton
                     buttonColor={Colors.Primary}
                     onPress={() => {
-                        console.log("hi")
+                        console.log("test.1");
+                        props.navigation.navigate("newMessage")
                     }}
                 />
             </View>

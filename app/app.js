@@ -13,7 +13,7 @@ import {fetchGroupMessages} from "./screens/messages/actions";
 import _ from 'lodash';
 import OneSignal from "react-native-onesignal";
 import Navigation from "./components/navigation";
-import NavigationService from "utils/navigation-service";
+import NavigationService from "./utils/navigation-service";
 
 Sentry.config(SENTRY_DSN).install();
 console.ignoredYellowBox = ['Remote debugger'];

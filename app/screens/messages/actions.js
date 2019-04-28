@@ -17,6 +17,11 @@ export const SET_CURRENT_GROUPMESSAGE_SUCCESS = 'SET_CURRENT_GROUPMESSAGE_SUCCES
 
 export const SET_REFRESHING = 'SET_REFRESHING';
 
+export const SET_NEW_MESSAGE_USER_SEARCH_REFRESHING = 'SET_NEW_MESSAGE_USER_SEARCH_REFRESHING';
+export const NEW_MESSAGE_USER_SEARCH_SUCCESS = 'NEW_MESSAGE_USER_SEARCH_SUCCESS';
+export const NEW_MESSAGE_USER_SEARCH_ERROR = 'NEW_MESSAGE_USER_SEARCH_ERROR';
+export const RESET_USER_SEARCH = 'RESET_USER_SEARCH';
+
 export const transformGroupMessageThread = (thread, userId) => {
     thread.userId = userId;
     thread.usersString = thread.users.filter(user => user.id != userId).map(user => user.firstname ? user.firstname : strings.someUsername).join(", ");
@@ -58,10 +63,19 @@ const sortMessageThreads = (groupMessages) => {
 };
 
 const transformGroupMessages = (groupMessages, userId) => {
-   const  sortedMessages = sortMessageThreads(groupMessages);
+    const sortedMessages = sortMessageThreads(groupMessages);
     const transformedMessages = sortedMessages.map(thread => transformGroupMessageThread(thread, userId));
     return transformedMessages;
 };
+
+function uniqBy(a, key) {
+    let seen = new Set();
+    return a.filter(item => {
+        let k = key(item);
+        return seen.has(k) ? false : seen.add(k);
+    });
+}
+
 
 export function fetchGroupMessages() {
     return dispatch => {
@@ -88,8 +102,26 @@ export function sendGroupMessage(groupMessageId, text) {
     }
 }
 
+export function newMessageUserSearch(text) {
+    return dispatch => {
+        dispatch(setUserSearchRefreshing(text));
+        withAccessToken(api, store.getState())
+            .searchUser(text)
+            .then((data) => {
+                const uniqueResults = uniqBy(data, (item) => item.id);
+                dispatch(onNewMessageUserSearchResult(uniqueResults.filter(result => result.firstname)))
+            })
+            .catch(error => dispatch(onNewMessageUserSearchError(error)))
+    }
+}
+
+export function resetUserSearch() {
+    return dispatch => {
+        dispatch(onResetUserSearch());
+    }
+}
+
 export function setCurrentGroupMessage(currentGroupMessage) {
-    console.log("setCurrentGroupMessage", currentGroupMessage);
     return dispatch => {
         dispatch(onSetCurrentGroupMessageSuccess(currentGroupMessage))
     }
@@ -116,6 +148,27 @@ function setRefreshing(refreshing = true) {
     }
 }
 
+function setUserSearchRefreshing(text, refreshing = true) {
+    return {
+        type: SET_NEW_MESSAGE_USER_SEARCH_REFRESHING,
+        payload: {text, refreshing}
+    }
+}
+
+function onNewMessageUserSearchResult(result) {
+    return {
+        type: NEW_MESSAGE_USER_SEARCH_SUCCESS,
+        payload: {result}
+    }
+}
+
+function onNewMessageUserSearchError(error) {
+    return {
+        type: NEW_MESSAGE_USER_SEARCH_ERROR,
+        payload: {error}
+    }
+}
+
 function onSendGroupMessagesSuccess(data) {
     return {
         type: SEND_GROUPMESSAGES_SUCCESS,
@@ -127,6 +180,13 @@ function onSendGroupMessagesError(error) {
     return {
         type: SEND_GROUPMESSAGES_ERROR,
         payload: {error}
+    }
+}
+
+function onResetUserSearch() {
+    return {
+        type: RESET_USER_SEARCH,
+        payload: {}
     }
 }
 

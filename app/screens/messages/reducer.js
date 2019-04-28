@@ -5,6 +5,10 @@ import {
     SEND_GROUPMESSAGES_ERROR,
     SET_CURRENT_GROUPMESSAGE_SUCCESS,
     SET_REFRESHING,
+    SET_NEW_MESSAGE_USER_SEARCH_REFRESHING,
+    NEW_MESSAGE_USER_SEARCH_SUCCESS,
+    NEW_MESSAGE_USER_SEARCH_ERROR,
+    RESET_USER_SEARCH,
     transformGroupMessageThread
 } from "./actions";
 
@@ -13,7 +17,10 @@ const initialState = {
     userId: 1,
     refreshing: false,
     error: null,
-    currentGroupMessage: null
+    currentGroupMessage: null,
+    newMessageSearchString: "",
+    newMessageSearchResults: [],
+    newMessageSearchRefreshing: false
 };
 
 function updateGroupMessagesForThread(groupMessages, updatedThread, userId) {
@@ -73,6 +80,39 @@ export default groupMessagesReducer = (state = initialState, action) => {
             return {
                 ...state,
                 refreshing: action.payload.refreshing,
+            };
+
+        case SET_NEW_MESSAGE_USER_SEARCH_REFRESHING:
+            return {
+                ...state,
+                newMessageSearchString: action.payload.text,
+                newMessageSearchRefreshing: action.payload.refreshing,
+            };
+
+        case NEW_MESSAGE_USER_SEARCH_SUCCESS:
+            return {
+                ...state,
+                newMessageSearchRefreshing: false,
+                newMessageSearchResults: action.payload.result,
+                newMessagesUserSearchError: {}
+            };
+
+        case NEW_MESSAGE_USER_SEARCH_ERROR:
+            return {
+                ...state,
+                newMessageSearchRefreshing: false,
+                newMessagesUserSearchError: {
+                    ...action.payload.error,
+                    userMessage: 'Failed to search User' // TODO: i18n
+                }
+            };
+
+        case RESET_USER_SEARCH:
+            return {
+                ...state,
+                newMessageSearchString: "",
+                newMessageSearchResults: [],
+                newMessageSearchRefreshing: false
             };
 
         default:

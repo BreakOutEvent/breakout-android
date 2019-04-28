@@ -4,7 +4,7 @@ import * as Colors from "../../config/colors";
 import {sendGroupMessage} from "./actions";
 import {connect} from "react-redux";
 
-class MessagesScreen extends React.PureComponent {
+class MessageScreen extends React.PureComponent {
 
     renderBubble = (props) => {
         return (
@@ -50,5 +50,5 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-const ConnectedMessagesScreen = connect(mapStateToProps, mapDispatchToProps)(MessagesScreen);
-export default ConnectedMessagesScreen;
+const ConnectedMessageScreen = connect(mapStateToProps, mapDispatchToProps)(MessageScreen);
+export default ConnectedMessageScreen;

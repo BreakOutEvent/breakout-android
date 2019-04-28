@@ -10,7 +10,8 @@ import {ProfilePic} from "./posting";
 import {connect} from "react-redux";
 import DeviceInfo from "react-native-device-info";
 import MessagesOverviewScreen from "../screens/messages/overview-screen";
-import MessagesScreen from "../screens/messages/message-screen";
+import MessageScreen from "../screens/messages/message-screen";
+import NewMessageScreen from "../screens/messages/new-message-screen";
 import LoginScreen from "../screens/login/screen";
 import ConnectedPostingList from "../screens/postings/screen";
 import MapScreen from "./map";
@@ -61,9 +62,12 @@ function buildNavOptions({navigation}) {
         headerLeft = drawerButtonBack();
         title = _.get(navigation, 'state.params.teamName');
     }
-    if (routeName === "messages") {
+    if (routeName === "message") {
         headerLeft = drawerButtonBack();
         title = _.get(navigation, 'state.params.usersString');
+    }
+    if (routeName === "newMessage") {
+        headerLeft = drawerButtonBack();
     }
     return {
         headerStyle: {
@@ -182,7 +186,8 @@ const ConnectedDrawer = connect(state => ({
 
 const MessagesStack = StackNavigator({
     messagesOverview: {screen: MessagesOverviewScreen},
-    messages: {screen: MessagesScreen}
+    message: {screen: MessageScreen},
+    newMessage: {screen: NewMessageScreen}
 }, {
     navigationOptions: buildNavOptions, // TODO own nav options
 });
