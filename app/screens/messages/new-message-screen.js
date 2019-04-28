@@ -53,17 +53,15 @@ class NewMessageScreen extends React.PureComponent {
                 bottom: 0,
                 alignItems: 'center',
                 justifyContent: 'center'
-            },
+            }
         });
 
-        const loading = true;
-
         return (
-            <View pointerEvents={loading ? 'none' : 'auto'}>
-                {loading ?
+            <View pointerEvents={props.createMessageRefreshing ? 'none' : 'auto'}>
+                {props.createMessageRefreshing ?
                     (<View style={this.style.loading}><ActivityIndicator size={100} color={Colors.Primary}/></View>)
                     : null}
-                <View style={loading ? this.style.loadingBackground : null}>
+                <View style={props.createMessageRefreshing ? this.style.loadingBackground : null}>
                     <Textarea
                         style={{margin: 5}}
                         rowSpan={2}
@@ -87,6 +85,7 @@ const mapStateToProps = (state) => {
         newMessageSearchString: state.messages.newMessageSearchString,
         newMessageSearchResults: state.messages.newMessageSearchResults,
         newMessageSearchRefreshing: state.messages.newMessageSearchRefreshing,
+        createMessageRefreshing: state.messages.createMessageRefreshing,
         groupMessages: state.messages.groupMessages,
         userId: state.messages.userId
     });
@@ -95,7 +94,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         newMessageUserSearch: (text) => dispatch(newMessageUserSearch(text)),
-        createGroupMessage: (item, groupMessages) => dispatch(createGroupMessage(item, groupMessages)),
+        createGroupMessage: (item, groupMessages, userId) => dispatch(createGroupMessage(item, groupMessages, userId)),
         resetUserSearch: () => dispatch(resetUserSearch())
     }
 };

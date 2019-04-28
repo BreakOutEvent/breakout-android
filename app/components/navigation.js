@@ -24,9 +24,10 @@ const drawerButton = () =>
     (<Icon name='menu' style={{padding: 10, paddingRight: 20, color: 'white'}}
            onPress={() => NavigationService.navigate('DrawerToggle')}/>);
 
-const drawerButtonBack = () =>
+const drawerButtonBack = (route = null) =>
     (<Icon name='arrow-back' style={{padding: 10, paddingRight: 20, color: 'white'}}
-           onPress={() => NavigationService.goBack()}/>);
+           onPress={() =>
+               route ? NavigationService.navigate(route) : NavigationService.goBack()}/>);
 
 
 const stacked = (Screen, title = 'BreakOut') => StackNavigator({
@@ -63,7 +64,7 @@ function buildNavOptions({navigation}) {
         title = _.get(navigation, 'state.params.teamName');
     }
     if (routeName === "message") {
-        headerLeft = drawerButtonBack();
+        headerLeft = drawerButtonBack('messagesOverview');
         title = _.get(navigation, 'state.params.usersString');
     }
     if (routeName === "newMessage") {

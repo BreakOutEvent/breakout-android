@@ -9,6 +9,7 @@ import {
     NEW_MESSAGE_USER_SEARCH_SUCCESS,
     NEW_MESSAGE_USER_SEARCH_ERROR,
     RESET_USER_SEARCH,
+    SET_CREATE_MESSAGE_REFRESHING,
     CREATE_GROUPMESSAGES_ERROR,
     transformGroupMessageThread
 } from "./actions";
@@ -21,7 +22,8 @@ const initialState = {
     currentGroupMessage: null,
     newMessageSearchString: "",
     newMessageSearchResults: [],
-    newMessageSearchRefreshing: false
+    newMessageSearchRefreshing: false,
+    createMessageRefreshing: false
 };
 
 function updateGroupMessagesForThread(groupMessages, updatedThread, userId) {
@@ -98,6 +100,7 @@ export default groupMessagesReducer = (state = initialState, action) => {
                 newMessagesUserSearchError: {}
             };
 
+
         case NEW_MESSAGE_USER_SEARCH_ERROR:
             return {
                 ...state,
@@ -118,12 +121,19 @@ export default groupMessagesReducer = (state = initialState, action) => {
                 }
             };
 
+        case SET_CREATE_MESSAGE_REFRESHING:
+            return {
+                ...state,
+                createMessageRefreshing: action.payload.refreshing
+            };
+
         case RESET_USER_SEARCH:
             return {
                 ...state,
                 newMessageSearchString: "",
                 newMessageSearchResults: [],
-                newMessageSearchRefreshing: false
+                newMessageSearchRefreshing: false,
+                createMessageRefreshing: false
             };
 
         default:

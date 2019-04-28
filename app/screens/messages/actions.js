@@ -25,6 +25,7 @@ export const NEW_MESSAGE_USER_SEARCH_ERROR = 'NEW_MESSAGE_USER_SEARCH_ERROR';
 
 export const RESET_USER_SEARCH = 'RESET_USER_SEARCH';
 
+export const SET_CREATE_MESSAGE_REFRESHING = 'SET_CREATE_MESSAGE_REFRESHING';
 export const CREATE_GROUPMESSAGES_ERROR = 'CREATE_GROUPMESSAGES_ERROR';
 
 export const transformGroupMessageThread = (thread, userId) => {
@@ -88,7 +89,7 @@ export function redirectToThread(thread) {
     }
 }
 
-export function fetchGroupMessages(redirectToThreadData = null) {
+export function fetchGroupMessages() {
     return dispatch => {
         dispatch(setRefreshing());
         withAccessToken(api, store.getState())
@@ -98,7 +99,6 @@ export function fetchGroupMessages(redirectToThreadData = null) {
                 .then(groupMessages => {
                     const transformedMessages = transformGroupMessages(groupMessages, me.id);
                     dispatch(onFetchGroupMessagesSuccess(transformedMessages, me.id));
-                    if (redirectToThreadData) dispatch(redirectToThread(redirectToThreadData));
                 })
                 .catch(error => dispatch(onFetchGroupMessagesError(error))))
             .catch(error => dispatch(onFetchGroupMessagesError(error)))
@@ -128,11 +128,13 @@ export function newMessageUserSearch(text) {
 }
 
 export function createGroupMessage(item, groupMessages, userId) {
-    const alreadyExistingGroupMessage = groupMessages
-        .filter(thread => thread.users.length === 2)
-        .find(thread => thread.users.find(user => user.id === item.id));
-
     return dispatch => {
+        dispatch(setCreateMessageRefreshing());
+
+        const alreadyExistingGroupMessage = groupMessages
+            .filter(thread => thread.users.length === 2)
+            .find(thread => thread.users.find(user => user.id === item.id));
+
         if (alreadyExistingGroupMessage) {
             dispatch(redirectToThread(alreadyExistingGroupMessage))
         } else {
@@ -140,7 +142,7 @@ export function createGroupMessage(item, groupMessages, userId) {
                 .createGroupMessage([item.id])
                 .then((data) => {
                     const transformedThread = transformGroupMessageThread(data, userId);
-                    dispatch(fetchGroupMessages(transformedThread))
+                    dispatch(redirectToThread(transformedThread))
                 })
                 .catch(error => dispatch(onCreateGroupMessageError(error)))
         }
@@ -186,6 +188,14 @@ function setUserSearchRefreshing(text, refreshing = true) {
         payload: {text, refreshing}
     }
 }
+
+function setCreateMessageRefreshing(refreshing = true) {
+    return {
+        type: SET_CREATE_MESSAGE_REFRESHING,
+        payload: {refreshing}
+    }
+}
+
 
 function onNewMessageUserSearchResult(result) {
     return {
