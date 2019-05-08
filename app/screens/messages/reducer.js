@@ -11,7 +11,8 @@ import {
     RESET_USER_SEARCH,
     SET_CREATE_MESSAGE_REFRESHING,
     CREATE_GROUPMESSAGES_ERROR,
-    transformGroupMessageThread
+    FETCH_GROUPMESSAGE_SUCCESS,
+    transformGroupMessageThread,
 } from "./actions";
 
 const initialState = {
@@ -37,6 +38,16 @@ export default groupMessagesReducer = (state = initialState, action) => {
         case 'CLEAN_ALL':
             return initialState;
 
+        case FETCH_GROUPMESSAGE_SUCCESS:
+            const updatedGroupMessages = updateGroupMessagesForThread(state.groupMessages, action.payload.groupMessage, action.payload.userId);
+            return {
+                ...state,
+                refreshing: false,
+                groupMessages: updatedGroupMessages,
+                userId: action.payload.userId,
+                fetchGroupMessagesError: null,
+                currentGroupMessage: state.currentGroupMessage ? updatedGroupMessages.find(item => item.id === state.currentGroupMessage.id) : null
+            };
         case FETCH_GROUPMESSAGES_SUCCESS:
             return {
                 ...state,

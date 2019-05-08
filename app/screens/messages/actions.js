@@ -9,6 +9,7 @@ import NavigationService from "../../utils/navigation-service";
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 
 export const FETCH_GROUPMESSAGES_SUCCESS = 'FETCH_GROUPMESSAGES_SUCCESS';
+export const FETCH_GROUPMESSAGE_SUCCESS = 'FETCH_GROUPMESSAGE_SUCCESS';
 export const FETCH_GROUPMESSAGES_ERROR = 'FETCH_GROUPMESSAGES_ERROR';
 
 export const SEND_GROUPMESSAGES_SUCCESS = 'SEND_GROUPMESSAGES_SUCCESS';
@@ -89,6 +90,17 @@ export function redirectToThread(thread) {
     }
 }
 
+export function fetchGroupMessage(id, userId) {
+    return dispatch => {
+        withAccessToken(api, store.getState()).getGroupMessage(id)
+            .then(groupMessage => {
+                console.log("groupMessage", groupMessage);
+                dispatch(onFetchGroupMessageSuccess(groupMessage, userId));
+            })
+            .catch(error => dispatch(onFetchGroupMessagesError(error)))
+    }
+}
+
 export function fetchGroupMessages() {
     return dispatch => {
         dispatch(setRefreshing());
@@ -158,6 +170,13 @@ export function resetUserSearch() {
 export function setCurrentGroupMessage(currentGroupMessage) {
     return dispatch => {
         dispatch(onSetCurrentGroupMessageSuccess(currentGroupMessage))
+    }
+}
+
+function onFetchGroupMessageSuccess(groupMessage, userId) {
+    return {
+        type: FETCH_GROUPMESSAGE_SUCCESS,
+        payload: {groupMessage, userId}
     }
 }
 

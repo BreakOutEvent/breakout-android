@@ -9,7 +9,7 @@ import {Sentry} from 'react-native-sentry';
 import {ONESIGNAL_APPID, SENTRY_DSN} from './config/secrets';
 import {onGeoLocationError, onGeoLocationReceived} from "./background-tracking/actions";
 import {onUpdateNotificationToken} from "./notifications/actions";
-import {fetchGroupMessages} from "./screens/messages/actions";
+import {fetchGroupMessage, fetchGroupMessages} from "./screens/messages/actions";
 import _ from 'lodash';
 import OneSignal from "react-native-onesignal";
 import Navigation from "./components/navigation";
@@ -41,7 +41,13 @@ export default class App extends React.Component {
 
     onReceived(notification) {
         console.log("Notification received: ", notification);
-        if (notification.payload.additionalData.type && notification.payload.additionalData.type == "ADDED_TO_MESSAGE" || notification.payload.additionalData.type == "NEW_MESSAGE") {
+        const userId = _.get(store.getState(), 'login.me.id', 0);
+        if (notification.payload.additionalData.id && notification.payload.additionalData.type && notification.payload.additionalData.type == "NEW_MESSAGE") {
+            setTimeout(() => {
+                store.dispatch(fetchGroupMessage(notification.payload.additionalData.id, userId))
+            }, 1000) // hacky but notification seems to be faster than DB
+        }
+        if (notification.payload.additionalData.type || notification.payload.additionalData.type == "ADDED_TO_MESSAGE") {
             store.dispatch(fetchGroupMessages())
         }
     }
