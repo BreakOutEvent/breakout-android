@@ -9,7 +9,7 @@ import {Sentry} from 'react-native-sentry';
 import {ONESIGNAL_APPID, SENTRY_DSN} from './config/secrets';
 import {onGeoLocationError, onGeoLocationReceived} from "./background-tracking/actions";
 import {onUpdateNotificationToken} from "./notifications/actions";
-import {fetchGroupMessage, fetchGroupMessages} from "./screens/messages/actions";
+import {fetchGroupMessage, fetchGroupMessages, redirectToThreadById} from "./screens/messages/actions";
 import _ from 'lodash';
 import OneSignal from "react-native-onesignal";
 import Navigation from "./components/navigation";
@@ -57,8 +57,8 @@ export default class App extends React.Component {
         console.log('Data: ', openResult.notification.payload.additionalData);
         console.log('isActive: ', openResult.notification.isAppInFocus);
         console.log('openResult: ', openResult);
-        if (notification.payload.additionalData.type && notification.payload.additionalData.type == "ADDED_TO_MESSAGE" || notification.payload.additionalData.type == "NEW_MESSAGE") {
-            NavigationService.navigate("messagesOverview");
+        if (openResult.notification.payload.additionalData.id && openResult.notification.payload.additionalData.type && openResult.notification.payload.additionalData.type == "ADDED_TO_MESSAGE" || openResult.notification.payload.additionalData.type == "NEW_MESSAGE") {
+            redirectToThreadById(openResult.notification.payload.additionalData.id)
         }
     }
 

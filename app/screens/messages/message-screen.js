@@ -1,10 +1,16 @@
 import React from 'react'
 import {GiftedChat, Bubble} from 'react-native-gifted-chat/index'
 import * as Colors from "../../config/colors";
-import {sendGroupMessage} from "./actions";
+import {sendGroupMessage, setCurrentGroupMessage} from "./actions";
 import {connect} from "react-redux";
 
 class MessageScreen extends React.PureComponent {
+
+    componentWillMount() {
+        const {navigation} = this.props;
+        const thread = navigation.getParam('thread', null);
+        if (thread) this.props.setCurrentGroupMessage(thread);
+    }
 
     renderBubble = (props) => {
         return (
@@ -46,7 +52,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        sendMessage: (groupMessageId, text) => dispatch(sendGroupMessage(groupMessageId, text))
+        sendMessage: (groupMessageId, text) => dispatch(sendGroupMessage(groupMessageId, text)),
+        setCurrentGroupMessage: (thread) => dispatch(setCurrentGroupMessage(thread))
     }
 };
 

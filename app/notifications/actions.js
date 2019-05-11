@@ -1,8 +1,8 @@
 import BreakoutApi from "breakout-api-client";
 import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, CLOUDINARY_API_KEY, CLOUDINARY_CLOUD, DEBUG} from "../config/secrets";
 import {withAccessToken} from "../utils/utils";
-import {ToastAndroid} from "react-native";
 import _ from "lodash";
+import NavigationService from "../utils/navigation-service";
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, CLOUDINARY_CLOUD, CLOUDINARY_API_KEY, DEBUG);
 
@@ -12,13 +12,12 @@ export function onUpdateNotificationToken(notificationToken) {
 
         if (!userId) return;
 
-        try {
-            await withAccessToken(api).updateUserNotificationToken(userId, {
-                token: notificationToken,
-            });
-        } catch (err) {
-            console.log(err);
-        }
+        await withAccessToken(api).updateUserNotificationToken(userId, {
+            token: notificationToken,
+        }).catch(error => {
+            console.log("onUpdateNotificationToken", error);
+            if (error.includes('401')) NavigationService.navigate("login");
+        });
     }
 }
 
@@ -28,10 +27,6 @@ export function onUpdateNotificationRemove() {
 
         if (!userId) return;
 
-        try {
-            await withAccessToken(api).removeUserNotificationToken(userId);
-        } catch (err) {
-            console.log(err);
-        }
+        await withAccessToken(api).removeUserNotificationToken(userId).catch(console.error);
     }
 }

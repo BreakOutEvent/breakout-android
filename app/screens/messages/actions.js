@@ -5,6 +5,7 @@ import {withAccessToken} from "../../utils/utils";
 import placeHolder from "../../assets/profile_pic_placeholder.jpg";
 import {strings} from "./overview-screen.js";
 import NavigationService from "../../utils/navigation-service";
+import _ from "lodash";
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 
@@ -137,6 +138,13 @@ export function newMessageUserSearch(text) {
             })
             .catch(error => dispatch(onNewMessageUserSearchError(error)))
     }
+}
+
+// where else to put this?
+export function redirectToThreadById(id) {
+    const groupMessages = _.get(store.getState(), 'messages.groupMessages');
+    const thread = groupMessages.find(thread => thread.id === id);
+    NavigationService.navigate("message", {usersString: thread.usersString, thread: thread})
 }
 
 export function createGroupMessage(item, groupMessages, userId) {
