@@ -102,7 +102,7 @@ class AllTeams extends React.PureComponent {
         return (
             <View style={styles.item}>
                 <View style={styles.imageContainer}>{imageOrPlaceHolder}</View>
-                <Button onPress={() => this.props.navigation.navigate("aTeam", {teamId: team.id, teamName: team.name})}>
+                <Button onPress={() => this.props.navigation.navigate("allATeam", {teamId: team.id, teamName: team.name})}>
                 <View style={styles.itemTeamName}>
                     <Text adjustsFontSizeToFit numberOfLines={2} style={styles.itemTeamNameText}>{team.name}</Text>
                 </View>

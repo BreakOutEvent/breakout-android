@@ -69,7 +69,28 @@ const Tabnav = TabNavigator({
     },
 });
 
-export default class TeamProfile extends React.PureComponent {
+class TeamProfile extends React.PureComponent {
+    constructor(props) {
+        super(props);
+    }
+
+    static navigationOptions = {
+        drawerLabel: () => null
+    };
+
+
+    componentWillMount() {
+        const teamId = this.props.navigation.getParam("teamId");
+        console.log("teamId", teamId, this.props);
+    }
+
+    render() {
+        const teamId = this.props.navigation.getParam("teamId");
+        return <Tabnav screenProps={{teamId}}/>
+    }
+}
+
+class YourTeamProfile extends React.PureComponent {
     constructor(props) {
         super(props);
     }
@@ -80,17 +101,17 @@ export default class TeamProfile extends React.PureComponent {
     };
 
     componentWillMount() {
-        const teamId = this.props.navigation.getParam("teamId") || this.props.teamId;
-        if (!teamId) {
+        if (!this.props.teamId) {
             this.props.navigation.navigate("drawerLogin");
         }
     }
 
     render() {
-        const teamId = this.props.navigation.getParam("teamId") || this.props.teamId;
+        const teamId = this.props.teamId;
         return <Tabnav screenProps={{teamId}}/>
     }
 }
+
 
 let strings = new LocalizedStrings({
     "en-US": {
@@ -100,3 +121,7 @@ let strings = new LocalizedStrings({
         yourTeamLabel: 'Dein Team'
     }
 });
+
+export {
+    TeamProfile, YourTeamProfile
+}

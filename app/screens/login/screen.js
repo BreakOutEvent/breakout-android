@@ -105,8 +105,8 @@ const ErrorMessageView = (props) => {
             <Text style={{color: Colors.LikeRed}}>{props.error.userMessage}</Text>
         </View>
     );
+};
 
-}
 const mapStateToProps = (state) => {
     return {
         username: state.login.username,

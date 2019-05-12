@@ -1,10 +1,10 @@
 import BreakoutApi from "breakout-api-client";
 import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG} from "../../config/secrets";
 import {Sentry} from 'react-native-sentry';
-import {navigatorRef} from "../../app";
-import {NavigationActions} from "react-navigation";
-import { Keyboard } from 'react-native'
+import {Keyboard} from 'react-native'
+import OneSignal from "react-native-onesignal";
 import _ from "lodash";
+import NavigationService from "../../utils/navigation-service";
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 
@@ -71,9 +71,10 @@ function onLoginSuccess(response, fromLoginScreen = false) {
     return async dispatch => {
 
         Keyboard.dismiss();
+        OneSignal.configure();
 
         if (fromLoginScreen) {
-            navigatorRef.dispatch(NavigationActions.navigate({routeName: 'drawer'}));
+            NavigationService.navigate('drawer');
         }
 
         dispatch({

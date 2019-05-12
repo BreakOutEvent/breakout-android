@@ -1,9 +1,8 @@
 import React from 'react';
 import {Icon, List, ListItem} from "native-base";
 import {store} from "../../store/store";
-import {NavigationActions} from "react-navigation";
 import {Text} from "react-native";
-import {navigatorRef} from "../../app";
+import NavigationService from "../../utils/navigation-service";
 
 class SettingsScreen extends React.PureComponent {
 
@@ -16,7 +15,7 @@ class SettingsScreen extends React.PureComponent {
         store.dispatch({
             type: 'CLEAN_ALL'
         });
-        navigatorRef.dispatch(NavigationActions.navigate({routeName: "login"}));
+        NavigationService.navigate("login");
     }
 
     render() {

@@ -7,6 +7,7 @@ import loginReducer from '../screens/login/reducer';
 import teamProfileReducer from '../screens/team-profile/reducer';
 import createPostingReducer from '../screens/create-posting/reducer';
 import allTeamsReducer from '../screens/all-teams/reducer';
+import groupMessagesReducer from '../screens/messages/reducer';
 import storage from 'redux-persist/lib/storage';
 import {persistReducer, persistStore} from "redux-persist";
 
@@ -18,6 +19,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     locations: locationReducer,
     postings: postingReducer,
+    messages: groupMessagesReducer,
     login: loginReducer,
     team: teamProfileReducer,
     createPosting: createPostingReducer,
