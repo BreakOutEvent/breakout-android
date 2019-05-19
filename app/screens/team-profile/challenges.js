@@ -1,9 +1,11 @@
 // TODO: parse company correctly
 import React from 'react';
 import {connect} from "react-redux";
-import {FlatList, Text} from "react-native";
-import {Body, Icon, ListItem} from "native-base";
+import {View, FlatList, Text} from "react-native";
+import {Icon, ListItem} from "native-base";
 import _ from "lodash";
+import * as Colors from "../../config/colors";
+
 
 const ChallengeListItem = (challenge) => {
 
@@ -18,22 +20,35 @@ const ChallengeListItem = (challenge) => {
     if (challenge.status === 'WITH_PROOF') {
         return (
             <ListItem>
-                <Icon style={{color: 'green', paddingRight: 15}} name='done-all'/>
-                <Body>
-                <Text note>{challenge.description}</Text>
-                <Text>{text}</Text>
-                </Body>
+                <View style={{flex: 1, flexDirection: 'row'}}>
+                    <View style={{width: 60}}>
+                        <View style={{flex: 1, flexDirection: 'column', alignContent: 'center'}}>
+                            <Icon style={{color: 'green'}} name='done-all'/>
+                            <Text style={{color: 'green'}}>{challenge.amount} €</Text>
+                        </View>
+                    </View>
+                    <View style={{flex: 1, flexDirection: 'column'}}>
+                        <Text>{challenge.description}</Text>
+                        <Text>{text}</Text>
+                    </View>
+                </View>
             </ListItem>
         );
     } else {
         return (
             <ListItem>
-                <Icon style={{color: 'white', paddingRight: 15}} name='done-all'/>
-                <Body>
-                <Text note>{challenge.description}</Text>
-                <Text/>
-                <Text>{text}</Text>
-                </Body>
+                <View style={{flex: 1, flexDirection: 'row'}}>
+                    <View style={{width: 60}}>
+                        <View style={{flex: 1, flexDirection: 'column', alignContent: 'center'}}>
+                            <Icon style={{color: Colors.Grey}} name='flag'/>
+                            <Text>{challenge.amount} €</Text>
+                        </View>
+                    </View>
+                    <View style={{flex: 1, flexDirection: 'column'}}>
+                        <Text>{challenge.description}</Text>
+                        <Text>{text}</Text>
+                    </View>
+                </View>
             </ListItem>
         );
     }
@@ -52,7 +67,7 @@ class Challenges extends React.Component {
     render() {
         return (
             <FlatList style={{backgroundColor: 'white'}}
-                      keyExtractor={(elem) => elem.id}
+                      keyExtractor={(elem) => elem.id.toString()}
                       data={this.props.challenges}
                       renderItem={({item}) => <ChallengeListItem {...item} />}
             />
