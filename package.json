@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "breakout-api-client": "git://github.com/BreakOutEvent/breakout-api-client.git#feature/messaging",
+    "breakout-api-client": "^0.15.2",
     "immutability-helper": "^2.9.1",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
