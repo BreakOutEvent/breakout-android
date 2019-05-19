@@ -33,7 +33,7 @@ export function changeFileEnding(url, newFileEnding) {
 
         // replace the ending of the video with .png. This will use cloudinary
         // to automatically generate a thumbnail based on the video url for us
-        return url.substr(0, url.lastIndexOf('.')) + '.'+ newFileEnding;
+        return url.substr(0, url.lastIndexOf('.')) + '.' + newFileEnding;
 
     } catch (err) {
         logger.error(`Error changing extension to ${newFileEnding} for url '${url}'`);
@@ -44,7 +44,7 @@ class AllTeams extends React.PureComponent {
 
     static navigationOptions = {
         drawerLabel: () => strings.allTeamsLabel,
-        drawerIcon: () => <Icon name="people" />
+        drawerIcon: () => <Icon name="people"/>
     };
 
     constructor(props) {
@@ -96,16 +96,21 @@ class AllTeams extends React.PureComponent {
         const styles = this.styles;
 
         const imageOrPlaceHolder = (profilePicUri)
-            ? <Image style={styles.image} source={{uri: transform('w_200,h_150,c_fill_pad,g_auto,b_auto,q_auto:eco', profilePicUri)}}/>
-            : <View style={styles.placeholder}/>;
+            ? <Image style={styles.image}
+                     source={{uri: transform('w_200,h_150,c_fill_pad,g_auto,b_auto,q_auto:eco', profilePicUri)}}/>
+            : <Image style={styles.image} source={require('../../assets/profile_pic_placeholder.jpg')}/>;
 
         return (
             <View style={styles.item}>
-                <View style={styles.imageContainer}>{imageOrPlaceHolder}</View>
-                <Button onPress={() => this.props.navigation.navigate("allATeam", {teamId: team.id, teamName: team.name})}>
-                <View style={styles.itemTeamName}>
-                    <Text adjustsFontSizeToFit numberOfLines={2} style={styles.itemTeamNameText}>{team.name}</Text>
-                </View>
+                <Button
+                    onPress={() => this.props.navigation.navigate("allATeam", {teamId: team.id, teamName: team.name})}>
+                    <View>
+                        <View style={styles.imageContainer}>{imageOrPlaceHolder}</View>
+                        <View style={styles.itemTeamName}>
+                            <Text adjustsFontSizeToFit numberOfLines={2}
+                                  style={styles.itemTeamNameText}>{team.name}</Text>
+                        </View>
+                    </View>
                 </Button>
             </View>
         )
@@ -138,12 +143,12 @@ function mapDispatchToProps(dispatch) {
 }
 
 let strings = new LocalizedStrings({
- "en-US":{
-	 allTeamsLabel:'All Teams'
- },
- de:{
-   allTeamsLabel:'Alle Teams'
- }
+    "en-US": {
+        allTeamsLabel: 'All Teams'
+    },
+    de: {
+        allTeamsLabel: 'Alle Teams'
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllTeams);

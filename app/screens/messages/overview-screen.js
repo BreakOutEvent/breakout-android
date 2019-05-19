@@ -12,10 +12,12 @@ import * as Colors from "../../config/colors";
 export const strings = new LocalizedStrings({
     "en-US": {
         drawerLabelMessages: 'Messages',
+        noMessages: 'No Messages yet',
         someUsername: 'Some User'
     },
     de: {
         drawerLabelMessages: 'Nachrichten',
+        noMessages: 'Noch keine Chats',
         someUsername: 'Ein Nutzer'
     }
 });
@@ -74,17 +76,37 @@ class MessagesOverviewScreen extends Component {
     render() {
         const props = this.props;
 
+        this.style = StyleSheet.create({
+            view: {
+                flex: 1
+            },
+            noMessages: {
+                padding: 10,
+                fontSize: 16
+            }
+        });
+
+        const GroupMessagesList = () => {
+            if (props.groupMessages.length) {
+                return (<FlatList data={props.groupMessages}
+                                  keyExtractor={item => item.id.toString()}
+                                  renderItem={({item}) => <GroupMessageThreadView item={item} {...props}/>}
+                                  refreshing={props.refreshing}
+                                  onRefresh={() => props.onRefresh()}
+                />);
+            } else {
+                return (<View style={this.style.noMessages}><Text>{strings.noMessages}</Text></View>);
+            }
+        };
+
+
         return (
-            <View>
-                <FlatList data={props.groupMessages}
-                          keyExtractor={item => item.id.toString()}
-                          renderItem={({item}) => <GroupMessageThreadView item={item} {...props}/>}
-                          refreshing={props.refreshing}
-                          onRefresh={() => props.onRefresh()}
-                />
+            <View style={this.style.view}>
+                <GroupMessagesList/>
                 <ActionButton
                     buttonColor={Colors.Primary}
                     onPress={() => {
+                        console.log("ActionButton");
                         props.navigation.navigate("newMessage")
                     }}
                 />

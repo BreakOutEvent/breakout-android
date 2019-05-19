@@ -1,8 +1,7 @@
-// TODO: parse company correctly
 import React from 'react';
 import {connect} from "react-redux";
 import {FlatList, Text} from "react-native";
-import {Body, Icon, ListItem} from "native-base";
+import {Icon, ListItem} from "native-base";
 import _ from "lodash";
 
 const SponsoringListItem = (sponsoring) => {
@@ -11,15 +10,13 @@ const SponsoringListItem = (sponsoring) => {
     const firstname = _.get(sponsoring, 'sponsor.firstname');
     const lastname = _.get(sponsoring, 'sponsor.lastname');
 
-    const text = (company)
+    const text = (company && company.trim() != "")
         ? `${firstname} ${lastname} – ${company}`
         : `${firstname} ${lastname}`;
 
     return (
         <ListItem>
-            <Body>
             <Text>{text}</Text>
-            </Body>
         </ListItem>
     );
 };
@@ -36,8 +33,8 @@ class Sponsorings extends React.Component {
     render() {
         return (
             <FlatList style={{backgroundColor: 'white'}}
-                      keyExtractor={(elem, idx) => idx}
-                      data={this.props.sponsorings}
+                      keyExtractor={(elem, idx) => idx.toString()}
+                      data={this.props.sponsorings.filter(sponsoring => sponsoring.status === "ACCEPTED")}
                       renderItem={({item}) => <SponsoringListItem {...item} />}
             />
         )

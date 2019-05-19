@@ -130,12 +130,17 @@ const CardChallenge = (props) => {
             alignItems: 'center',
             margin: 15,
             padding: 10,
-            marginTop: 0,
-            borderWidth: 2,
-            borderRadius: 6,
-            borderColor: Colors.Primary
+            marginTop: 5,
+            borderWidth: 1,
+            borderRadius: 4,
+            borderColor: Colors.Grey
         }}>
-            <Icon style={{padding: 15}} name='trophy'/>
+            <View style={{width: 55}}>
+                <View style={{flex: 1, flexDirection: 'column', alignContent: 'center'}}>
+                    <Icon style={{color: 'green'}} name='done-all'/>
+                    <Text style={{color: 'green'}}>{props.challenge.amount} €</Text>
+                </View>
+            </View>
             <View style={{flex: 1}}>
                 <Text>{props.challenge.description}</Text>
             </View>
