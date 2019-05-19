@@ -1,4 +1,3 @@
-// TODO: parse company correctly
 import React from 'react';
 import {connect} from "react-redux";
 import {View, FlatList, Text} from "react-native";
@@ -13,7 +12,7 @@ const ChallengeListItem = (challenge) => {
     const firstname = _.get(challenge, 'sponsor.firstname');
     const lastname = _.get(challenge, 'sponsor.lastname');
 
-    const text = (company)
+    const text = (company && company.trim() != "")
         ? `${firstname} ${lastname} – ${company}`
         : `${firstname} ${lastname}`;
 
