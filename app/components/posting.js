@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, TouchableNativeFeedback} from "react-native";
+import {StyleSheet, Text, View, TouchableNativeFeedback, ToastAndroid} from "react-native";
 import ProgressBar from "react-native-progress/Bar";
 import * as Colors from "../config/colors";
 import React from 'react';
@@ -52,6 +52,11 @@ const cardCommentsAndLikesStyle = StyleSheet.create({
         backgroundColor: 'white',
         paddingBottom: 10
     },
+    innerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'white',
+    },
     buttonStyle: {
         padding: 0,
         margin: 0
@@ -88,11 +93,15 @@ class CardCommentsAndLikes extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        this.onPress = this.onPress.bind(this, props.postingId)
+        this.onLikePress = this.onLikePress.bind(this, props.postingId)
     }
 
-    onPress(postingId) {
+    onLikePress(postingId) {
         this.props.addLike(postingId);
+    }
+
+    onCommentPress() {
+        ToastAndroid.show(strings.noCommentsYet, ToastAndroid.SHORT);
     }
 
     render() {
@@ -101,19 +110,23 @@ class CardCommentsAndLikes extends React.PureComponent {
 
         return (
             <View style={cardCommentsAndLikesStyle.container}>
-                <Button onPress={this.onPress}>
-                    <Icon active={props.hasLiked} name='heart'
-                          style={{color: likeColor, marginLeft: 15, marginRight: 15}}/>
-                </Button>
-                <Button onPress={this.onPress}>
-                    <Text style={cardCommentsAndLikesStyle.likesText}>{props.likes} {strings.likes}</Text>
+                <Button onPress={this.onLikePress}>
+                    <View style={cardCommentsAndLikesStyle.innerContainer}>
+                        <Icon active={props.hasLiked} name='heart'
+                              style={{color: likeColor, marginLeft: 15, marginRight: 15}}/>
+                        <Text style={cardCommentsAndLikesStyle.likesText}>{props.likes} {strings.likes}</Text>
+                    </View>
                 </Button>
 
-                <Button>
-                    <Icon name='text' style={cardCommentsAndLikesStyle.commentsIcon}/>
+
+                <Button onPress={this.onCommentPress}>
+                    <View style={cardCommentsAndLikesStyle.innerContainer}>
+                        <Icon name='text' style={cardCommentsAndLikesStyle.commentsIcon}/>
+                        <Text style={cardCommentsAndLikesStyle.commentsText}>
+                            {_.get(props, 'comments.length', 0)} {strings.comments}
+                        </Text>
+                    </View>
                 </Button>
-                <Text
-                    style={cardCommentsAndLikesStyle.commentsText}>{_.get(props, 'comments.length', 0)} {strings.comments}</Text>
             </View>
         );
     }
@@ -307,10 +320,13 @@ export const ProfilePic = (props) => {
 let strings = new LocalizedStrings({
     "en-US": {
         comments: 'Comments',
-        likes: 'Likes'
+        likes: 'Likes',
+        noCommentsYet: 'Comments not working on Android yet'
     },
     de: {
         comments: 'Kommentare',
-        likes: 'Likes'
+        likes: 'Likes',
+        noCommentsYet: 'Kommentare funktionieren auf Android noch nicht'
+
     }
 });
