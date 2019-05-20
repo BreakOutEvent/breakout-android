@@ -38,8 +38,7 @@ function updateTeamStateWithLocations(state, teamId, locations) {
 }
 
 function updateStateWithChallenges(state, teamId, challenges) {
-
-    challenges.filter(challenge => challenge.status === 'ACCEPTED' || challenge.status === 'WITH_PROOF');
+    challenges = challenges.filter(challenge => challenge.status === 'ACCEPTED' || challenge.status === 'WITH_PROOF' || challenge.status === 'PROPOSED');
 
     const team = update(state[teamId], {
         $apply: (team) => {

@@ -2,6 +2,7 @@ import BreakoutApi from 'breakout-api-client';
 import {BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG} from "../../config/secrets";
 import {store} from '../../store/store';
 import {withAccessToken} from "../../utils/utils";
+import NavigationService from "../../utils/navigation-service";
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, DEBUG);
 
@@ -50,6 +51,7 @@ function onFetchNewPostingsInProgress() {
 }
 
 function onFetchNewPostingsError(error) {
+    if(error.response.status === 401) NavigationService.navigate("login");
     return {
         type: FETCH_NEW_POSTINGS_ERROR,
         payload: {error}
