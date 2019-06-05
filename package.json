@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "breakout-api-client": "^0.15.2",
+    "breakout-api-client": "^0.16.2",
     "immutability-helper": "^2.9.1",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
@@ -22,9 +22,9 @@
     "react-native-gifted-chat": "git+https://github.com/nerdfitness/react-native-gifted-chat.git",
     "react-native-image-picker": "^0.27.2",
     "react-native-image-progress": "^1.1.1",
-    "react-native-localization": "^2.1.1",
+    "react-native-localization": "^2.1.2",
     "react-native-maps": "^0.22.1",
-    "react-native-onesignal": "^3.2.12",
+    "react-native-onesignal": "^3.2.14",
     "react-native-progress": "^3.6.0",
     "react-native-scrollable-tab-view": "^0.10.0",
     "react-native-sentry": "^0.40.3",
