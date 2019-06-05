@@ -51,7 +51,7 @@ function onFetchNewPostingsInProgress() {
 }
 
 function onFetchNewPostingsError(error) {
-    if(error.response.status === 401) NavigationService.navigate("login");
+    if(error && error.response && error.response.status === 401) NavigationService.navigate("login");
     return {
         type: FETCH_NEW_POSTINGS_ERROR,
         payload: {error}

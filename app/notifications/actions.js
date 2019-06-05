@@ -16,7 +16,7 @@ export function onUpdateNotificationToken(notificationToken) {
             token: notificationToken,
         }).catch(error => {
             console.log("onUpdateNotificationToken", error);
-            if (error.includes('401')) NavigationService.navigate("login");
+            if(error && error.response && error.response.status === 401) NavigationService.navigate("login");
         });
     }
 }
