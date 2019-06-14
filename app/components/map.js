@@ -163,8 +163,8 @@ function getEventsMapContent(props) {
             title={team.name}
             opacity={0.7}
             coordinate={{
-                latitude: maxDistanceTeamLocation.latitude,
-                longitude: maxDistanceTeamLocation.longitude,
+                latitude: maxDistanceTeamLocation.latitude || 0,
+                longitude: maxDistanceTeamLocation.longitude || 0,
             }}/>;
     });
     const teamPolylines = props.locations.map(team => {
