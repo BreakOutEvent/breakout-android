@@ -6,7 +6,7 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "clean": "cd android && ./gradlew clean",
-    "android-build-release": "cd android && ./gradlew assembleRelease",
+    "android-build-release": "cd android && ./gradlew bundleRelease",
     "test": "jest",
     "lint": "eslint ."
   },
