@@ -7,7 +7,8 @@
     "android": "react-native run-android",
     "clean": "cd android && ./gradlew clean",
     "android-build-release": "cd android && ./gradlew assembleRelease",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint ."
   },
   "dependencies": {
     "breakout-api-client": "^0.16.2",
@@ -15,15 +16,15 @@
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "native-base": "^2.12.1",
-    "react": "^16.8.6",
-    "react-native": "^0.59.8",
+    "react": "16.8.6",
+    "react-native": "0.60.0",
     "react-native-action-button": "^2.8.5",
     "react-native-device-info": "^2.1.0",
     "react-native-gifted-chat": "git+https://github.com/nerdfitness/react-native-gifted-chat.git",
     "react-native-image-picker": "^0.28.1",
     "react-native-image-progress": "^1.1.1",
     "react-native-localization": "^2.1.2",
-    "react-native-maps": "^0.24.2",
+    "react-native-maps": "git+https://github.com/react-native-community/react-native-maps.git",
     "react-native-onesignal": "^3.2.14",
     "react-native-progress": "^3.6.0",
     "react-native-scrollable-tab-view": "^0.10.0",
@@ -39,10 +40,14 @@
     "url": "^0.11.0"
   },
   "devDependencies": {
-    "babel-jest": "23.6.0",
-    "jest": "23.6.0",
-    "metro-react-native-babel-preset": "0.54.1",
-    "react-test-renderer": "16.6.3"
+    "@babel/core": "^7.4.5",
+    "@babel/runtime": "^7.4.5",
+    "babel-jest": "^24.8.0",
+    "eslint": "^6.0.1",
+    "jest": "^24.8.0",
+    "jetifier": "^1.6.1",
+    "metro-react-native-babel-preset": "^0.54.1",
+    "react-test-renderer": "^16.8.6"
   },
   "jest": {
     "preset": "react-native"
