@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 
 class MessageScreen extends React.PureComponent {
 
-    componentWillMount() {
+    componentDidMount() {
         const {navigation} = this.props;
         const thread = navigation.getParam('thread', null);
         if (thread) this.props.setCurrentGroupMessage(thread);

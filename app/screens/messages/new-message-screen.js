@@ -34,7 +34,7 @@ const SearchResultView = ({item, ...props}) => {
 
 class NewMessageScreen extends React.PureComponent {
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.resetUserSearch();
     }
 

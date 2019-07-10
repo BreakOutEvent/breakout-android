@@ -79,7 +79,7 @@ class TeamProfile extends React.PureComponent {
     };
 
 
-    componentWillMount() {
+    componentDidMount() {
         const teamId = this.props.navigation.getParam("teamId");
         console.log("teamId", teamId, this.props);
     }
@@ -100,7 +100,7 @@ class YourTeamProfile extends React.PureComponent {
         drawerIcon: () => <Icon name='contact'/>
     };
 
-    componentWillMount() {
+    componentDidMount() {
         if (!this.props.teamId) {
             this.props.navigation.navigate("drawerLogin");
         }

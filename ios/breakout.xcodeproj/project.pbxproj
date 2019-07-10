@@ -425,6 +425,7 @@
 				2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */,
 				2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */,
 				0E0B1C2089664169AD524EE2 /* libRNDeviceInfo-tvOS.a in Frameworks */,
+				177F6CBF7140451FB44E5DA7 /* libRNSentry-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
