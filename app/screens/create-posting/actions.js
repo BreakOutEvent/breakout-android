@@ -8,6 +8,7 @@ import {fetchNewPostings} from "../postings/actions";
 import {PermissionsAndroid} from "react-native";
 import _ from "lodash";
 import NavigationService from "../../utils/navigation-service";
+import Geolocation from '@react-native-community/geolocation';
 
 const api = new BreakoutApi(BASE_URL, CLIENT_NAME, CLIENT_SECRET, CLOUDINARY_CLOUD, CLOUDINARY_API_KEY, DEBUG);
 
@@ -202,7 +203,7 @@ export function onCreatePostingScreenMounted(teamId) {
             // return PermissionsAndroid.RESULTS.GRANTED. Do not use `==` here!
             if (granted === PermissionsAndroid.RESULTS.GRANTED || granted === true) {
                 locations = await new Promise((resolve, reject) => {
-                    navigator.geolocation.getCurrentPosition(resolve, reject, options)
+                    Geolocation.getCurrentPosition(resolve)
                 });
             } else {
                 throw new Error("User didn't give access to geolocation. Permissions are: " + granted);
