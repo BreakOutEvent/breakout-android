@@ -96,9 +96,12 @@ function getCityColor(team) {
         'Köln': '#6b5aac'
     };
 
-    return colorlist[team.event.city];
+    return colorlist[team.event.city] ? colorlist[team.event.city] : randomColor();
 }
 
+function randomColor() {
+    return '#' + Math.floor(Math.random() * 16777215).toString(16);
+}
 
 function colorGradientByWeight(color1, color2, weight) {
     const w = weight * 2 - 1;
