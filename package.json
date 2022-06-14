@@ -8,7 +8,8 @@
     "clean": "cd android && ./gradlew clean",
     "android-build-release": "cd android && ./gradlew bundleRelease",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "postinstall" : "npx jetify"
   },
   "dependencies": {
     "@react-native-community/geolocation": "^1.4.2",
